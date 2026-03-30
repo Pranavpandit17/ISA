@@ -1,0 +1,438 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="space-y-6">
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <div class="flex items-start justify-between gap-4 mb-4">
+          <div class="flex items-center space-x-4">
+          <img [src]="currentUser?.image" class="h-16 w-16 rounded-full object-cover">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">{{ currentUser?.name }}</h2>
+            <p class="text-xs text-slate-500" *ngIf="currentUser?.email">{{ currentUser?.email }}</p>
+            <p class="text-sm text-slate-500" *ngIf="currentUser?.title || currentUser?.company">
+              {{ currentUser?.title }}
+              <span *ngIf="currentUser?.title && currentUser?.company"> &#64; </span>
+              {{ currentUser?.company }}
+            </p>
+            <span class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">{{ currentUser?.type }} MEMBER</span>
+            <div class="mt-2 text-xs text-slate-600" *ngIf="selectedMembershipPlan">
+              <span class="font-semibold">Plan:</span>
+              <span>{{ selectedMembershipPlan.name }} ({{ selectedMembershipPlan.type }})</span>
+            </div>
+            <div class="mt-2 text-xs text-slate-500" *ngIf="!selectedMembershipPlan">
+              <span class="font-semibold">Plan:</span>
+              <span>No plan selected</span>
+            </div>
+          </div>
+          </div>
+
+          <!-- Notifications bell -->
+          <button
+            type="button"
+            (click)="openNotifications()"
+            class="relative inline-flex items-center justify-center h-10 w-10 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
+            title="Notifications">
+            <span class="text-lg">🔔</span>
+            <span
+              *ngIf="unreadCount > 0"
+              class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 min-w-[20px] text-center">
+              {{ unreadCount }}
+            </span>
+          </button>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button (click)="onNavigate('PROFILE_EDIT')" class="flex-1 py-2 px-4 border border-slate-300 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-50">Edit Profile</button>
+        </div>
+      </div>
+
+      <!-- Notifications Modal -->
+      <div *ngIf="showNotifications" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4" (click)="closeNotifications()">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" (click)="$event.stopPropagation()">
+          <div class="flex items-center justify-between p-6 border-b border-slate-200">
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">Notifications</h3>
+              <p class="text-sm text-slate-600 mt-1">Updates about payments and events</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                (click)="markAllAsRead()"
+                class="px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-700 hover:bg-slate-50">
+                Mark all read
+              </button>
+              <button
+                type="button"
+                (click)="clearAllNotifications()"
+                [disabled]="isLoadingNotifications"
+                class="px-3 py-2 border border-red-300 text-red-700 rounded-md text-sm hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                Clear all
+              </button>
+              <button (click)="closeNotifications()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold">×</button>
+            </div>
+          </div>
+
+          <div class="p-6 overflow-y-auto flex-1">
+            <div *ngIf="notificationsError" class="mb-4 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-r-lg">
+              {{ notificationsError }}
+            </div>
+
+            <div *ngIf="isLoadingNotifications" class="text-center py-8 text-slate-600">
+              <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-3"></div>
+              Loading...
+            </div>
+
+            <div *ngIf="!isLoadingNotifications && !notificationsError && notifications.length === 0" class="text-center py-8 text-slate-600">
+              No notifications yet.
+            </div>
+
+            <div *ngIf="!isLoadingNotifications && !notificationsError && notifications.length > 0" class="space-y-3">
+              <div
+                *ngFor="let n of notifications"
+                (click)="onNotificationClick(n)"
+                class="p-4 rounded-lg border transition-colors cursor-pointer"
+                [ngClass]="n.read ? 'bg-white border-slate-200' : 'bg-blue-50 border-blue-200'">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <p class="text-sm font-semibold text-slate-900">{{ n.title }}</p>
+                      <span *ngIf="!n.read" class="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">NEW</span>
+                      <span *ngIf="n.category" class="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">{{ n.category }}</span>
+                    </div>
+                    <p class="text-sm text-slate-700 mt-1">{{ n.message }}</p>
+                    <p class="text-xs text-slate-500 mt-2" *ngIf="n.createdAt">{{ n.createdAt | date:'medium' }}</p>
+                  </div>
+                  <button
+                    *ngIf="!n.read"
+                    type="button"
+                    (click)="$event.stopPropagation(); markAsRead(n)"
+                    class="px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg hover:bg-slate-800">
+                    Mark read
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 border-t border-slate-200 flex justify-end gap-3">
+            <button type="button" (click)="loadNotifications()" class="px-4 py-2 border border-slate-300 rounded-md text-sm text-slate-700 hover:bg-slate-50">
+              Refresh
+            </button>
+            <button type="button" (click)="closeNotifications()" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Announcements -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <h3 class="text-lg font-medium text-slate-900 mb-4">Announcements</h3>
+        <ul class="space-y-4">
+          <li *ngFor="let item of announcements" class="flex items-start space-x-3">
+            <div class="flex-shrink-0 mt-0.5">
+              <div class="h-2 w-2 rounded-full" [ngClass]="item.type === 'ALERT' ? 'bg-red-500' : 'bg-blue-500'"></div>
+            </div>
+            <div>
+              <p class="text-sm text-slate-700">{{ item.title }}</p>
+              <span class="text-xs text-slate-400">{{ item.date }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Quick Actions - Fixed Icons -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100 sticky top-0 z-10">
+        <h3 class="text-lg font-medium text-slate-900 mb-4">Quick Actions</h3>
+        <div class="flex gap-3 overflow-x-auto pb-1">
+          <button 
+            (click)="onSelectView('DIRECTORY')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'DIRECTORY'}"
+            class="flex-shrink-0 min-w-[120px] p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">👥</span>
+            <div class="text-sm font-medium">Directory</div>
+          </button>
+          <button 
+            (click)="onSelectView('BENCH')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'BENCH'}"
+            class="flex-shrink-0 min-w-[140px] p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">💼</span>
+            <div class="text-sm font-medium">Bench Resources</div>
+          </button>
+          <button 
+            (click)="onSelectView('EVENTS')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'EVENTS'}"
+            class="flex-shrink-0 min-w-[110px] p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">📅</span>
+            <div class="text-sm font-medium">Events</div>
+          </button>
+          <button 
+            (click)="onSelectView('BLOGS')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'BLOGS'}"
+            class="flex-shrink-0 min-w-[110px] p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">📝</span>
+            <div class="text-sm font-medium">Blogs</div>
+          </button>
+          <button 
+            (click)="onSelectView('JOBS_PROJECTS')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'JOBS_PROJECTS'}"
+            class="flex-shrink-0 min-w-[150px] p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">💼</span>
+            <div class="text-sm font-medium">Jobs & Projects</div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Content Area -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <!-- Default: My Schedule + Membership Plans -->
+        <div *ngIf="!currentView">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium text-slate-900">My Schedule</h3>
+            <a (click)="onSelectView('EVENTS')" class="text-sm text-blue-600 hover:text-blue-800 cursor-pointer">View All</a>
+          </div>
+          <div *ngIf="myEvents.length === 0" class="text-center py-8 text-slate-500 text-sm bg-slate-50 rounded-lg">
+            No upcoming events. Check the calendar!
+          </div>
+          <div class="space-y-4">
+            <div *ngFor="let event of myEvents" class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+              <div class="flex items-center gap-4">
+                <div class="flex-shrink-0 h-12 w-12 bg-blue-100 text-blue-600 rounded-lg flex flex-col items-center justify-center">
+                  <span class="text-xs font-bold uppercase">{{ event.date | date:'MMM' }}</span>
+                  <span class="text-lg font-bold">{{ event.date | date:'dd' }}</span>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">{{ event.title }}</h4>
+                  <p class="text-xs text-slate-500">{{ event.location }} • {{ event.mode }}</p>
+                </div>
+              </div>
+              <button (click)="onViewEvent(event)" class="text-sm text-blue-600 font-medium hover:text-blue-800">View Details</button>
+            </div>
+          </div>
+
+          <!-- Membership Plans (overview) -->
+          <div id="membership-plans-section" class="mt-8 border-t border-slate-200 pt-6">
+            <div class="flex justify-between items-center mb-3">
+              <h3 class="text-lg font-medium text-slate-900">Membership Plans</h3>
+              <a (click)="onSelectView('DIRECTORY')" class="hidden"></a>
+            </div>
+            <app-membership-plans></app-membership-plans>
+          </div>
+        </div>
+
+        <!-- Events List View -->
+        <div *ngIf="currentView === 'EVENTS'">
+          <div class="mb-6">
+            <h1 class="text-2xl font-bold text-slate-900 mb-2">Event Listings</h1>
+            <p class="text-slate-600">Discover and register for upcoming events</p>
+          </div>
+
+          <!-- Filter Bar -->
+          <div class="bg-slate-50 rounded-lg border border-slate-200 p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <!-- Event Type Filter -->
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Event Type</label>
+                <select [(ngModel)]="eventTypeFilter" (change)="applyFilters()" class="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <option>All Types</option>
+                  <option>CONFERENCE</option>
+                  <option>NETWORKING</option>
+                  <option>WORKSHOP</option>
+                  <option>WEBINAR</option>
+                </select>
+              </div>
+
+              <!-- Date Range Filter -->
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Date Range</label>
+                <select [(ngModel)]="dateRangeFilter" (change)="applyFilters()" class="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <option>All Dates</option>
+                  <option>This Week</option>
+                  <option>This Month</option>
+                  <option>Next Month</option>
+                </select>
+              </div>
+
+              <!-- Cost Filter -->
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Cost</label>
+                <select [(ngModel)]="costFilter" (change)="applyFilters()" class="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <option>All Costs</option>
+                  <option>Free</option>
+                  <option>Paid</option>
+                </select>
+              </div>
+
+              <!-- Search Filter -->
+              <div>
+                <label class="block text-xs font-medium text-slate-700 mb-1">Search</label>
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    [(ngModel)]="searchQuery" 
+                    (input)="applyFilters()"
+                    placeholder="Search events..." 
+                    class="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <svg class="absolute left-3 top-2.5 h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center py-8 text-slate-500">
+            Loading events...
+          </div>
+
+          <!-- Events Table List View -->
+          <div *ngIf="!isLoading && filteredEvents.length > 0" class="bg-white shadow rounded-lg border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Event Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Start Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Location</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Capacity</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Cost</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-slate-200">
+                  <tr *ngFor="let event of filteredEvents" class="hover:bg-slate-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{{ event.name || event.title }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span [class]="getCategoryColor(event.type || event.category) + ' text-white px-2 py-1 rounded-full text-xs font-bold uppercase'">
+                        {{ event.type || event.category || 'EVENT' }}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                      {{ formatEventDateTime(event) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ event.location || event.venue }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                      {{ event.totalRegisteredSeats !== undefined ? event.totalRegisteredSeats : (event.registeredCount || 0) }} / {{ event.capacity || event.maxCapacity || 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{{ getEventCost(event) }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        (click)="onViewEvent(event)"
+                        class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                        View Detail
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoading && filteredEvents.length === 0" class="bg-white shadow rounded-lg border border-slate-200 p-8 text-center">
+            <p class="text-slate-500 text-lg">No events found matching your filters.</p>
+          </div>
+        </div>
+
+        <!-- Jobs & Projects View -->
+        <div *ngIf="currentView === 'JOBS_PROJECTS'">
+          <app-job-listings [showPostButton]="true" [isAdminView]="false"></app-job-listings>
+        </div>
+
+        <!-- Bench Resources View -->
+        <div *ngIf="currentView === 'BENCH'">
+          <app-bench-resources 
+            (navigate)="onNavigate($event)"
+            (openPayment)="onNavigate('PAYMENT')">
+          </app-bench-resources>
+        </div>
+      </div>
+
+      <!-- Recommended Connections (Hidden when viewing events or jobs) -->
+      <div *ngIf="!currentView || (currentView !== 'EVENTS' && currentView !== 'JOBS_PROJECTS')" class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium text-slate-900">Recommended Connections</h3>
+          <button (click)="onNavigate('DIRECTORY')" class="text-sm text-blue-600 hover:text-blue-800">View Directory</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div *ngFor="let member of members" class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-slate-200">
+            <img [src]="member.image" class="h-10 w-10 rounded-full bg-slate-200 object-cover">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-slate-900 truncate">{{ member.name }}</p>
+              <p class="text-xs text-slate-500 truncate">{{ member.company }}</p>
+            </div>
+            <button class="p-1 rounded-full text-blue-600 hover:bg-blue-50">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Other Members list -->
+        <div *ngIf="otherMembers.length > 0" class="border-t border-slate-200 pt-4 mt-2">
+          <h4 class="text-sm font-semibold text-slate-800 mb-3">Other Members</h4>
+          <div class="max-h-64 overflow-y-auto space-y-2">
+            <div *ngFor="let member of otherMembers" class="flex items-center space-x-3 p-2 hover:bg-slate-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-slate-200">
+              <img [src]="member.image" class="h-8 w-8 rounded-full bg-slate-200 object-cover">
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-medium text-slate-900 truncate">{{ member.name }}</p>
+                <p class="text-[11px] text-slate-500 truncate">{{ member.company }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Active Resources & Projects (Hidden when viewing events or jobs) -->
+      <div *ngIf="(!currentView || (currentView !== 'EVENTS' && currentView !== 'JOBS_PROJECTS')) && currentUser?.type === 'PREMIUM'" class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium text-slate-900">My Bench Posts & Bids</h3>
+          <div class="flex gap-2">
+            <button (click)="onNavigate('RESOURCE_POST')" class="text-sm bg-indigo-50 text-indigo-700 px-3 py-1 rounded-md hover:bg-indigo-100 font-medium">+ Post Resource</button>
+            <button (click)="onNavigate('PROJECT_POST')" class="text-sm bg-green-50 text-green-700 px-3 py-1 rounded-md hover:bg-green-100 font-medium">+ Post Project</button>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200">
+            <tbody class="divide-y divide-slate-200">
+              <tr *ngFor="let res of getMyResources()">
+                <td class="py-3 text-sm font-medium text-slate-900">{{ res.role }}</td>
+                <td class="py-3 text-sm text-slate-500">{{ res.stack }}</td>
+                <td class="py-3 text-sm">
+                  <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                </td>
+                <td class="py-3 text-right text-sm font-medium">
+                  <button class="text-red-600 hover:text-red-900">Remove</button>
+                </td>
+              </tr>
+              <tr *ngIf="getMyResources().length === 0">
+                <td colspan="4" class="py-4 text-center text-sm text-slate-500 italic">No active resource postings.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Detail Modal -->
+  <app-event-detail-modal
+    [show]="showEventDetailModal"
+    [event]="selectedEvent"
+    (close)="closeEventDetailModal()"
+    (registered)="onEventRegistered()"
+    (openPayment)="onEventPaymentRequest($event)">
+  </app-event-detail-modal>
+
+  <!-- Payment Modal -->
+  <app-payment-modal
+    [show]="showPaymentModal"
+    [paymentType]="selectedEvent && ((selectedEvent.pricingType === 'PAID' || selectedEvent.pricingType === 'DISCOUNTED') || (selectedEvent.memberPrice && selectedEvent.memberPrice > 0) || (selectedEvent.nonMemberPrice && selectedEvent.nonMemberPrice > 0) || (selectedEvent.price && selectedEvent.price > 0)) ? 'EVENT' : 'MEMBERSHIP'"
+    [event]="selectedEvent"
+    [quantity]="selectedEvent?.quantity || 1"
+    (close)="closePaymentModal()"
+    (success)="onPaymentSuccess($event)">
+  </app-payment-modal>
+</div>
+

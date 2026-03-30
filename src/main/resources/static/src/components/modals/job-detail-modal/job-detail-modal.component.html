@@ -1,0 +1,449 @@
+<div *ngIf="show && jobPosting" class="fixed inset-0 z-50 overflow-y-auto" (click)="onClose()">
+  <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 transition-opacity bg-black bg-opacity-50" aria-hidden="true"></div>
+    
+    <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <!-- Header -->
+        <div class="flex justify-between items-start mb-4">
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase"
+                    [ngClass]="jobPosting.type === 'JOB' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'">
+                {{ jobPosting.type }}
+              </span>
+              <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': jobPosting.status === 'OPEN',
+                      'bg-red-100 text-red-800': jobPosting.status === 'CLOSED',
+                      'bg-gray-100 text-gray-800': jobPosting.status === 'FILLED'
+                    }">
+                {{ jobPosting.status }}
+              </span>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900">{{ jobPosting.title }}</h3>
+            <p *ngIf="jobPosting.postedBy" class="text-sm text-slate-500 mt-1">
+              Posted by {{ jobPosting.postedBy }}
+              <span *ngIf="jobPosting.postedDate"> • {{ jobPosting.postedDate | date:'short' }}</span>
+            </p>
+          </div>
+          <button (click)="onClose()" class="text-slate-400 hover:text-slate-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Job Details -->
+        <div class="space-y-4 mb-6">
+          <!-- Description -->
+          <div>
+            <h4 class="text-sm font-semibold text-slate-700 mb-2">Description</h4>
+            <p class="text-slate-600 whitespace-pre-wrap">{{ jobPosting.description }}</p>
+          </div>
+
+          <!-- Full Description -->
+          <div *ngIf="jobPosting.fullDescription">
+            <h4 class="text-sm font-semibold text-slate-700 mb-2">Full Description</h4>
+            <p class="text-slate-600 whitespace-pre-wrap">{{ jobPosting.fullDescription }}</p>
+          </div>
+
+          <!-- Details Grid -->
+          <div class="grid grid-cols-2 gap-4">
+            <div *ngIf="jobPosting.employmentType">
+              <h4 class="text-sm font-semibold text-slate-700">Employment Type</h4>
+              <p class="text-slate-600">{{ jobPosting.employmentType }}</p>
+            </div>
+            <div *ngIf="jobPosting.location">
+              <h4 class="text-sm font-semibold text-slate-700">Location</h4>
+              <p class="text-slate-600">
+                {{ jobPosting.location }}
+                <span *ngIf="jobPosting.isRemote" class="ml-2 text-green-600 font-medium">(Remote)</span>
+              </p>
+            </div>
+            <div *ngIf="jobPosting.salaryMin || jobPosting.salaryMax">
+              <h4 class="text-sm font-semibold text-slate-700">Salary Range</h4>
+              <p class="text-slate-600">
+                <span *ngIf="jobPosting.salaryMin">{{ jobPosting.salaryCurrency || 'USD' }} {{ jobPosting.salaryMin | number:'1.0-0' }}</span>
+                <span *ngIf="jobPosting.salaryMin && jobPosting.salaryMax"> - </span>
+                <span *ngIf="jobPosting.salaryMax">{{ jobPosting.salaryCurrency || 'USD' }} {{ jobPosting.salaryMax | number:'1.0-0' }}</span>
+              </p>
+            </div>
+            <div *ngIf="jobPosting.closingDate">
+              <h4 class="text-sm font-semibold text-slate-700">Closing Date</h4>
+              <p class="text-slate-600">{{ jobPosting.closingDate | date:'mediumDate' }}</p>
+            </div>
+          </div>
+
+          <!-- Posted By Information -->
+          <div *ngIf="jobPosting.postedByName || jobPosting.postedByEmail || jobPosting.postedByCompany" class="bg-slate-50 p-4 rounded-lg">
+            <h4 class="text-sm font-semibold text-slate-700 mb-2">Posted By</h4>
+            <div class="space-y-1">
+              <p *ngIf="jobPosting.postedByName" class="text-slate-600"><strong>Name:</strong> {{ jobPosting.postedByName }}</p>
+              <p *ngIf="jobPosting.postedByEmail" class="text-slate-600"><strong>Email:</strong> {{ jobPosting.postedByEmail }}</p>
+              <p *ngIf="jobPosting.postedByCompany" class="text-slate-600"><strong>Company:</strong> {{ jobPosting.postedByCompany }}</p>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div *ngIf="jobPosting.tags && jobPosting.tags.length > 0">
+            <h4 class="text-sm font-semibold text-slate-700 mb-2">Tags</h4>
+            <div class="flex flex-wrap gap-2">
+              <span *ngFor="let tag of jobPosting.tags" 
+                    class="px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800">
+                {{ tag }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Requirements -->
+          <div *ngIf="jobPosting.requirements && (getRequirementsArray().length > 0 || getRequirementsString())">
+            <h4 class="text-sm font-semibold text-slate-700 mb-2">Requirements</h4>
+            <ul *ngIf="getRequirementsArray().length > 0" class="list-disc list-inside space-y-1">
+              <li *ngFor="let req of getRequirementsArray()" class="text-slate-600">{{ req }}</li>
+            </ul>
+            <p *ngIf="getRequirementsArray().length === 0 && getRequirementsString()" class="text-slate-600 whitespace-pre-wrap">{{ getRequirementsString() }}</p>
+          </div>
+
+          <!-- Application Count -->
+          <div *ngIf="jobPosting.applicationCount !== undefined || proposals.length > 0">
+            <h4 class="text-sm font-semibold text-slate-700">
+              Applications: {{ jobPosting.applicationCount ?? proposals.length }}
+            </h4>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200">
+            <div *ngIf="jobPosting.createdAt">
+              <h4 class="text-sm font-semibold text-slate-700">Posted Date</h4>
+              <p class="text-slate-600 text-sm">{{ jobPosting.createdAt | date:'medium' }}</p>
+            </div>
+            <div *ngIf="jobPosting.publishedAt">
+              <h4 class="text-sm font-semibold text-slate-700">Published Date</h4>
+              <p class="text-slate-600 text-sm">{{ jobPosting.publishedAt | date:'medium' }}</p>
+            </div>
+            <div *ngIf="jobPosting.adminReviewStatus">
+              <h4 class="text-sm font-semibold text-slate-700">Review Status</h4>
+              <span class="px-2 py-1 rounded text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-800': jobPosting.adminReviewStatus === 'PENDING',
+                      'bg-green-100 text-green-800': jobPosting.adminReviewStatus === 'APPROVED',
+                      'bg-red-100 text-red-800': jobPosting.adminReviewStatus === 'REJECTED'
+                    }">
+                {{ jobPosting.adminReviewStatus }}
+              </span>
+            </div>
+            <div *ngIf="jobPosting.visibility">
+              <h4 class="text-sm font-semibold text-slate-700">Visibility</h4>
+              <p class="text-slate-600 text-sm">{{ jobPosting.visibility }}</p>
+            </div>
+          </div>
+
+          <!-- Admin Review Notes (if rejected) -->
+          <div *ngIf="jobPosting.adminReviewStatus === 'REJECTED' && jobPosting.adminReviewNotes" class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-red-700 mb-2">Review Notes</h4>
+            <p class="text-red-600 text-sm whitespace-pre-wrap">{{ jobPosting.adminReviewNotes }}</p>
+          </div>
+        </div>
+
+        <!-- Applied Status -->
+        <div *ngIf="!isOwnJob && hasApplied" class="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-md">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-purple-800 font-medium">You have already applied for this job</span>
+          </div>
+        </div>
+
+        <!-- Application Form Toggle -->
+        <div *ngIf="canSubmitProposal() && !showProposalForm" class="mb-6">
+          <button 
+            (click)="showProposalForm = true"
+            class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">
+            Apply for this Job
+          </button>
+        </div>
+
+        <!-- Application Form -->
+        <div *ngIf="showProposalForm && canSubmitProposal()" class="border-t border-slate-200 pt-6 mb-6">
+          <h4 class="text-lg font-semibold text-slate-900 mb-4">Apply for this Job</h4>
+          <form (ngSubmit)="onSubmitProposal($event)">
+            <div class="space-y-4">
+              <!-- Cover Message -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Cover Message *</label>
+                <textarea 
+                  [(ngModel)]="proposal.coverLetter" 
+                  name="coverLetter"
+                  rows="5"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Explain why you're a good fit for this job and highlight your relevant experience..."
+                  required></textarea>
+              </div>
+
+              <!-- Resume Upload (Optional) -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Resume URL (Optional)</label>
+                <input 
+                  type="url" 
+                  [(ngModel)]="proposal.resumeUrl" 
+                  name="resumeUrl"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="https://example.com/resume.pdf">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Resume File Name (Optional)</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="proposal.resumeFileName" 
+                  name="resumeFileName"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="resume.pdf">
+              </div>
+
+              <!-- Error/Success Messages -->
+              <div *ngIf="errorMessage" class="p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
+                {{ errorMessage }}
+              </div>
+              <div *ngIf="successMessage" class="p-3 bg-green-50 border border-green-200 rounded-md text-green-700 text-sm">
+                {{ successMessage }}
+              </div>
+
+              <!-- Actions -->
+              <div class="flex justify-end gap-3">
+                <button 
+                  type="button"
+                  (click)="showProposalForm = false"
+                  class="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50">
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  [disabled]="isSubmitting"
+                  class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                  <span *ngIf="isSubmitting">Submitting...</span>
+                  <span *ngIf="!isSubmitting">Submit Application</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Existing Proposals (for poster) -->
+        <div *ngIf="isOwnJob" class="border-t border-slate-200 pt-6">
+          <h4 class="text-lg font-semibold text-slate-900 mb-4">
+            Applicants ({{ proposals.length }})
+          </h4>
+          
+          <!-- Loading State -->
+          <div *ngIf="isLoadingProposals" class="text-center py-4 text-slate-500 text-sm">
+            Loading applicants...
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="!isLoadingProposals && proposals.length === 0" class="text-center py-8 text-slate-400 text-sm bg-slate-50 rounded-lg">
+            No applicants yet
+          </div>
+
+          <!-- Applicants List -->
+          <div *ngIf="!isLoadingProposals && proposals.length > 0" class="space-y-4">
+            <div *ngFor="let prop of proposals" class="border border-slate-200 rounded-lg p-4 hover:bg-slate-50 transition-colors">
+              <div class="flex justify-between items-start mb-3">
+                <div class="flex-1">
+                  <p class="font-semibold text-slate-900 text-lg">{{ prop.applicantName }}</p>
+                  <p class="text-sm text-slate-600 mt-1">{{ prop.applicantEmail }}</p>
+                  <p *ngIf="prop.applicantCompany" class="text-sm text-slate-500 mt-1">{{ prop.applicantCompany }}</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-4"
+                      [ngClass]="{
+                        'bg-yellow-100 text-yellow-800': prop.status === 'PENDING',
+                        'bg-green-100 text-green-800': prop.status === 'ACCEPTED',
+                        'bg-red-100 text-red-800': prop.status === 'REJECTED'
+                      }">
+                  {{ prop.status || 'PENDING' }}
+                </span>
+              </div>
+              
+              <div class="mb-3">
+                <p class="text-sm font-medium text-slate-700 mb-1">Cover Message:</p>
+                <p class="text-slate-600 text-sm whitespace-pre-wrap">{{ prop.coverMessage || prop.coverLetter || 'No cover message provided.' }}</p>
+              </div>
+
+              <div *ngIf="prop.relevantExperience" class="mb-3">
+                <p class="text-sm font-medium text-slate-700 mb-1">Relevant Experience:</p>
+                <p class="text-slate-600 text-sm whitespace-pre-wrap">{{ prop.relevantExperience }}</p>
+              </div>
+
+              <div *ngIf="prop.proposedBudget || prop.proposedDuration" class="flex gap-4 text-sm mb-3">
+                <div *ngIf="prop.proposedBudget" class="flex items-center text-slate-600">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>Budget: {{ prop.proposedBudget }}</span>
+                </div>
+                <div *ngIf="prop.proposedDuration" class="flex items-center text-slate-600">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span>Duration: {{ prop.proposedDuration }}</span>
+                </div>
+              </div>
+
+              <div *ngIf="prop.submittedDate" class="text-xs text-slate-400">
+                Applied on {{ prop.submittedDate | date:'short' }}
+              </div>
+
+              <!-- Action Buttons (only for pending/under review applications) -->
+              <div *ngIf="canAcceptReject(prop)" class="mt-3 pt-3 border-t border-slate-200 flex justify-end gap-2">
+                <button
+                  (click)="onRejectApplication(prop)"
+                  [disabled]="isSubmitting"
+                  class="px-4 py-2 bg-red-100 text-red-700 text-sm font-medium rounded hover:bg-red-200 disabled:opacity-50">
+                  Reject
+                </button>
+                <button
+                  (click)="onAcceptApplication(prop)"
+                  [disabled]="isSubmitting"
+                  class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700 disabled:opacity-50">
+                  Accept
+                </button>
+              </div>
+
+              <!-- Review Notes (if reviewed) -->
+              <div *ngIf="prop.reviewNotes && (prop.status === 'ACCEPTED' || prop.status === 'REJECTED')" class="mt-3 pt-3 border-t border-slate-200">
+                <p class="text-sm font-medium text-slate-700 mb-1">Review Notes:</p>
+                <p class="text-slate-600 text-sm whitespace-pre-wrap">{{ prop.reviewNotes }}</p>
+              </div>
+
+              <!-- Rejection Reason (if rejected) -->
+              <div *ngIf="prop.rejectionReason && prop.status === 'REJECTED'" class="mt-3 pt-3 border-t border-slate-200">
+                <p class="text-sm font-medium text-red-700 mb-1">Rejection Reason:</p>
+                <p class="text-red-600 text-sm whitespace-pre-wrap">{{ prop.rejectionReason }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-6 flex justify-end gap-3">
+          <button 
+            *ngIf="isOwnJob"
+            (click)="editJob.emit(jobPosting!)"
+            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">
+            Edit Job
+          </button>
+          <button 
+            (click)="onClose()"
+            class="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Accept Application Modal -->
+<div *ngIf="showAcceptModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeAcceptModal()">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4" (click)="$event.stopPropagation()">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-slate-900">Accept Application</h2>
+        <button (click)="closeAcceptModal()" class="text-slate-400 hover:text-slate-600">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+
+      <div *ngIf="selectedProposal" class="mb-4">
+        <p class="text-sm text-slate-600 mb-2">
+          <strong>Applicant:</strong> {{ selectedProposal.applicantName }}
+        </p>
+        <p class="text-sm text-slate-600 mb-2">
+          <strong>Email:</strong> {{ selectedProposal.applicantEmail }}
+        </p>
+      </div>
+
+      <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded">
+        <p class="text-sm text-green-800">
+          Accepting this application will notify the applicant and mark their application as accepted.
+        </p>
+      </div>
+
+      <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+        {{ errorMessage }}
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button
+          (click)="closeAcceptModal()"
+          [disabled]="isSubmitting"
+          class="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50 disabled:opacity-50">
+          Cancel
+        </button>
+        <button
+          (click)="confirmAcceptApplication()"
+          [disabled]="isSubmitting"
+          class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50">
+          <span *ngIf="isSubmitting">Accepting...</span>
+          <span *ngIf="!isSubmitting">Accept Application</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Application Modal -->
+<div *ngIf="showRejectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeRejectModal()">
+  <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4" (click)="$event.stopPropagation()">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-slate-900">Reject Application</h2>
+        <button (click)="closeRejectModal()" class="text-slate-400 hover:text-slate-600">
+          <span class="text-2xl">&times;</span>
+        </button>
+      </div>
+
+      <div *ngIf="selectedProposal" class="mb-4">
+        <p class="text-sm text-slate-600 mb-2">
+          <strong>Applicant:</strong> {{ selectedProposal.applicantName }}
+        </p>
+        <p class="text-sm text-slate-600 mb-2">
+          <strong>Email:</strong> {{ selectedProposal.applicantEmail }}
+        </p>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-slate-700 mb-2">
+          Reason for Rejection <span class="text-red-600">*</span>
+        </label>
+        <textarea
+          [(ngModel)]="rejectionReason"
+          rows="4"
+          class="w-full border border-slate-300 rounded-md p-2 text-sm"
+          placeholder="Please provide a reason for rejecting this application..."
+          required></textarea>
+      </div>
+
+      <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+        {{ errorMessage }}
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button
+          (click)="closeRejectModal()"
+          [disabled]="isSubmitting"
+          class="px-4 py-2 border border-slate-300 rounded-md text-slate-700 hover:bg-slate-50 disabled:opacity-50">
+          Cancel
+        </button>
+        <button
+          (click)="confirmRejectApplication()"
+          [disabled]="isSubmitting || !rejectionReason.trim()"
+          class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50">
+          <span *ngIf="isSubmitting">Rejecting...</span>
+          <span *ngIf="!isSubmitting">Reject Application</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
