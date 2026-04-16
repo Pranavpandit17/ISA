@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadMembershipPlans(): void {
     this.isLoadingPlans = true;
-    this.apiService.getMembershipPlans().subscribe({
+    this.apiService.getPublicPlans().subscribe({
       next: (plans) => {
         // Map backend plans to suit the premium home UI
         this.membershipPlans = (plans || []).map((p: any) => ({
@@ -128,25 +128,26 @@ export class HomeComponent implements OnInit, OnDestroy {
       .filter((f: string) => !!f);
   }
 
-  getPlanFeatureObjects(plan: any): any[] {
+  getPlanFeatureObjects(plan: any): Array<{ name: string; description: string; category: string }> {
     const features = Array.isArray(plan?.features) ? plan.features : [];
-    return features.map((f: any) => {
-      if (f && typeof f === 'object') {
+    return features
+      .map((f: any) => {
+        if (f && typeof f === 'object') {
+          return {
+            name: String(f.name || f.code || '').trim(),
+            description: String(f.description || '').trim(),
+            category: String(f.category || 'GENERAL').trim()
+          };
+        }
+        const text = String(f || '').trim();
         return {
-          name: String(f.name || f.code || '').trim(),
-          description: String(f.description || '').trim(),
-          category: String(f.category || 'GENERAL').trim()
+          name: text,
+          description: '',
+          category: 'GENERAL'
         };
-      }
-      const text = String(f || '').trim();
-      return {
-        name: text,
-        description: '',
-        category: 'GENERAL'
-      };
-    }).filter((f: any) => !!f.name);
+      })
+      .filter((f: { name: string }) => !!f.name);
   }
-
 
   ngOnDestroy(): void {
     if (this.galleryIntervalId) clearInterval(this.galleryIntervalId);

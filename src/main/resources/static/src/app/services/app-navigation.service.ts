@@ -33,7 +33,7 @@ export class AppNavigationService {
     };
 
     private readonly protectedRoutes = [
-        'dashboard', 'admin-dashboard', 'directory',
+        'dashboard', 'admin-dashboard', 'directory', 'events', 'bench',
         'profile-edit', 'resource-post', 'project-post', 'blog-create',
         'member-management', 'event-create', 'event-management'
     ];
@@ -51,6 +51,11 @@ export class AppNavigationService {
         if (this.protectedRoutes.includes(path) && !user) {
             sessionStorage.setItem('redirectAfterLogin', '/' + path);
             this.router.navigate(['/home']);
+            return;
+        }
+
+        if (user && user.role !== 'admin' && path !== 'select-plan' && !this.authService.hasSelectedPlan()) {
+            this.router.navigate(['/select-plan']);
             return;
         }
 

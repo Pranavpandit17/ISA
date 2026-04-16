@@ -766,6 +766,26 @@ export class DashboardComponent implements OnInit {
     return !!this.currentUser && this.currentUser.type === 'PREMIUM';
   }
 
+  getMembershipLabel(): string {
+    if (!this.currentUser) {
+      return 'GUEST';
+    }
+    if (this.currentUser.role === 'admin') {
+      return 'ADMIN';
+    }
+    if (this.currentUser.currentPlanName && this.authService.hasSelectedPlan()) {
+      return this.currentUser.currentPlanName.toUpperCase();
+    }
+    if (this.currentUser.planExpiryDate && new Date(this.currentUser.planExpiryDate) < new Date(new Date().toDateString())) {
+      return 'PLAN EXPIRED';
+    }
+    return 'NO PLAN';
+  }
+
+  canUpgradePlan(): boolean {
+    return !!this.currentUser && this.currentUser.role !== 'admin';
+  }
+
   formatEventDateTime(event: any, useStartDate: boolean = true): string {
     if (!event) return 'N/A';
 

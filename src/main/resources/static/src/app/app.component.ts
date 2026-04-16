@@ -102,6 +102,11 @@ export class AppComponent implements OnInit {
                 return;
             }
 
+            if (user.role !== 'admin' && !this.authService.hasSelectedPlan()) {
+                this.router.navigate(['/select-plan']);
+                return;
+            }
+
             this.router.navigate([user.role === 'admin' ? '/admin-dashboard' : '/dashboard']);
             window.scrollTo(0, 0);
         } else {
@@ -110,6 +115,10 @@ export class AppComponent implements OnInit {
                 try {
                     const parsedUser = JSON.parse(storedUser);
                     this.currentUser = parsedUser;
+                    if (parsedUser.role !== 'admin' && !this.authService.hasSelectedPlan()) {
+                        this.router.navigate(['/select-plan']);
+                        return;
+                    }
                     this.router.navigate([parsedUser.role === 'admin' ? '/admin-dashboard' : '/dashboard']);
                     window.scrollTo(0, 0);
                 } catch (e) {

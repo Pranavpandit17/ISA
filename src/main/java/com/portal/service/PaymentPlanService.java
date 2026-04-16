@@ -119,6 +119,7 @@ public class PaymentPlanService {
         dto.setPrice(plan.getPrice() != null ? plan.getPrice() : java.math.BigDecimal.ZERO);
         dto.setCurrency(plan.getCurrency() != null ? plan.getCurrency() : "INR");
         dto.setDurationMonths(plan.getDurationMonths() != null ? plan.getDurationMonths() : 0);
+        dto.setLevel(resolvePlanLevel(plan));
         dto.setIsActive(plan.getIsActive() != null ? plan.getIsActive() : Boolean.FALSE);
         dto.setCreatedAt(plan.getCreatedAt());
 
@@ -183,6 +184,7 @@ public class PaymentPlanService {
         plan.setPrice(dto.getPrice() != null ? dto.getPrice() : java.math.BigDecimal.ZERO);
         plan.setCurrency(dto.getCurrency() != null ? dto.getCurrency() : "USD");
         plan.setDurationMonths(dto.getDurationMonths() != null ? dto.getDurationMonths() : 12);
+        plan.setLevel(dto.getLevel() != null ? dto.getLevel() : inferLevelFromPrice(dto.getPrice()));
         if (dto.getFeatures() != null) {
             try {
                 plan.setFeatures(objectMapper.writeValueAsString(extractFeatureNames(dto.getFeatures())));
@@ -192,6 +194,27 @@ public class PaymentPlanService {
         }
         plan.setIsActive(dto.getIsActive() != null ? dto.getIsActive() : true);
         return plan;
+    }
+
+    private Integer resolvePlanLevel(MembershipFeePlan plan) {
+        if (plan.getLevel() != null && plan.getLevel() > 0) {
+            return plan.getLevel();
+        }
+        return inferLevelFromPrice(plan.getPrice());
+    }
+
+    private Integer inferLevelFromPrice(java.math.BigDecimal price) {
+        java.math.BigDecimal normalized = price != null ? price : java.math.BigDecimal.ZERO;
+        if (normalized.compareTo(java.math.BigDecimal.ZERO) <= 0) {
+            return 1;
+        }
+        if (normalized.compareTo(new java.math.BigDecimal("3500")) <= 0) {
+            return 2;
+        }
+        if (normalized.compareTo(new java.math.BigDecimal("7000")) <= 0) {
+            return 3;
+        }
+        return 4;
     }
 
     private PlanFeatureDTO convertPlanFeatureToDto(PlanFeature feature) {

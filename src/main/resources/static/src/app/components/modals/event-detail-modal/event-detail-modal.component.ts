@@ -262,10 +262,34 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
     return false;
   }
 
+  private getActivePlanLevel(): number {
+    if (!this.currentUser) return 0;
+
+    const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
+    if (isAdmin) return 999;
+
+    if (!this.currentUser.currentPlanId) {
+      return 0;
+    }
+
+    if (this.currentUser.planExpiryDate) {
+      const expiry = new Date(this.currentUser.planExpiryDate);
+      if (expiry < new Date(new Date().toDateString())) {
+        return 0;
+      }
+    }
+
+    return this.currentUser.currentPlanLevel || 0;
+  }
+
+  /**
+   * "Member pricing / member eligibility" is based on plan level.
+   * Current mapping:
+   *  - level >= 2  => member
+   *  - level < 2   => non-member
+   */
   private isPaidMember(): boolean {
-    if (!this.currentUser) return false;
-    const type = String(this.currentUser.type || '').toUpperCase();
-    return type === 'PREMIUM' || type === 'ADMIN';
+    return this.getActivePlanLevel() >= 2;
   }
 
   // Attendance management (admin only)
@@ -489,7 +513,7 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
   getTicketTypes(): any[] {
     if (!this.event) return [];
     const list = Array.isArray(this.event.ticketTypes) ? this.event.ticketTypes : [];
-    return list
+    const normalized = list
       .filter((t: any) => t && t.id != null)
       .map((t: any) => ({
         ...t,
@@ -497,6 +521,14 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
         price: Number(t.price || 0),
         availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : null
       }));
+    const unique = new Map<string, any>();
+    for (const ticket of normalized) {
+      const key = ticket.type || String(ticket.name || '').trim().toUpperCase();
+      if (!unique.has(key)) {
+        unique.set(key, ticket);
+      }
+    }
+    return Array.from(unique.values());
   }
 
   getSelectedTicketType(): any | null {
@@ -528,14 +560,13 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
   isTicketEligible(ticket: any): boolean {
     if (!ticket || !this.currentUser) return false;
     const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
-    const isMemberUser = this.isPaidMember();
     switch (ticket.type) {
       case 'VIP':
-        return isAdmin;
+        return isAdmin || this.getActivePlanLevel() >= 3;
       case 'MEMBER':
-        return isMemberUser || isAdmin;
+        return isAdmin || this.getActivePlanLevel() >= 2;
       case 'NON_MEMBER':
-        return !isMemberUser || isAdmin;
+        return isAdmin || this.getActivePlanLevel() < 2;
       case 'EARLY_BIRD':
         return this.isEarlyBirdOpen();
       default:

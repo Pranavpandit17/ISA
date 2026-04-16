@@ -46,7 +46,7 @@
 
       <!-- Popular / Active Badge -->
       <div *ngIf="isCurrentPlan(plan)" class="plan-badge plan-badge--active">
-        <span class="plan-badge__dot"></span> Active Plan
+        <span class="plan-badge__dot"></span> ACTIVE PLAN
       </div>
       <div *ngIf="!isCurrentPlan(plan) && plan.price > 0 && plan.price <= 3500" class="plan-badge plan-badge--popular">
         ★ Most Popular
@@ -103,12 +103,11 @@
         <button type="button" (click)="showFeatures(plan)" class="plan-card__btn plan-card__btn--details">
           View All Details
         </button>
-        <button type="button" [disabled]="isCurrentPlan(plan)" (click)="startSelectPlan(plan)"
+        <button type="button" [disabled]="!canSelectPlan(plan)" (click)="startSelectPlan(plan)"
           class="plan-card__btn plan-card__btn--cta"
-          [class.plan-card__btn--disabled]="isCurrentPlan(plan)">
+          [class.plan-card__btn--disabled]="!canSelectPlan(plan)">
           <span *ngIf="isCurrentPlan(plan)">✓ Current Plan</span>
-          <span *ngIf="!isCurrentPlan(plan) && plan.price === 0">Get Started Free</span>
-          <span *ngIf="!isCurrentPlan(plan) && plan.price > 0">Choose This Plan</span>
+          <span *ngIf="!isCurrentPlan(plan)">{{ getPlanActionLabel(plan) }}</span>
         </button>
       </div>
     </div>

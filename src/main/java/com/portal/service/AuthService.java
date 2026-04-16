@@ -4,6 +4,7 @@ import com.portal.dto.LoginRequest;
 import com.portal.dto.LoginResponse;
 import com.portal.entity.Member;
 import com.portal.entity.MembershipPayment;
+import com.portal.entity.MembershipFeePlan;
 import com.portal.entity.User;
 import com.portal.entity.MembershipApplication;
 import com.portal.repository.MemberRepository;
@@ -19,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -113,6 +115,28 @@ public class AuthService {
     }
 
     private void populateMembershipProfile(User user, LoginResponse response) {
+        // Expire plan status automatically when plan has crossed expiry date.
+        if (user.getPlanStatus() == User.PlanStatus.SELECTED
+                && user.getPlanExpiryDate() != null
+                && user.getPlanExpiryDate().isBefore(LocalDate.now())) {
+            user.setPlanStatus(User.PlanStatus.NOT_SELECTED);
+            userRepository.save(user);
+        }
+
+        if (user.getSelectedPlan() != null) {
+            response.setCurrentPlanId(user.getSelectedPlan().getId());
+            response.setCurrentPlanName(user.getSelectedPlan().getName());
+            response.setCurrentPlanLevel(user.getSelectedPlan().getLevel());
+        }
+        response.setPlanStatus(user.getPlanStatus() != null ? user.getPlanStatus().name() : User.PlanStatus.NOT_SELECTED.name());
+        response.setPlanStartDate(user.getPlanStartDate());
+        response.setPlanExpiryDate(user.getPlanExpiryDate());
+        response.setHasPlan(
+                response.getCurrentPlanId() != null
+                        && user.getPlanStatus() == User.PlanStatus.SELECTED
+                        && (user.getPlanExpiryDate() == null || !user.getPlanExpiryDate().isBefore(LocalDate.now()))
+        );
+
         if (user.getRole() == User.Role.ADMIN) {
             response.setUserType("ADMIN");
             response.setMembershipStatus("ACTIVE");
@@ -152,9 +176,46 @@ public class AuthService {
 
         if (latestPaid.isPresent() && latestPaid.get().getPlan() != null) {
             response.setUserType("PREMIUM");
-            response.setCurrentPlanId(latestPaid.get().getPlan().getId());
-            response.setCurrentPlanName(latestPaid.get().getPlan().getName());
+            MembershipFeePlan latestPlan = latestPaid.get().getPlan();
+
+            if (response.getCurrentPlanId() == null) {
+                response.setCurrentPlanId(latestPlan.getId());
+                response.setCurrentPlanName(latestPlan.getName());
+            }
+            if (response.getCurrentPlanLevel() == null) {
+                response.setCurrentPlanLevel(resolvePlanLevel(latestPlan));
+            }
+
+            // Legacy fallback: if selectedPlan fields aren't populated in DB,
+            // treat active membership payment as the currently active plan for UI gating.
+            if (response.getPlanStartDate() == null) {
+                response.setPlanStartDate(member.getSubscriptionStartDate());
+            }
+            if (response.getPlanExpiryDate() == null) {
+                response.setPlanExpiryDate(member.getSubscriptionEndDate());
+            }
+
+            response.setPlanStatus(User.PlanStatus.SELECTED.name());
+            response.setHasPlan(
+                    response.getPlanExpiryDate() == null || !response.getPlanExpiryDate().isBefore(LocalDate.now())
+            );
         }
+    }
+
+    private int resolvePlanLevel(MembershipFeePlan plan) {
+        if (plan == null) {
+            return 0;
+        }
+        Integer level = plan.getLevel();
+        if (level != null && level > 0) {
+            return level;
+        }
+
+        BigDecimal price = plan.getPrice() != null ? plan.getPrice() : BigDecimal.ZERO;
+        if (price.compareTo(BigDecimal.ZERO) <= 0) return 1;
+        if (price.compareTo(new BigDecimal("3500")) <= 0) return 2;
+        if (price.compareTo(new BigDecimal("7000")) <= 0) return 3;
+        return 4;
     }
 
     /**

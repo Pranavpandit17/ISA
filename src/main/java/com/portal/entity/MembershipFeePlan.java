@@ -43,6 +43,9 @@ public class MembershipFeePlan {
     @Column(name = "duration_months", nullable = false)
     private Integer durationMonths;
 
+    @Column(name = "plan_level")
+    private Integer level;
+
     @Column(columnDefinition = "JSON")
     private String features; // Legacy field, kept for backward compatibility
 
@@ -116,6 +119,14 @@ public class MembershipFeePlan {
 
     public void setDurationMonths(Integer durationMonths) {
         this.durationMonths = durationMonths;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public String getFeatures() {

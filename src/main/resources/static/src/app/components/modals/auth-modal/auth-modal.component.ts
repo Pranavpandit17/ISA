@@ -65,23 +65,18 @@ export class AuthModalComponent implements OnChanges {
 
   loadPlans(): void {
     this.isLoading = true;
-    this.apiService.getMembershipPlans().subscribe({
+    this.apiService.getPublicPlans().subscribe({
       next: (plans) => {
         this.plans = plans || [];
         this.isLoading = false;
-        
-        // Fallback: If no plans are returned from the backend, 
-        // don't block the user. Auto-select a dummy free plan or just move ahead.
         if (this.plans.length === 0) {
-          console.warn('No membership plans found in backend. Moving to registration form.');
-          this.step = 'AUTH_FORM';
+          this.errorMessage = 'No membership plans are currently available. Please try again later.';
         }
       },
       error: (error) => {
         console.error('Error loading plans:', error);
         this.isLoading = false;
-        // Even on error, we don't want to block registration
-        this.step = 'AUTH_FORM';
+        this.errorMessage = 'Unable to load membership plans. Please try again.';
       }
     });
   }
@@ -183,6 +178,12 @@ export class AuthModalComponent implements OnChanges {
   }
 
   submitApplication(): void {
+    if (!this.selectedPlan?.id) {
+      this.errorMessage = 'Please select a membership plan before registration.';
+      this.step = 'PLAN_SELECTION';
+      return;
+    }
+
     // Validate required fields
     if (!this.regData.applicantName || !this.regData.email || 
         !this.regData.phone || !this.regData.company || 
@@ -204,7 +205,7 @@ export class AuthModalComponent implements OnChanges {
 
     this.apiService.createMembershipApplication({
       ...this.regData,
-      planId: this.selectedPlan?.id
+      planId: this.selectedPlan.id
     }).subscribe({
       next: () => {
         this.isLoading = false;

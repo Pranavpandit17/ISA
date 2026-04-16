@@ -13,6 +13,7 @@ public class MembershipFeePlanDTO {
     private BigDecimal price;
     private String currency;
     private Integer durationMonths;
+    private Integer level;
     private List<Object> features;
     private Boolean isActive;
     private LocalDateTime createdAt;
@@ -65,6 +66,14 @@ public class MembershipFeePlanDTO {
 
     public void setDurationMonths(Integer durationMonths) {
         this.durationMonths = durationMonths;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public List<Object> getFeatures() {

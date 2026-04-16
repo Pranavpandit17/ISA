@@ -312,9 +312,19 @@ export class ApiService {
   }
 
   // Membership / Payment Plans
+  getPublicPlans(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/plans`);
+  }
+
   getMembershipPlans(): Observable<any> {
     // Active plans for members
     return this.http.get(`${this.apiUrl}/payment-plans`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  selectPlan(planId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/plans/select-plan`, { planId }, {
       headers: this.getHeaders()
     });
   }

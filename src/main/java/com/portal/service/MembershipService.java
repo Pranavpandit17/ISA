@@ -436,6 +436,20 @@ public class MembershipService {
         newUser.setPhone(dto.getPhone());
         newUser.setCompany(dto.getCompany());
         newUser.setIsActive(true);
+        newUser.setPlanStatus(User.PlanStatus.NOT_SELECTED);
+
+        if (dto.getPlanId() != null) {
+            MembershipFeePlan selectedPlan = feePlanRepository.findById(dto.getPlanId())
+                    .orElseThrow(() -> new RuntimeException("Selected plan not found: " + dto.getPlanId()));
+            newUser.setSelectedPlan(selectedPlan);
+            newUser.setPlanStatus(User.PlanStatus.SELECTED);
+            LocalDate startDate = LocalDate.now();
+            newUser.setPlanStartDate(startDate);
+            Integer durationMonths = selectedPlan.getDurationMonths() != null && selectedPlan.getDurationMonths() > 0
+                    ? selectedPlan.getDurationMonths()
+                    : null;
+            newUser.setPlanExpiryDate(durationMonths != null ? startDate.plusMonths(durationMonths).minusDays(1) : null);
+        }
 
         userRepository.save(newUser);
 
@@ -714,6 +728,7 @@ public class MembershipService {
         dto.setPrice(plan.getPrice());
         dto.setCurrency(plan.getCurrency());
         dto.setDurationMonths(plan.getDurationMonths());
+        dto.setLevel(plan.getLevel());
         dto.setIsActive(plan.getIsActive());
         dto.setCreatedAt(plan.getCreatedAt());
 
@@ -722,7 +737,7 @@ public class MembershipService {
             try {
                 List<String> features = objectMapper.readValue(plan.getFeatures(),
                     new TypeReference<List<String>>() {});
-                dto.setFeatures(features);
+                dto.setFeatures(new ArrayList<>(features));
             } catch (Exception e) {
                 dto.setFeatures(new ArrayList<>());
             }

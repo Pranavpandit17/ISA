@@ -14,6 +14,11 @@ export interface User {
   membershipStatus?: 'ACTIVE' | 'INACTIVE' | 'EXPIRED' | 'SUSPENDED' | 'PENDING';
   currentPlanId?: number;
   currentPlanName?: string;
+  currentPlanLevel?: number;
+  hasPlan?: boolean;
+  planStatus?: 'SELECTED' | 'NOT_SELECTED';
+  planStartDate?: string;
+  planExpiryDate?: string;
   company?: string;
   image?: string;
   title?: string;
@@ -56,7 +61,12 @@ export class AuthService {
       type: userData.userType || (normalizedRole === 'admin' ? 'ADMIN' : 'REGULAR'),
       membershipStatus: userData.membershipStatus,
       currentPlanId: userData.currentPlanId,
-      currentPlanName: userData.currentPlanName
+      currentPlanName: userData.currentPlanName,
+      currentPlanLevel: userData.currentPlanLevel,
+      hasPlan: !!userData.currentPlanId || !!userData.hasPlan,
+      planStatus: userData.planStatus || (userData.currentPlanId ? 'SELECTED' : 'NOT_SELECTED'),
+      planStartDate: userData.planStartDate,
+      planExpiryDate: userData.planExpiryDate
     };
   }
 
@@ -119,6 +129,15 @@ export class AuthService {
 
   isMember(): boolean {
     return this.currentUserSubject.value?.role === 'member';
+  }
+
+  hasSelectedPlan(): boolean {
+    const user = this.currentUserSubject.value;
+    if (!user) {
+      return false;
+    }
+    const isExpired = !!user.planExpiryDate && new Date(user.planExpiryDate) < new Date(new Date().toDateString());
+    return !isExpired && (!!user.currentPlanId || user.planStatus === 'SELECTED' || user.hasPlan === true);
   }
 
   refreshCurrentUserProfile(): Observable<User | null> {

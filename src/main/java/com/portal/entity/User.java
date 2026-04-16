@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,6 +58,20 @@ public class User {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plan_id")
+    private MembershipFeePlan selectedPlan;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "plan_status", nullable = false, length = 20)
+    private PlanStatus planStatus = PlanStatus.NOT_SELECTED;
+
+    @Column(name = "plan_start_date")
+    private LocalDate planStartDate;
+
+    @Column(name = "plan_expiry_date")
+    private LocalDate planExpiryDate;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -76,6 +91,11 @@ public class User {
 
     public enum Role {
         ADMIN, MEMBER
+    }
+
+    public enum PlanStatus {
+        NOT_SELECTED,
+        SELECTED
     }
 
     // Getters and Setters
@@ -165,6 +185,38 @@ public class User {
 
     public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public MembershipFeePlan getSelectedPlan() {
+        return selectedPlan;
+    }
+
+    public void setSelectedPlan(MembershipFeePlan selectedPlan) {
+        this.selectedPlan = selectedPlan;
+    }
+
+    public PlanStatus getPlanStatus() {
+        return planStatus;
+    }
+
+    public void setPlanStatus(PlanStatus planStatus) {
+        this.planStatus = planStatus;
+    }
+
+    public LocalDate getPlanStartDate() {
+        return planStartDate;
+    }
+
+    public void setPlanStartDate(LocalDate planStartDate) {
+        this.planStartDate = planStartDate;
+    }
+
+    public LocalDate getPlanExpiryDate() {
+        return planExpiryDate;
+    }
+
+    public void setPlanExpiryDate(LocalDate planExpiryDate) {
+        this.planExpiryDate = planExpiryDate;
     }
 
     public LocalDateTime getCreatedAt() {

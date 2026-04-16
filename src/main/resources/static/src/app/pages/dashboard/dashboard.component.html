@@ -39,7 +39,7 @@
       <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
         <div class="text-right hidden sm:block">
           <p class="text-sm font-bold text-slate-900">{{ currentUser?.name }}</p>
-          <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">{{ currentUser?.type }} MEMBER</p>
+          <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">{{ getMembershipLabel() }} MEMBER</p>
         </div>
         <div class="avatar-container cursor-pointer" (click)="onNavigate('PROFILE_EDIT')">
           <img [src]="currentUser?.image" class="avatar-img shadow-sm" alt="Profile">
@@ -98,20 +98,20 @@
       </div>
 
       <!-- Membership Shortcut Card -->
-      <div *ngIf="currentUser?.type === 'REGULAR'" class="upgrade-banner group cursor-pointer" (click)="scrollToPlans()">
+      <div *ngIf="canUpgradePlan()" class="upgrade-banner group cursor-pointer" (click)="scrollToPlans()">
         <div class="relative z-10">
-          <h4 class="font-bold text-white mb-1">Go Premium</h4>
+          <h4 class="font-bold text-white mb-1">Manage Plan</h4>
           <p class="text-xs text-indigo-200 mb-4">Unlock exclusive networking events and project tools.</p>
           <span class="inline-flex items-center text-xs font-bold bg-indigo-500 text-white px-3 py-1.5 rounded-lg group-hover:bg-white group-hover:text-indigo-600 transition-colors">
-            Upgrade Now →
+            View Plans →
           </span>
         </div>
       </div>
       
-      <div *ngIf="selectedMembershipPlan" class="premium-card p-6 bg-gradient-to-br from-indigo-50 to-white overflow-hidden relative">
+      <div *ngIf="currentUser?.currentPlanName" class="premium-card p-6 bg-gradient-to-br from-indigo-50 to-white overflow-hidden relative">
         <div class="relative z-10">
           <p class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Active Plan</p>
-          <h4 class="text-lg font-bold text-slate-900">{{ selectedMembershipPlan.name }}</h4>
+          <h4 class="text-lg font-bold text-slate-900">{{ currentUser?.currentPlanName }}</h4>
           <button (click)="scrollToPlans()" class="mt-4 text-sm font-bold text-indigo-600 hover:underline">Manage Subscription</button>
         </div>
         <div class="absolute -bottom-4 -right-4 opacity-10 text-6-xl rotate-12">💎</div>
