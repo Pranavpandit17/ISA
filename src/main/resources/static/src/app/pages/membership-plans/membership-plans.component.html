@@ -1,0 +1,321 @@
+<div class="plans-wrapper animate-fade-in">
+  <!-- Section Header -->
+  <div class="plans-header">
+    <div>
+      <h2 class="plans-title">Membership Plans</h2>
+      <p class="plans-subtitle">Select the best membership to access exclusive community benefits.</p>
+    </div>
+    <button type="button" (click)="openPaymentHistory()" class="history-btn">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      Payment History
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="plans-loading">
+    <div class="plans-spinner"></div>
+    <p>Loading plans...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="plans-error">
+    <span>⚠️</span> {{ errorMessage }}
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && plans.length === 0 && !errorMessage" class="plans-empty">
+    <span class="plans-empty-icon">📋</span>
+    <p>No plans available at the moment.</p>
+  </div>
+
+  <!-- Plans Grid -->
+  <div *ngIf="!isLoading && plans.length > 0" class="plans-grid">
+    <div *ngFor="let plan of plans; let i = index"
+      class="plan-card"
+      [class.plan-card--free]="plan.price === 0"
+      [class.plan-card--regular]="plan.price > 0 && plan.price <= 3500"
+      [class.plan-card--gold]="plan.price > 3500"
+      [class.plan-card--active]="isCurrentPlan(plan)"
+      [style.animation-delay]="(i * 0.1) + 's'">
+
+      <!-- Decorative orbs -->
+      <div class="plan-card__orb plan-card__orb--1"></div>
+      <div class="plan-card__orb plan-card__orb--2"></div>
+
+      <!-- Popular / Active Badge -->
+      <div *ngIf="isCurrentPlan(plan)" class="plan-badge plan-badge--active">
+        <span class="plan-badge__dot"></span> Active Plan
+      </div>
+      <div *ngIf="!isCurrentPlan(plan) && plan.price > 0 && plan.price <= 3500" class="plan-badge plan-badge--popular">
+        ★ Most Popular
+      </div>
+      <div *ngIf="!isCurrentPlan(plan) && plan.price > 3500" class="plan-badge plan-badge--premium">
+        👑 Best Value
+      </div>
+
+      <!-- Card Header -->
+      <div class="plan-card__header">
+        <div class="plan-card__icon">
+          {{ plan.price === 0 ? '🌱' : (plan.price > 3500 ? '👑' : '💎') }}
+        </div>
+        <h3 class="plan-card__name">{{ plan.name }}</h3>
+        <span class="plan-card__type">{{ plan.type }} Membership</span>
+      </div>
+
+      <!-- Pricing -->
+      <div class="plan-card__pricing">
+        <div class="plan-card__price-row">
+          <span *ngIf="plan.price === 0" class="plan-card__price">Free</span>
+          <span *ngIf="plan.price > 0" class="plan-card__currency">₹</span>
+          <span *ngIf="plan.price > 0" class="plan-card__price">{{ plan.price | number:'1.0-0' }}</span>
+          <span *ngIf="plan.price > 0" class="plan-card__period">/ {{ plan.durationMonths > 1 ? plan.durationMonths + ' months' : 'year' }}</span>
+        </div>
+        <p *ngIf="plan.price === 0" class="plan-card__price-note">No credit card required</p>
+        <p *ngIf="plan.price > 0 && plan.price <= 3500" class="plan-card__price-note">Perfect for growing professionals</p>
+        <p *ngIf="plan.price > 3500" class="plan-card__price-note">Unlock everything the community offers</p>
+      </div>
+
+      <!-- Divider -->
+      <div class="plan-card__divider">
+        <span>What's included</span>
+      </div>
+
+      <!-- Features List -->
+      <div class="plan-card__features">
+        <ul>
+          <li *ngFor="let f of (plan.features || []) | slice:0:5" class="plan-card__feature">
+            <span class="plan-card__check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </span>
+            <span>{{ getFeatureLabel(f) }}</span>
+          </li>
+        </ul>
+        <button *ngIf="(plan.features.length || 0) > 5" (click)="showFeatures(plan)"
+          class="plan-card__more-link">
+          + {{ (plan.features.length || 0) - 5 }} more features →
+        </button>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="plan-card__actions">
+        <button type="button" (click)="showFeatures(plan)" class="plan-card__btn plan-card__btn--details">
+          View All Details
+        </button>
+        <button type="button" [disabled]="isCurrentPlan(plan)" (click)="startSelectPlan(plan)"
+          class="plan-card__btn plan-card__btn--cta"
+          [class.plan-card__btn--disabled]="isCurrentPlan(plan)">
+          <span *ngIf="isCurrentPlan(plan)">✓ Current Plan</span>
+          <span *ngIf="!isCurrentPlan(plan) && plan.price === 0">Get Started Free</span>
+          <span *ngIf="!isCurrentPlan(plan) && plan.price > 0">Choose This Plan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Features Modal (Redesigned) -->
+  <div *ngIf="showingFeaturesForPlan"
+    class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
+    (click)="closeFeaturesModal()">
+    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden flex flex-col"
+      (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="p-10 border-b border-slate-100 bg-gradient-to-br from-indigo-50 to-white relative overflow-hidden">
+        <div class="relative z-10 flex items-center justify-between">
+          <div class="space-y-1">
+            <h3 class="text-3xl font-black text-slate-900 tracking-tight">{{ showingFeaturesForPlan.name }}</h3>
+            <p class="text-xs font-bold text-indigo-600 uppercase tracking-widest">Everything included in this plan</p>
+          </div>
+          <button (click)="closeFeaturesModal()"
+            class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white text-slate-400 hover:text-slate-900 shadow-sm transition-all">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Decorative icon -->
+        <span class="absolute right-0 bottom-0 text-9xl opacity-5 translate-y-1/2 translate-x-1/4">💎</span>
+      </div>
+
+      <!-- Features Body -->
+      <div class="flex-1 overflow-y-auto p-10 space-y-4 custom-scrollbar">
+        <div *ngIf="isLoadingFeatures" class="flex flex-col items-center justify-center py-20">
+          <div class="w-12 h-12 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+        </div>
+
+        <div *ngIf="!isLoadingFeatures && planFeatures.length > 0" class="grid grid-cols-1 gap-4">
+          <div *ngFor="let feature of planFeatures"
+            class="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all group">
+            <div class="flex items-start gap-4">
+              <div
+                class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-100 text-emerald-500 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                ✓
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="text-sm font-black text-slate-900 uppercase tracking-wide">{{ feature.name }}</span>
+                  <span [ngClass]="getFeatureCategoryColor(feature.category)"
+                    class="text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-widest text-white">
+                    {{ feature.category }}
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 font-medium leading-relaxed">{{ feature.description || 'Access to ' +
+                  feature.name + ' tools and services.' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoadingFeatures && planFeatures.length === 0" class="text-center py-20">
+          <p class="text-slate-400 font-bold italic">No specified features for this plan.</p>
+        </div>
+      </div>
+
+      <div class="p-10 border-t border-slate-100 bg-slate-50 flex justify-end">
+        <button (click)="closeFeaturesModal()"
+          class="px-8 py-4 bg-indigo-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-900 transition-all shadow-lg active:scale-95">
+          Got it!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- More modals follow - Confirm Plan, Payment History -->
+  <!-- Confirmation Modal Redesign -->
+  <div *ngIf="confirmingPlan"
+    class="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-10">
+      <div class="text-center mb-10">
+        <div
+          class="w-16 h-16 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl">
+          🚀
+        </div>
+        <h3 class="text-2xl font-black text-slate-900 tracking-tight">Confirm Your Plan</h3>
+        <p class="text-sm text-slate-500 mt-2 font-medium">Ready to upgrade your experience?</p>
+      </div>
+
+      <div class="bg-slate-50 rounded-3xl border border-slate-100 p-8 space-y-4 mb-10">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Plan Name</span>
+          <span class="text-sm font-black text-slate-900">{{ confirmingPlan.name }}</span>
+        </div>
+        <div class="flex justify-between items-center text-xs font-black text-indigo-600">
+          <span>DURATION</span>
+          <span>{{ confirmingPlan.durationMonths }} MONTHS</span>
+        </div>
+        <div class="pt-4 border-t border-slate-200 flex justify-between items-end">
+          <span class="text-xs font-black text-slate-400 uppercase tracking-widest">Total to Pay</span>
+          <span class="text-4xl font-black text-slate-900">₹{{ confirmingPlan.price | number:'1.0-2' }}</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <button (click)="confirmSelection()" [disabled]="isProcessing"
+          class="w-full py-5 bg-green-600 text-white rounded-[1.25rem] text-[11px] font-black uppercase tracking-widest hover:bg-slate-900 transition-all shadow-xl active:scale-95 disabled:opacity-50">
+          {{ isProcessing ? 'Working on it...' : 'Confirm Subscription' }}
+        </button>
+        <button (click)="cancelSelection()"
+          class="w-full py-4 text-slate-400 font-black text-[10px] uppercase tracking-widest hover:text-red-500 transition-colors">
+          Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment History Modal Redesign -->
+  <div *ngIf="showPaymentHistory"
+    class="fixed inset-0 z-[115] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in"
+    (click)="closePaymentHistory()">
+    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col"
+      (click)="$event.stopPropagation()">
+      <div class="p-8 lg:p-10 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-2xl font-black text-slate-900 tracking-tight">Payment History</h3>
+          <p class="text-sm text-slate-500 font-medium">Tracking all your plan subscriptions and transactions.</p>
+        </div>
+        <button (click)="closePaymentHistory()"
+          class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-slate-900 shadow-sm transition-all">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-0 custom-scrollbar">
+        <!-- Error Area -->
+        <div *ngIf="paymentsError"
+          class="m-10 p-4 bg-red-50 border border-red-100 rounded-2xl text-red-700 text-sm font-bold">
+          ⚠️ {{ paymentsError }}
+        </div>
+
+        <!-- Table View -->
+        <div *ngIf="!isLoadingPayments && !paymentsError && payments.length > 0">
+          <table class="premium-table w-full">
+            <thead>
+              <tr>
+                <th class="pl-10">DATE & TIME</th>
+                <th>PLAN SELECTED</th>
+                <th>AMOUNT</th>
+                <th>STATUS</th>
+                <th>METHOD</th>
+                <th class="pr-10 text-right">INVOICE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of payments">
+                <td class="pl-10">
+                  <div class="text-xs font-black text-slate-900">{{ (p.paidDate || p.createdAt) | date:'MMM d, yyyy' }}
+                  </div>
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{{ (p.paidDate ||
+                    p.createdAt) | date:'h:mm a' }}</div>
+                </td>
+                <td>
+                  <span class="text-sm font-black text-indigo-600">{{ p.planName || 'Legacy Plan' }}</span>
+                </td>
+                <td>
+                  <span class="text-sm font-black text-slate-900">₹{{ p.amount | number:'1.2-2' }}</span>
+                </td>
+                <td>
+                  <span
+                    [class]="(p.status || '').toUpperCase() === 'PAID' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'"
+                    class="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">
+                    {{ p.status || 'PENDING' }}
+                  </span>
+                </td>
+                <td class="text-xs font-bold text-slate-500 uppercase">{{ p.paymentMethod || 'Razorpay' }}</td>
+                <td class="pr-10 text-right">
+                  <button (click)="downloadInvoice(p.id, p.invoiceNumber)"
+                    class="px-4 py-2 border border-slate-200 text-indigo-600 hover:bg-slate-50 text-xs font-black rounded-xl transition-all">
+                    Download
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty / Loading States -->
+        <div *ngIf="isLoadingPayments" class="flex flex-col items-center justify-center py-32">
+          <div class="w-12 h-12 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+        </div>
+
+        <div *ngIf="!isLoadingPayments && !paymentsError && payments.length === 0" class="text-center py-32">
+          <span class="text-6xl block mb-6 grayscale opacity-50">🧾</span>
+          <h4 class="text-xl font-bold text-slate-400 italic">No payment records found.</h4>
+        </div>
+      </div>
+
+      <div class="p-8 border-t border-slate-100 bg-slate-50 flex justify-end gap-4">
+        <button (click)="loadPaymentHistory()"
+          class="px-6 py-3 bg-white border border-slate-200 text-slate-700 text-xs font-black rounded-2xl hover:border-indigo-500 transition-all shadow-sm">
+          REFRESH
+        </button>
+        <button (click)="closePaymentHistory()"
+          class="px-8 py-3 bg-slate-900 text-white text-xs font-black rounded-2xl hover:bg-slate-800 transition-all shadow-md active:scale-95">
+          CLOSE
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

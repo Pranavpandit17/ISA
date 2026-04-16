@@ -1,0 +1,188 @@
+<div class="management-container">
+
+  <header class="mb-10">
+    <h1 class="text-4xl font-black text-slate-900 mb-2 tracking-tighter">Member Management</h1>
+    <p class="text-sm font-medium text-slate-400">Manage membership applications, approve new members, and review
+      rejection history.</p>
+  </header>
+
+  <!-- Modern Navigation Tabs -->
+  <nav class="tab-nav">
+    <button (click)="setTab('APPLICATIONS')" [class.active]="activeTab === 'APPLICATIONS'" class="tab-btn">
+      Applications
+      <span *ngIf="applications.length > 0" class="tab-badge">{{ applications.length }}</span>
+    </button>
+    <button (click)="setTab('APPROVED')" [class.active]="activeTab === 'APPROVED'" class="tab-btn">
+      Approved Members
+      <span *ngIf="approvedMembers.length > 0" class="tab-badge">{{ approvedMembers.length }}</span>
+    </button>
+    <button (click)="setTab('REJECTED')" [class.active]="activeTab === 'REJECTED'" class="tab-btn">
+      Rejected History
+      <span *ngIf="rejectedApplications.length > 0" class="tab-badge">{{ rejectedApplications.length }}</span>
+    </button>
+  </nav>
+
+  <!-- Error Alerts -->
+  <div *ngIf="errorMessage"
+    class="mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Applications Management Table -->
+  <div *ngIf="activeTab === 'APPLICATIONS'" class="table-wrapper">
+    <div class="table-header">
+      <h2>Pending Applications</h2>
+      <button (click)="loadData()"
+        class="p-2 h-10 w-10 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all"
+        [disabled]="isLoading">🔄</button>
+    </div>
+
+    <div *ngIf="isLoading" class="p-20 text-center flex flex-col items-center justify-center gap-4">
+      <div class="h-10 w-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+      <p class="text-xs font-black text-slate-300 uppercase tracking-widest">Processing Data...</p>
+    </div>
+
+    <div *ngIf="!isLoading && applications.length === 0" class="p-20 text-center">
+      <div class="text-5xl mb-4 grayscale opacity-20">📭</div>
+      <p class="text-sm font-bold text-slate-400">No pending applications at the moment.</p>
+    </div>
+
+    <div *ngIf="!isLoading && applications.length > 0" class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="text-left font-bold uppercase text-[10px] tracking-widest text-slate-400">
+          <tr>
+            <th>Applicant</th>
+            <th>Company</th>
+            <th>Email Address</th>
+            <th>Market / Industry</th>
+            <th>Status</th>
+            <th class="text-right">Administrative Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-50">
+          <tr *ngFor="let app of applications" class="hover:bg-slate-50/50 transition-colors">
+            <td>
+              <p class="font-bold text-slate-900">{{ app.applicantName }}</p>
+              <p class="text-[11px] text-slate-400">{{ app.createdAt | date:'shortDate' }}</p>
+            </td>
+            <td class="text-sm font-medium text-slate-600">{{ app.company || 'N/A' }}</td>
+            <td class="text-sm text-slate-500">{{ app.email }}</td>
+            <td class="text-sm text-slate-500">{{ app.industry }}</td>
+            <td>
+              <span class="status-pill status-pending">Pending Review</span>
+            </td>
+            <td>
+              <div class="flex items-center justify-end gap-2">
+                <button (click)="openDetailModal(app)" [disabled]="isLoading"
+                  class="btn-pill btn-details">Review</button>
+                <button (click)="openApproveModal(app)" [disabled]="isLoading"
+                  class="btn-pill btn-confirm">Approve</button>
+                <button (click)="openRejectModal(app)" [disabled]="isLoading" class="btn-pill btn-deny">Reject</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Approved Members Table -->
+  <div *ngIf="activeTab === 'APPROVED'" class="table-wrapper">
+    <div class="table-header">
+      <h2>Active Members</h2>
+    </div>
+
+    <div *ngIf="isLoading" class="p-20 text-center flex flex-col items-center justify-center gap-4">
+      <div class="h-10 w-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+      <p class="text-xs font-black text-slate-300 uppercase tracking-widest">Processing Data...</p>
+    </div>
+
+    <div *ngIf="!isLoading && approvedMembers.length === 0" class="p-20 text-center">
+      <div class="text-5xl mb-4 grayscale opacity-20">👥</div>
+      <p class="text-sm font-bold text-slate-400">No active members found in records.</p>
+    </div>
+
+    <div *ngIf="!isLoading && approvedMembers.length > 0" class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="text-left font-bold uppercase text-[10px] tracking-widest text-slate-400">
+          <tr>
+            <th>Registered Member</th>
+            <th>Current Organization</th>
+            <th>Direct Email</th>
+            <th>Specialization</th>
+            <th>Account Status</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-50">
+          <tr *ngFor="let member of approvedMembers" class="hover:bg-slate-50/50 transition-colors">
+            <td>
+              <p class="font-bold text-slate-900">{{ member.name || member.applicantName }}</p>
+              <p class="text-[11px] text-slate-400">Member ID: {{ member.id }}</p>
+            </td>
+            <td class="text-sm font-medium text-slate-600">{{ member.company || 'Private' }}</td>
+            <td class="text-sm text-slate-500">{{ member.email }}</td>
+            <td class="text-sm text-slate-500">{{ member.industry }}</td>
+            <td>
+              <span class="status-pill status-approved">Active Member</span>
+            </td>
+            <td class="text-right">
+              <button (click)="openDetailModal(member)" [disabled]="isLoading" class="btn-pill btn-details">Full
+                Overview</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Rejected History Table -->
+  <div *ngIf="activeTab === 'REJECTED'" class="table-wrapper">
+    <div class="table-header">
+      <h2>Rejected Applications</h2>
+    </div>
+
+    <div *ngIf="isLoading" class="p-20 text-center flex flex-col items-center justify-center gap-4">
+      <div class="h-10 w-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+      <p class="text-xs font-black text-slate-300 uppercase tracking-widest">Processing Data...</p>
+    </div>
+
+    <div *ngIf="!isLoading && rejectedApplications.length === 0" class="p-20 text-center">
+      <div class="text-5xl mb-4 grayscale opacity-20">📁</div>
+      <p class="text-sm font-bold text-slate-400">Rejection archive is empty.</p>
+    </div>
+
+    <div *ngIf="!isLoading && rejectedApplications.length > 0" class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="text-left font-bold uppercase text-[10px] tracking-widest text-slate-400">
+          <tr>
+            <th>Former Applicant</th>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Industry</th>
+            <th>Decision Status</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-50">
+          <tr *ngFor="let app of rejectedApplications"
+            class="hover:bg-slate-50/50 transition-colors grayscale-[0.5] opacity-80">
+            <td class="font-bold text-slate-900">{{ app.applicantName }}</td>
+            <td class="text-sm font-medium text-slate-600">{{ app.company || 'N/A' }}</td>
+            <td class="text-sm text-slate-500">{{ app.email }}</td>
+            <td class="text-sm text-slate-500">{{ app.industry }}</td>
+            <td>
+              <span class="status-pill status-rejected">Application Denied</span>
+            </td>
+            <td class="text-right">
+              <button (click)="openDetailModal(app)" [disabled]="isLoading" class="btn-pill btn-details">Review
+                Logs</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+</div>

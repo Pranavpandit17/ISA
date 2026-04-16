@@ -3,6 +3,7 @@ package com.portal.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portal.dto.EventDTO;
+import com.portal.dto.EventRegistrationDTO;
 import com.portal.dto.EventScheduleDTO;
 import com.portal.dto.SpeakerDTO;
 import com.portal.dto.TicketTypeDTO;
@@ -341,6 +342,11 @@ public class EventService {
         } else {
             dto.setAvailableSeats(null); // No capacity limit
         }
+
+        // Populate attendees for frontend to check registration status
+        dto.setAttendees(registrations.stream()
+                .map(this::convertRegistrationToDTO)
+                .collect(Collectors.toList()));
         
         return dto;
     }
@@ -371,6 +377,10 @@ public class EventService {
         event.setOrganizerPhone(dto.getOrganizerPhone());
         if (dto.getFormat() != null) {
             event.setFormat(Event.EventFormat.valueOf(dto.getFormat()));
+        } else if (dto.getLocationType() != null) {
+            event.setFormat(Event.EventFormat.valueOf(dto.getLocationType()));
+        } else {
+            event.setFormat(Event.EventFormat.IN_PERSON);
         }
         event.setCapacity(dto.getCapacity());
         if (dto.getVisibility() != null) {
@@ -502,6 +512,31 @@ public class EventService {
         ticketType.setAvailableQuantity(dto.getAvailableQuantity() != null ? dto.getAvailableQuantity() : event.getCapacity());
         ticketType.setDescription(dto.getDescription());
         return ticketType;
+    }
+
+    private EventRegistrationDTO convertRegistrationToDTO(com.portal.entity.EventRegistration registration) {
+        EventRegistrationDTO dto = new EventRegistrationDTO();
+        dto.setId(registration.getId());
+        dto.setEventId(registration.getEvent().getId());
+        dto.setEventName(registration.getEvent().getName());
+        dto.setUserId(registration.getUser().getId());
+        dto.setUserName(registration.getUser().getName());
+        dto.setUserEmail(registration.getUser().getEmail());
+        dto.setName(registration.getUser().getName()); // Alias for frontend
+        dto.setEmail(registration.getUser().getEmail()); // Alias for frontend
+        if (registration.getTicketType() != null) {
+            dto.setTicketTypeId(registration.getTicketType().getId());
+            dto.setTicketTypeName(registration.getTicketType().getName());
+        }
+        dto.setQuantity(registration.getQuantity());
+        dto.setTotalAmount(registration.getTotalAmount());
+        dto.setStatus(registration.getStatus().name());
+        dto.setRegistrationId(registration.getRegistrationId());
+        dto.setPaymentStatus(registration.getPaymentStatus().name());
+        dto.setCheckedIn(registration.getCheckedIn());
+        dto.setCheckedInAt(registration.getCheckedInAt());
+        dto.setRegisteredAt(registration.getRegisteredAt());
+        return dto;
     }
 }
 

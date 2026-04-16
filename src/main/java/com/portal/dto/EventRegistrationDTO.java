@@ -12,6 +12,8 @@ public class EventRegistrationDTO {
     private Long userId;
     private String userName;
     private String userEmail;
+    private String name;
+    private String email;
     private Long ticketTypeId;
     private String ticketTypeName;
     private Integer quantity;
@@ -69,6 +71,22 @@ public class EventRegistrationDTO {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Long getTicketTypeId() {

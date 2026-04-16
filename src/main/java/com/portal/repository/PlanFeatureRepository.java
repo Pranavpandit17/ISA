@@ -13,4 +13,5 @@ public interface PlanFeatureRepository extends JpaRepository<PlanFeature, Long> 
     List<PlanFeature> findByIsActiveTrue();
     List<PlanFeature> findByCategory(PlanFeature.FeatureCategory category);
     List<PlanFeature> findByCategoryAndIsActiveTrue(PlanFeature.FeatureCategory category);
+    List<PlanFeature> findByPlans_IdAndIsActiveTrue(Long planId);
 }

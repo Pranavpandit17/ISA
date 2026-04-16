@@ -89,6 +89,44 @@ public class TestController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String username = request.get("username");
+            String newPassword = request.get("newPassword");
+
+            if (username == null || username.isBlank() || newPassword == null || newPassword.isBlank()) {
+                response.put("success", false);
+                response.put("message", "username and newPassword are required");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            User user = userRepository.findByUsername(username)
+                    .orElseGet(() -> userRepository.findByEmailIgnoreCase(username).orElse(null));
+
+            if (user == null) {
+                response.put("success", false);
+                response.put("message", "User not found");
+                return ResponseEntity.ok(response);
+            }
+
+            user.setPasswordHash(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+
+            response.put("success", true);
+            response.put("message", "Password reset successfully");
+            response.put("username", user.getUsername());
+            response.put("email", user.getEmail());
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/create-test-admin")
     public ResponseEntity<Map<String, Object>> createTestAdmin() {
         Map<String, Object> response = new HashMap<>();

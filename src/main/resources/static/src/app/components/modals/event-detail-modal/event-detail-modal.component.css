@@ -1,0 +1,213 @@
+/* Premium Modal System - Command Center Aesthetic */
+
+:host {
+  --modal-primary: #6366f1;
+  --modal-success: #10b981;
+  --modal-danger: #f43f5e;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: overlayFade 0.3s ease-out forwards;
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-container {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 32px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  animation: modalReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
+}
+
+@keyframes modalReveal {
+  from { opacity: 0; transform: scale(0.95) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Header Styling */
+.modal-header {
+  padding: 32px 40px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.btn-close {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-close:hover {
+  background: #fee2e2;
+  color: #ef4444;
+  transform: rotate(90deg);
+}
+
+/* Body & Content Groups */
+.modal-body {
+  padding: 40px;
+}
+
+.content-group {
+  background: #f8fafc;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid #f1f5f9;
+  margin-bottom: 24px;
+}
+
+.group-title {
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.info-item label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.info-item .value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+.info-item .value-large {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+/* Action Footers */
+.modal-footer {
+  padding: 32px 40px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: #f8fafc;
+  border-radius: 0 0 32px 32px;
+}
+
+.btn-pill {
+  padding: 12px 24px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  font-weight: 800;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-secondary { background: #fff; border: 1.5px solid #e2e8f0; color: #64748b; }
+.btn-secondary:hover { background: #f8fafc; color: #1e293b; border-color: #cbd5e1; }
+
+.btn-primary { background: var(--modal-primary); color: white; box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2); flex: 1; }
+.btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-success { background: var(--modal-success); color: white; flex: 1; }
+
+.btn-disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; flex: 1; }
+
+/* Attendance Table */
+.attendance-track {
+  margin-top: 32px;
+}
+
+.scroll-track {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  background: white;
+  scrollbar-width: thin;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+table tbody td {
+  padding: 16px 20px;
+  font-size: 0.8125rem;
+  color: #334155;
+  border-bottom: 1px solid #f8fafc;
+}
