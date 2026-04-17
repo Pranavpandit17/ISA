@@ -72,9 +72,6 @@ public class MembershipApplication {
     @Column(name = "rejection_reason", columnDefinition = "TEXT")
     private String rejectionReason;
 
-    @Column(name = "password_hash", length = 255)
-    private String passwordHash;
-
     @Column(columnDefinition = "TEXT")
     private String notes;
 
@@ -187,14 +184,6 @@ public class MembershipApplication {
 
     public void setRejectionReason(String rejectionReason) {
         this.rejectionReason = rejectionReason;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
     }
 
     public String getNotes() {

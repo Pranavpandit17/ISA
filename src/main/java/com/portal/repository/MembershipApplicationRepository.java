@@ -10,6 +10,6 @@ import java.util.List;
 public interface MembershipApplicationRepository extends JpaRepository<MembershipApplication, Long> {
     List<MembershipApplication> findByStatus(MembershipApplication.ApplicationStatus status);
     List<MembershipApplication> findByMembershipType(MembershipApplication.MembershipType type);
-    List<MembershipApplication> findAllByEmailIgnoreCase(String email);
+    java.util.Optional<MembershipApplication> findByEmailIgnoreCase(String email);
 }
 
