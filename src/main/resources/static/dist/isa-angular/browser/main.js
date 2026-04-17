@@ -1,32 +1,19 @@
 import {
   AppModalService
-} from "./chunk-MVRZHEL3.js";
+} from "./chunk-33D7UXTH.js";
 import {
   AppNavigationService
-} from "./chunk-QHKKPQF3.js";
+} from "./chunk-UJ5H324Q.js";
 import {
   PaymentModalComponent
-} from "./chunk-2HN4FSBJ.js";
-import {
-  EventDetailModalComponent
-} from "./chunk-YJ756JFA.js";
-import "./chunk-4ZF6DWFC.js";
-import {
-  ConfirmService
-} from "./chunk-ZFJR45MD.js";
-import {
-  AUTO_STYLE,
-  AnimationGroupPlayer,
-  AnimationMetadataType,
-  NoopAnimationPlayer,
-  provideToastr,
-  sequence,
-  style,
-  ɵPRE_STYLE
-} from "./chunk-NKTV2H2O.js";
+} from "./chunk-VZNB23V5.js";
 import {
   ToastService
-} from "./chunk-P4YHU2RF.js";
+} from "./chunk-NFZPHHS6.js";
+import {
+  EventDetailModalComponent
+} from "./chunk-TU4ZYDAB.js";
+import "./chunk-VT4PRNUX.js";
 import {
   AuthService,
   Router,
@@ -37,7 +24,7 @@ import {
   provideRouter,
   withComponentInputBinding,
   withViewTransitions
-} from "./chunk-ZQTCOOSY.js";
+} from "./chunk-ULHL74DO.js";
 import {
   DefaultValueAccessor,
   FormsModule,
@@ -46,12 +33,26 @@ import {
   NgSelectOption,
   SelectControlValueAccessor,
   ɵNgSelectMultipleOption
-} from "./chunk-EMPR7R4G.js";
+} from "./chunk-PKI2UZZD.js";
+import {
+  ConfirmService
+} from "./chunk-QHSI6HUX.js";
+import {
+  AUTO_STYLE,
+  AnimationGroupPlayer,
+  AnimationMetadataType,
+  NoopAnimationPlayer,
+  ToastrService,
+  provideToastr,
+  sequence,
+  style,
+  ɵPRE_STYLE
+} from "./chunk-BQ4A4C7G.js";
 import {
   BrowserModule,
   DomRendererFactory2,
   bootstrapApplication
-} from "./chunk-TPWHRN67.js";
+} from "./chunk-MEK4GBIB.js";
 import {
   ANIMATION_MODULE_TYPE,
   ApiService,
@@ -59,6 +60,7 @@ import {
   CommonModule,
   DOCUMENT,
   EventEmitter,
+  HttpErrorResponse,
   Inject,
   Injectable,
   NgClass,
@@ -71,10 +73,13 @@ import {
   __objRest,
   __spreadProps,
   __spreadValues,
+  catchError,
   inject,
   performanceMarkFeature,
   provideHttpClient,
   setClassMetadata,
+  throwError,
+  withInterceptors,
   ɵsetClassDebugInfo,
   ɵɵNgOnChangesFeature,
   ɵɵStandaloneFeature,
@@ -115,7 +120,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-IAKTGX76.js";
+} from "./chunk-DNDVYN6P.js";
 
 // node_modules/zone.js/fesm2015/zone.js
 var global = globalThis;
@@ -6706,7 +6711,7 @@ function NavigationComponent_ng_template_14_Template(rf, ctx) {
     \u0275\u0275advance();
     \u0275\u0275classProp("role-premium", (ctx_r2.currentUser == null ? null : ctx_r2.currentUser.type) === "PREMIUM")("role-regular", (ctx_r2.currentUser == null ? null : ctx_r2.currentUser.type) === "REGULAR")("role-admin", (ctx_r2.currentUser == null ? null : ctx_r2.currentUser.type) === "ADMIN" || (ctx_r2.currentUser == null ? null : ctx_r2.currentUser.role) === "admin");
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate1(" ", (ctx_r2.currentUser == null ? null : ctx_r2.currentUser.type) || (ctx_r2.currentUser == null ? null : ctx_r2.currentUser.role), " ");
+    \u0275\u0275textInterpolate1(" ", ctx_r2.getUserPlanLabel(), " ");
   }
 }
 var NavigationComponent = class _NavigationComponent {
@@ -6739,6 +6744,21 @@ var NavigationComponent = class _NavigationComponent {
   }
   onLogout() {
     this.logout.emit();
+  }
+  getUserPlanLabel() {
+    if (!this.currentUser) {
+      return "";
+    }
+    if (this.currentUser.role === "admin" || this.currentUser.type === "ADMIN") {
+      return "ADMIN";
+    }
+    if (this.currentUser.currentPlanName && this.authService.hasSelectedPlan()) {
+      return this.currentUser.currentPlanName.toUpperCase();
+    }
+    if (this.currentUser.planExpiryDate && new Date(this.currentUser.planExpiryDate) < new Date((/* @__PURE__ */ new Date()).toDateString())) {
+      return "PLAN EXPIRED";
+    }
+    return "NO PLAN";
   }
   static {
     this.\u0275fac = function NavigationComponent_Factory(t) {
@@ -7002,9 +7022,10 @@ function AuthModalComponent_div_0_ng_container_14_div_7_div_1_li_13_Template(rf,
   if (rf & 2) {
     const f_r6 = ctx.$implicit;
     const plan_r5 = \u0275\u0275nextContext().$implicit;
+    const ctx_r1 = \u0275\u0275nextContext(4);
     \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(2, _c2, plan_r5.price > 0, plan_r5.price === 0));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate1(" ", f_r6, " ");
+    \u0275\u0275textInterpolate1(" ", ctx_r1.getFeatureLabel(f_r6), " ");
   }
 }
 function AuthModalComponent_div_0_ng_container_14_div_7_div_1_Template(rf, ctx) {
@@ -7606,7 +7627,7 @@ function AuthModalComponent_div_0_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275property("ngIf", ctx_r1.mode === "REGISTER" && ctx_r1.step === "PLAN_SELECTION");
     \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.errorMessage && (ctx_r1.mode === "LOGIN" || ctx_r1.step === "AUTH_FORM"));
+    \u0275\u0275property("ngIf", ctx_r1.errorMessage);
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.successMessage && (ctx_r1.mode === "LOGIN" || ctx_r1.step === "AUTH_FORM"));
     \u0275\u0275advance();
@@ -7634,19 +7655,18 @@ var AuthModalComponent = class _AuthModalComponent {
   }
   loadPlans() {
     this.isLoading = true;
-    this.apiService.getMembershipPlans().subscribe({
+    this.apiService.getPublicPlans().subscribe({
       next: (plans) => {
         this.plans = plans || [];
         this.isLoading = false;
         if (this.plans.length === 0) {
-          console.warn("No membership plans found in backend. Moving to registration form.");
-          this.step = "AUTH_FORM";
+          this.errorMessage = "No membership plans are currently available. Please try again later.";
         }
       },
       error: (error) => {
         console.error("Error loading plans:", error);
         this.isLoading = false;
-        this.step = "AUTH_FORM";
+        this.errorMessage = "Unable to load membership plans. Please try again.";
       }
     });
   }
@@ -7657,6 +7677,12 @@ var AuthModalComponent = class _AuthModalComponent {
     } else {
       this.step = "AUTH_FORM";
     }
+  }
+  getFeatureLabel(feature) {
+    if (feature && typeof feature === "object") {
+      return feature.name || feature.description || "";
+    }
+    return String(feature || "");
   }
   // Called from parent after payment success
   onPaymentSuccess() {
@@ -7749,6 +7775,11 @@ var AuthModalComponent = class _AuthModalComponent {
     }
   }
   submitApplication() {
+    if (!this.selectedPlan?.id) {
+      this.errorMessage = "Please select a membership plan before registration.";
+      this.step = "PLAN_SELECTION";
+      return;
+    }
     if (!this.regData.applicantName || !this.regData.email || !this.regData.phone || !this.regData.company || !this.regData.address || !this.regData.password) {
       this.errorMessage = "Please fill in all required fields";
       return;
@@ -7762,7 +7793,7 @@ var AuthModalComponent = class _AuthModalComponent {
     this.errorMessage = "";
     this.successMessage = "";
     this.apiService.createMembershipApplication(__spreadProps(__spreadValues({}, this.regData), {
-      planId: this.selectedPlan?.id
+      planId: this.selectedPlan.id
     })).subscribe({
       next: () => {
         this.isLoading = false;
@@ -8063,6 +8094,10 @@ var AppComponent = class _AppComponent {
         this.router.navigate([redirect]);
         return;
       }
+      if (user.role !== "admin" && !this.authService.hasSelectedPlan()) {
+        this.router.navigate(["/select-plan"]);
+        return;
+      }
       this.router.navigate([user.role === "admin" ? "/admin-dashboard" : "/dashboard"]);
       window.scrollTo(0, 0);
     } else {
@@ -8071,6 +8106,10 @@ var AppComponent = class _AppComponent {
         try {
           const parsedUser = JSON.parse(storedUser);
           this.currentUser = parsedUser;
+          if (parsedUser.role !== "admin" && !this.authService.hasSelectedPlan()) {
+            this.router.navigate(["/select-plan"]);
+            return;
+          }
           this.router.navigate([parsedUser.role === "admin" ? "/admin-dashboard" : "/dashboard"]);
           window.scrollTo(0, 0);
         } catch (e) {
@@ -8115,8 +8154,7 @@ var AppComponent = class _AppComponent {
     }
   }
   onAuthPaymentRequest(plan) {
-    this.selectedEvent = null;
-    this.showPaymentModal = true;
+    this.openPaymentModal(plan);
   }
   handleLoginRequiredForEvent(event) {
     this.pendingEvent = event;
@@ -8154,7 +8192,11 @@ var AppComponent = class _AppComponent {
   }
   onEventPaymentRequest(paymentData) {
     if (paymentData && paymentData.event) {
-      this.selectedEvent = __spreadProps(__spreadValues({}, paymentData.event), { quantity: paymentData.quantity || 1 });
+      this.selectedEvent = __spreadProps(__spreadValues({}, paymentData.event), {
+        quantity: paymentData.quantity || 1,
+        selectedTicketTypeId: paymentData.selectedTicketTypeId || null,
+        selectedTicketType: paymentData.selectedTicketType || null
+      });
       this.showEventDetailModal = false;
       this.showPaymentModal = true;
     }
@@ -8246,33 +8288,84 @@ var AppComponent = class _AppComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AppComponent, { className: "AppComponent", filePath: "src\\app\\app.component.ts", lineNumber: 37 });
 })();
 
+// src/app/guards/auth.guard.ts
+var authGuard = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  if (authService.isAuthenticated()) {
+    return true;
+  }
+  sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+  return router.createUrlTree(["/home"]);
+};
+
+// src/app/guards/plan-selected.guard.ts
+var planSelectedGuard = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const user = authService.getCurrentUser();
+  if (!user) {
+    return router.createUrlTree(["/home"]);
+  }
+  if (user.role === "admin") {
+    return true;
+  }
+  if (authService.hasSelectedPlan()) {
+    return true;
+  }
+  return router.createUrlTree(["/select-plan"]);
+};
+
 // src/app/app.routes.ts
 var routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
-  { path: "home", loadComponent: () => import("./chunk-QO4AH3RA.js").then((c) => c.HomeComponent) },
-  { path: "dashboard", loadComponent: () => import("./chunk-AZA7EBJC.js").then((c) => c.DashboardComponent) },
-  { path: "admin-dashboard", loadComponent: () => import("./chunk-MUX3D7GQ.js").then((c) => c.AdminDashboardComponent) },
-  { path: "directory", loadComponent: () => import("./chunk-QTZO7KRP.js").then((c) => c.DirectoryComponent) },
-  { path: "events", loadComponent: () => import("./chunk-DLMX2VLR.js").then((c) => c.EventsComponent) },
-  { path: "events/:id", loadComponent: () => import("./chunk-IZZLZ3WQ.js").then((c) => c.EventDetailComponent) },
-  { path: "bench", loadComponent: () => import("./chunk-K25RX6Q4.js").then((c) => c.BenchComponent) },
-  { path: "blogs", loadComponent: () => import("./chunk-A4XDYYFO.js").then((c) => c.BlogsComponent) },
-  { path: "profile-edit", loadComponent: () => import("./chunk-TFDABZTE.js").then((c) => c.ProfileEditComponent) },
-  { path: "resource-post", loadComponent: () => import("./chunk-YVUGJTL3.js").then((c) => c.ResourcePostComponent) },
-  { path: "project-post", loadComponent: () => import("./chunk-EU4NJH74.js").then((c) => c.ProjectPostComponent) },
-  { path: "blog-create", loadComponent: () => import("./chunk-C4SOKB2R.js").then((c) => c.BlogCreateComponent) },
-  { path: "member-management", loadComponent: () => import("./chunk-ZPHRCORN.js").then((c) => c.MemberManagementComponent) },
-  { path: "event-create", loadComponent: () => import("./chunk-UUTCMOVD.js").then((c) => c.EventCreateComponent) },
-  { path: "event-management", loadComponent: () => import("./chunk-GB66BILF.js").then((c) => c.EventManagementComponent) },
+  { path: "home", loadComponent: () => import("./chunk-QCCE5LFC.js").then((c) => c.HomeComponent) },
+  { path: "dashboard", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-WMGYHIE6.js").then((c) => c.DashboardComponent) },
+  { path: "admin-dashboard", canActivate: [authGuard], loadComponent: () => import("./chunk-BJ3JVHOE.js").then((c) => c.AdminDashboardComponent) },
+  { path: "directory", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-2PZDOKDB.js").then((c) => c.DirectoryComponent) },
+  { path: "events", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-WHMEEREO.js").then((c) => c.EventsComponent) },
+  { path: "events/:id", loadComponent: () => import("./chunk-56G7BHBB.js").then((c) => c.EventDetailComponent) },
+  { path: "bench", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-35RZV7ZK.js").then((c) => c.BenchComponent) },
+  { path: "blogs", loadComponent: () => import("./chunk-NN5D6YAW.js").then((c) => c.BlogsComponent) },
+  { path: "profile-edit", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-HHM7S5W6.js").then((c) => c.ProfileEditComponent) },
+  { path: "resource-post", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-C2DQE2AO.js").then((c) => c.ResourcePostComponent) },
+  { path: "project-post", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-X72UYIAS.js").then((c) => c.ProjectPostComponent) },
+  { path: "blog-create", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-HM5SRLV3.js").then((c) => c.BlogCreateComponent) },
+  { path: "member-management", canActivate: [authGuard], loadComponent: () => import("./chunk-2O72P3WE.js").then((c) => c.MemberManagementComponent) },
+  { path: "event-create", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-F4FHFI2U.js").then((c) => c.EventCreateComponent) },
+  { path: "event-management", canActivate: [authGuard], loadComponent: () => import("./chunk-ITCTWQPT.js").then((c) => c.EventManagementComponent) },
+  { path: "select-plan", canActivate: [authGuard], loadComponent: () => import("./chunk-V6MDF54Y.js").then((c) => c.MembershipPlansComponent) },
   { path: "**", redirectTo: "home" }
   // Fallback
 ];
+
+// src/app/interceptors/auth-expiry.interceptor.ts
+var handlingSessionExpiry = false;
+var authExpiryInterceptor = (req, next) => {
+  const authService = inject(AuthService);
+  const toastr = inject(ToastrService);
+  return next(req).pipe(catchError((error) => {
+    if (error instanceof HttpErrorResponse && error.status === 401) {
+      const token = localStorage.getItem("token");
+      const isAuthEndpoint = req.url.includes("/api/auth/login");
+      if (token && !isAuthEndpoint && !handlingSessionExpiry) {
+        handlingSessionExpiry = true;
+        toastr.error("Token expired. Please login again.");
+        authService.logout();
+        setTimeout(() => {
+          handlingSessionExpiry = false;
+        }, 1500);
+      }
+    }
+    return throwError(() => error);
+  }));
+};
 
 // src/main.ts
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authExpiryInterceptor])),
     provideAnimations(),
     provideToastr({
       timeOut: 3e3,

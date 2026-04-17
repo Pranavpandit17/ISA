@@ -5,6 +5,7 @@ import { MembershipService } from '../../services/membership.service';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 interface MembershipPlan {
   id?: number;
@@ -13,6 +14,7 @@ interface MembershipPlan {
   price: number;
   currency: string;
   durationMonths: number;
+  level?: number;
   features: any[];
   planFeatures?: PlanFeature[]; // Features from PlanFeature entity
   isActive: boolean;
@@ -73,15 +75,22 @@ export class MembershipPlansComponent implements OnInit {
     private apiService: ApiService,
     private membershipService: MembershipService,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    this.selectedPlan = this.membershipService.getSelectedPlan();
+    this.selectedPlan = this.currentUser?.currentPlanId ? { id: this.currentUser.currentPlanId } as MembershipPlan : this.membershipService.getSelectedPlan();
     this.loadPlans();
     this.membershipService.getSelectedPlan$().subscribe(plan => {
-      this.selectedPlan = plan;
+      if (!this.currentUser?.currentPlanId) {
+        this.selectedPlan = plan;
+      }
+    });
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      this.selectedPlan = user?.currentPlanId ? { id: user.currentPlanId } as MembershipPlan : this.selectedPlan;
     });
   }
 
@@ -89,7 +98,7 @@ export class MembershipPlansComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.apiService.getMembershipPlans().subscribe({
+    this.apiService.getPublicPlans().subscribe({
       next: (response: any) => {
         this.plans = Array.isArray(response) ? response : [];
         this.isLoading = false;
@@ -110,10 +119,68 @@ export class MembershipPlansComponent implements OnInit {
   }
 
   isCurrentPlan(plan: MembershipPlan): boolean {
-    return !!this.selectedPlan && !!plan.id && this.selectedPlan.id === plan.id;
+    const currentPlanId = this.currentUser?.currentPlanId || this.selectedPlan?.id;
+    return !!currentPlanId && !!plan.id && currentPlanId === plan.id;
+  }
+
+  private getPlanLevel(plan: MembershipPlan): number {
+    if (plan.level != null && plan.level > 0) {
+      return plan.level;
+    }
+    // Fallback based on price if level is missing
+    const price = plan.price || 0;
+    if (price <= 0) return 1;
+    if (price <= 3500) return 2;
+    if (price <= 7000) return 3;
+    return 4;
+  }
+
+  private getCurrentPlanLevel(): number {
+    if (!this.currentUser) return 0;
+    
+    // If user has a plan ID but no level, try to find it in the loaded plans
+    if (this.currentUser.currentPlanId && (!this.currentUser.currentPlanLevel || this.currentUser.currentPlanLevel === 0)) {
+      const current = this.plans.find(p => p.id === this.currentUser?.currentPlanId);
+      if (current) return this.getPlanLevel(current);
+    }
+    
+    return this.currentUser.currentPlanLevel || 0;
+  }
+
+  canSelectPlan(plan: MembershipPlan): boolean {
+    if (!this.currentUser) return true; // Let them click, they'll be prompted to login/register
+    
+    // Admin bypass: Admins can select/test any plan
+    const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
+    if (isAdmin) return !this.isCurrentPlan(plan);
+
+    if (this.isCurrentPlan(plan)) {
+      return false;
+    }
+
+    const currentLevel = this.getCurrentPlanLevel();
+    if (!currentLevel || currentLevel === 0) {
+      return true;
+    }
+
+    // Allow upgrades (selecting a plan with a higher level)
+    return this.getPlanLevel(plan) > currentLevel;
+  }
+
+  getPlanActionLabel(plan: MembershipPlan): string {
+    if (this.isCurrentPlan(plan)) {
+      return 'Current Plan';
+    }
+    if (this.canSelectPlan(plan)) {
+      return this.getCurrentPlanLevel() ? 'Upgrade Plan' : 'Choose Plan';
+    }
+    return 'Not Allowed';
   }
 
   startSelectPlan(plan: MembershipPlan): void {
+    if (!this.canSelectPlan(plan)) {
+      return;
+    }
     this.confirmingPlan = plan;
   }
 
@@ -217,36 +284,32 @@ export class MembershipPlansComponent implements OnInit {
   confirmSelection(): void {
     if (!this.confirmingPlan || !this.confirmingPlan.id) return;
 
-    // Dummy payment flow - save to database
     this.isProcessing = true;
     const plan = this.confirmingPlan;
     const planId = plan.id!; // Non-null assertion since we checked above
 
-    // Generate dummy transaction ID
-    const transactionId = 'DUMMY-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-
-    // Create membership payment in database
-    this.apiService.createMembershipPayment(planId, 'CREDIT_CARD', transactionId).subscribe({
-      next: (paymentResponse: any) => {
-        // Payment saved successfully
+    this.apiService.selectPlan(planId).subscribe({
+      next: () => {
         this.membershipService.setSelectedPlan(plan);
         this.authService.refreshCurrentUserProfile().subscribe({
           next: () => {
             this.isProcessing = false;
             this.confirmingPlan = null;
-            this.toastr.success('Payment successful. Membership plan updated and profile refreshed.', 'Success');
+            this.toastr.success('Membership plan selected successfully.', 'Success');
+            this.router.navigate(['/dashboard']);
           },
           error: () => {
             this.isProcessing = false;
             this.confirmingPlan = null;
-            this.toastr.success('Payment successful. Membership plan updated.', 'Success');
+            this.toastr.success('Membership plan selected successfully.', 'Success');
+            this.router.navigate(['/dashboard']);
           }
         });
       },
       error: (error: any) => {
-        console.error('Error creating membership payment:', error);
+        console.error('Error selecting membership plan:', error);
         this.isProcessing = false;
-        this.toastr.error(error?.error?.error || error?.error?.message || 'Unable to process plan purchase.', 'Error');
+        this.toastr.error(error?.error?.error || error?.error?.message || 'Unable to select membership plan.', 'Error');
       }
     });
   }

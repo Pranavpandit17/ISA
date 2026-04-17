@@ -102,6 +102,11 @@ export class AppComponent implements OnInit {
                 return;
             }
 
+            if (user.role !== 'admin' && !this.authService.hasSelectedPlan()) {
+                this.router.navigate(['/select-plan']);
+                return;
+            }
+
             this.router.navigate([user.role === 'admin' ? '/admin-dashboard' : '/dashboard']);
             window.scrollTo(0, 0);
         } else {
@@ -110,6 +115,10 @@ export class AppComponent implements OnInit {
                 try {
                     const parsedUser = JSON.parse(storedUser);
                     this.currentUser = parsedUser;
+                    if (parsedUser.role !== 'admin' && !this.authService.hasSelectedPlan()) {
+                        this.router.navigate(['/select-plan']);
+                        return;
+                    }
                     this.router.navigate([parsedUser.role === 'admin' ? '/admin-dashboard' : '/dashboard']);
                     window.scrollTo(0, 0);
                 } catch (e) {
@@ -127,7 +136,12 @@ export class AppComponent implements OnInit {
 
     openPaymentModal(data?: any): void {
         if (data && data.event) {
-            this.selectedEvent = { ...data.event, quantity: data.quantity || 1 } as AppEvent;
+            this.selectedEvent = { 
+              ...data.event, 
+              quantity: data.quantity || 1,
+              selectedTicketTypeId: data.ticketTypeId || data.selectedTicketTypeId || null,
+              selectedTicketType: data.selectedTicketType || null
+            } as AppEvent;
             this.paymentPlanData = null;
         } else {
             this.paymentPlanData = data;
@@ -189,11 +203,7 @@ export class AppComponent implements OnInit {
             const isPaid = pricingType === 'PAID' || pricingType === 'DISCOUNTED' ||
                 (ev.memberPrice > 0 || ev.nonMemberPrice > 0 || ev.price > 0);
             this.selectedEvent = { ...ev, registeredCount: ev.registrationCount || ev.registeredCount || 0 } as any;
-            if (isPaid) {
-                this.showPaymentModal = true;
-            } else {
-                this.showEventDetailModal = true;
-            }
+            this.showEventDetailModal = true;
         };
 
         if ((event as any).id) {

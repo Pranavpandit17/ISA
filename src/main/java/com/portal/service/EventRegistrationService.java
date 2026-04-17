@@ -7,6 +7,7 @@ import com.portal.entity.Payment;
 import com.portal.entity.TicketType;
 import com.portal.entity.User;
 import com.portal.entity.MembershipPayment;
+import com.portal.entity.MembershipFeePlan;
 import com.portal.repository.EventRegistrationRepository;
 import com.portal.repository.EventRepository;
 import com.portal.repository.TicketTypeRepository;
@@ -186,18 +187,18 @@ public class EventRegistrationService {
         }
 
         boolean isAdmin = user.getRole() == User.Role.ADMIN;
-        boolean isPremiumMember = isPremiumMember(user.getId());
+        int activePlanLevel = getActivePlanLevel(user);
 
-        if (ticketTypeEnum == TicketType.TicketTypeEnum.MEMBER && !isAdmin && !isPremiumMember) {
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.MEMBER && !isAdmin && activePlanLevel < 2) {
             throw new RuntimeException("This is a member-only ticket");
         }
 
-        if (ticketTypeEnum == TicketType.TicketTypeEnum.NON_MEMBER && !isAdmin && isPremiumMember) {
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.NON_MEMBER && !isAdmin && activePlanLevel >= 2) {
             throw new RuntimeException("This ticket is for non-members only");
         }
 
-        if (ticketTypeEnum == TicketType.TicketTypeEnum.VIP && !isAdmin) {
-            throw new RuntimeException("VIP ticket is restricted");
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.VIP && !isAdmin && activePlanLevel < 3) {
+            throw new RuntimeException("VIP ticket is restricted to Gold members (plan level 3+)");
         }
 
         if (ticketTypeEnum == TicketType.TicketTypeEnum.EARLY_BIRD) {
@@ -206,6 +207,51 @@ public class EventRegistrationService {
                 throw new RuntimeException("Early bird ticket window is closed");
             }
         }
+    }
+
+    /**
+     * Returns the user's currently active membership plan "level" or 0 if no active plan exists.
+     * This is used to unlock ticket eligibility dynamically (Member/VIP/Non-Member).
+     */
+    private int getActivePlanLevel(User user) {
+        if (user == null) {
+            return 0;
+        }
+        if (user.getRole() == User.Role.ADMIN) {
+            return 999;
+        }
+        // New/current flow: plan_id + plan_status persisted on User
+        if (user.getPlanStatus() == User.PlanStatus.SELECTED
+                && (user.getPlanExpiryDate() == null || !user.getPlanExpiryDate().isBefore(LocalDate.now()))
+                && user.getSelectedPlan() != null) {
+            return resolvePlanLevel(user.getSelectedPlan());
+        }
+
+        // Legacy fallback: derive active plan from Member subscription/payment history
+        return memberRepository.findById(user.getId())
+                .filter(m -> m.getMembershipStatus() == com.portal.entity.Member.MembershipStatus.ACTIVE)
+                .filter(m -> m.getSubscriptionEndDate() == null || !m.getSubscriptionEndDate().isBefore(LocalDate.now()))
+                .flatMap(m -> membershipPaymentRepository.findTopByMemberIdAndStatusOrderByCreatedAtDesc(
+                        m.getId(),
+                        MembershipPayment.PaymentStatus.PAID
+                ).map(MembershipPayment::getPlan))
+                .map(this::resolvePlanLevel)
+                .orElse(0);
+    }
+
+    private int resolvePlanLevel(MembershipFeePlan plan) {
+        if (plan == null) {
+            return 0;
+        }
+        Integer level = plan.getLevel();
+        if (level != null && level > 0) {
+            return level;
+        }
+        java.math.BigDecimal price = plan.getPrice() != null ? plan.getPrice() : java.math.BigDecimal.ZERO;
+        if (price.compareTo(java.math.BigDecimal.ZERO) <= 0) return 1;
+        if (price.compareTo(new java.math.BigDecimal("3500")) <= 0) return 2;
+        if (price.compareTo(new java.math.BigDecimal("7000")) <= 0) return 3;
+        return 4;
     }
 
     private boolean isActiveMember(Long userId) {
@@ -284,8 +330,9 @@ public class EventRegistrationService {
     }
     
     private TicketType createDefaultTicketType(Event event, User user) {
-        // Check if user is an active member (has MEMBER role AND active Member record)
-        boolean isActiveMember = user.getRole() == User.Role.MEMBER && isActiveMember(user.getId());
+        boolean isAdmin = user.getRole() == User.Role.ADMIN;
+        // "Member access" is based on plan level (>=2) rather than premium/payment history.
+        boolean isActiveMember = isAdmin || getActivePlanLevel(user) >= 2;
         
         TicketType ticketType = new TicketType();
         ticketType.setEvent(event);

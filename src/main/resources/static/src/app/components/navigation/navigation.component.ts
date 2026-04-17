@@ -51,4 +51,20 @@ export class NavigationComponent implements OnInit {
   onLogout(): void {
     this.logout.emit();
   }
+
+  getUserPlanLabel(): string {
+    if (!this.currentUser) {
+      return '';
+    }
+    if (this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN') {
+      return 'ADMIN';
+    }
+    if (this.currentUser.currentPlanName && this.authService.hasSelectedPlan()) {
+      return this.currentUser.currentPlanName.toUpperCase();
+    }
+    if (this.currentUser.planExpiryDate && new Date(this.currentUser.planExpiryDate) < new Date(new Date().toDateString())) {
+      return 'PLAN EXPIRED';
+    }
+    return 'NO PLAN';
+  }
 }

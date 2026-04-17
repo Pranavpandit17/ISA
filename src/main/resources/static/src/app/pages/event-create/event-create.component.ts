@@ -366,6 +366,19 @@ export class EventCreateComponent implements OnInit, OnChanges {
           return false;
         }
       }
+      const seenTypes = new Set<string>();
+      for (const t of (this.eventData.ticketTypes || [])) {
+        const name = String(t?.name || '').trim();
+        if (!name) {
+          continue;
+        }
+        const type = String(t?.type || 'MEMBER').toUpperCase();
+        if (seenTypes.has(type)) {
+          this.errorMessage = `Duplicate ticket type "${type}" is not allowed. Keep only one entry per type.`;
+          return false;
+        }
+        seenTypes.add(type);
+      }
     } else if (this.currentStep === 5) {
       const speakers = this.eventData.speakers || [];
       for (let i = 0; i < speakers.length; i++) {
@@ -394,9 +407,20 @@ export class EventCreateComponent implements OnInit, OnChanges {
   }
 
   addTicketType(): void {
+    const usedTypes = new Set(
+      (this.eventData.ticketTypes || [])
+        .map((t: any) => String(t?.type || '').toUpperCase())
+        .filter((t: string) => !!t)
+    );
+    const allTypes = ['MEMBER', 'NON_MEMBER', 'EARLY_BIRD', 'VIP'];
+    const nextType = allTypes.find(t => !usedTypes.has(t));
+    if (!nextType) {
+      this.errorMessage = 'Each ticket type can be added only once.';
+      return;
+    }
     this.eventData.ticketTypes.push({
       name: '',
-      type: 'MEMBER',
+      type: nextType,
       price: 0,
       availableQuantity: 0,
       quantityLimit: null,
@@ -478,7 +502,19 @@ export class EventCreateComponent implements OnInit, OnChanges {
       websiteUrl: s.websiteUrl || ''
     }));
 
-    const ticketTypes = (this.eventData.ticketTypes || [])
+    const uniqueTicketTypes = new Map<string, any>();
+    for (const t of (this.eventData.ticketTypes || [])) {
+      const ticketName = String(t?.name || '').trim();
+      if (!ticketName) {
+        continue;
+      }
+      const ticketType = String(t.type || 'MEMBER').toUpperCase();
+      if (!uniqueTicketTypes.has(ticketType)) {
+        uniqueTicketTypes.set(ticketType, t);
+      }
+    }
+
+    const ticketTypes = Array.from(uniqueTicketTypes.values())
       .filter((t: any) => t.name && String(t.name).trim())
       .map((t: any) => ({
         name: String(t.name).trim(),

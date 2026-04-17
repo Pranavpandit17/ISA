@@ -20,6 +20,7 @@ public class MemberDTO {
     private String membershipNumber;
     private LocalDate subscriptionStartDate;
     private LocalDate subscriptionEndDate;
+    private String activePlanName;
     private LocalDateTime createdAt;
 
     // Getters and Setters
@@ -133,6 +134,14 @@ public class MemberDTO {
 
     public void setSubscriptionEndDate(LocalDate subscriptionEndDate) {
         this.subscriptionEndDate = subscriptionEndDate;
+    }
+
+    public String getActivePlanName() {
+        return activePlanName;
+    }
+
+    public void setActivePlanName(String activePlanName) {
+        this.activePlanName = activePlanName;
     }
 
     public LocalDateTime getCreatedAt() {

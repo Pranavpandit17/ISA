@@ -254,9 +254,24 @@ public class MembershipService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found for email: " + userEmail));
 
-        // Find member by user ID
+        // Find member by user ID. If not found (e.g. for Admin or newly registered user), create it on the fly.
         Member member = memberRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("Member not found for user: " + userEmail));
+                .orElseGet(() -> {
+                    Member newMember = new Member();
+                    newMember.setUser(user);
+                    newMember.setMembershipStatus(Member.MembershipStatus.PENDING);
+                    newMember.setMembershipType(Member.MembershipType.INDIVIDUAL); // Default
+                    
+                    // Generate a temporary membership number
+                    String membershipNumber = "MEM-TEMP-" + System.currentTimeMillis();
+                    newMember.setMembershipNumber(membershipNumber);
+
+                    // Set default dates to satisfy NOT NULL constraints
+                    newMember.setSubscriptionStartDate(LocalDate.now());
+                    newMember.setSubscriptionEndDate(LocalDate.now().plusYears(1));
+                    
+                    return memberRepository.save(newMember);
+                });
 
         // Determine previous PAID plan (for switch notification)
         Long previousPlanId = null;
@@ -436,6 +451,20 @@ public class MembershipService {
         newUser.setPhone(dto.getPhone());
         newUser.setCompany(dto.getCompany());
         newUser.setIsActive(true);
+        newUser.setPlanStatus(User.PlanStatus.NOT_SELECTED);
+
+        if (dto.getPlanId() != null) {
+            MembershipFeePlan selectedPlan = feePlanRepository.findById(dto.getPlanId())
+                    .orElseThrow(() -> new RuntimeException("Selected plan not found: " + dto.getPlanId()));
+            newUser.setSelectedPlan(selectedPlan);
+            newUser.setPlanStatus(User.PlanStatus.SELECTED);
+            LocalDate startDate = LocalDate.now();
+            newUser.setPlanStartDate(startDate);
+            Integer durationMonths = selectedPlan.getDurationMonths() != null && selectedPlan.getDurationMonths() > 0
+                    ? selectedPlan.getDurationMonths()
+                    : null;
+            newUser.setPlanExpiryDate(durationMonths != null ? startDate.plusMonths(durationMonths).minusDays(1) : null);
+        }
 
         userRepository.save(newUser);
 
@@ -576,6 +605,14 @@ public class MembershipService {
         dto.setMembershipNumber(member.getMembershipNumber());
         dto.setSubscriptionStartDate(member.getSubscriptionStartDate());
         dto.setSubscriptionEndDate(member.getSubscriptionEndDate());
+        
+        // Populate current plan name from the User entity
+        if (member.getUser().getSelectedPlan() != null) {
+            dto.setActivePlanName(member.getUser().getSelectedPlan().getName());
+        } else {
+            dto.setActivePlanName("No Plan");
+        }
+        
         dto.setCreatedAt(member.getCreatedAt());
 
         // Populate industry field
@@ -714,6 +751,7 @@ public class MembershipService {
         dto.setPrice(plan.getPrice());
         dto.setCurrency(plan.getCurrency());
         dto.setDurationMonths(plan.getDurationMonths());
+        dto.setLevel(plan.getLevel());
         dto.setIsActive(plan.getIsActive());
         dto.setCreatedAt(plan.getCreatedAt());
 

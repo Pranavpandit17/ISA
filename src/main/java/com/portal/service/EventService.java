@@ -28,7 +28,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -125,8 +127,8 @@ public class EventService {
         // Create ticket types based on pricing
         List<TicketType> ticketTypes = new ArrayList<>();
         if (eventDTO.getTicketTypes() != null && !eventDTO.getTicketTypes().isEmpty()) {
-            // Use provided ticket types
-            for (TicketTypeDTO ticketDTO : eventDTO.getTicketTypes()) {
+            // Use provided ticket types with type-level deduplication
+            for (TicketTypeDTO ticketDTO : normalizeTicketTypeDTOs(eventDTO.getTicketTypes())) {
                 TicketType ticketType = convertTicketTypeToEntity(ticketDTO, savedEvent);
                 ticketTypes.add(ticketType);
             }
@@ -302,7 +304,7 @@ public class EventService {
         
         // Convert related entities to DTOs
         if (event.getTicketTypes() != null && !event.getTicketTypes().isEmpty()) {
-            dto.setTicketTypes(event.getTicketTypes().stream()
+            dto.setTicketTypes(normalizeTicketTypes(event.getTicketTypes()).stream()
                     .map(this::convertTicketTypeToDTO)
                     .collect(Collectors.toList()));
         } else {
@@ -512,6 +514,46 @@ public class EventService {
         ticketType.setAvailableQuantity(dto.getAvailableQuantity() != null ? dto.getAvailableQuantity() : event.getCapacity());
         ticketType.setDescription(dto.getDescription());
         return ticketType;
+    }
+
+    private List<TicketTypeDTO> normalizeTicketTypeDTOs(List<TicketTypeDTO> ticketTypes) {
+        if (ticketTypes == null || ticketTypes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Map<String, TicketTypeDTO> unique = new LinkedHashMap<>();
+        for (TicketTypeDTO ticketType : ticketTypes) {
+            if (ticketType == null || ticketType.getName() == null || ticketType.getName().trim().isEmpty()) {
+                continue;
+            }
+            String key = buildTicketTypeKey(ticketType.getType(), ticketType.getName());
+            unique.putIfAbsent(key, ticketType);
+        }
+        return new ArrayList<>(unique.values());
+    }
+
+    private List<TicketType> normalizeTicketTypes(List<TicketType> ticketTypes) {
+        if (ticketTypes == null || ticketTypes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Map<String, TicketType> unique = new LinkedHashMap<>();
+        for (TicketType ticketType : ticketTypes) {
+            if (ticketType == null || ticketType.getName() == null || ticketType.getName().trim().isEmpty()) {
+                continue;
+            }
+            String key = buildTicketTypeKey(
+                    ticketType.getType() != null ? ticketType.getType().name() : null,
+                    ticketType.getName()
+            );
+            unique.putIfAbsent(key, ticketType);
+        }
+        return new ArrayList<>(unique.values());
+    }
+
+    private String buildTicketTypeKey(String type, String name) {
+        if (type != null && !type.trim().isEmpty()) {
+            return type.trim().toUpperCase();
+        }
+        return name != null ? name.trim().toUpperCase() : "UNKNOWN";
     }
 
     private EventRegistrationDTO convertRegistrationToDTO(com.portal.entity.EventRegistration registration) {

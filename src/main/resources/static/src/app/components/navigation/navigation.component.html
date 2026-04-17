@@ -50,7 +50,7 @@
               <span class="user-role-pill" [class.role-premium]="currentUser?.type === 'PREMIUM'"
                 [class.role-regular]="currentUser?.type === 'REGULAR'"
                 [class.role-admin]="currentUser?.type === 'ADMIN' || currentUser?.role === 'admin'">
-                {{ currentUser?.type || currentUser?.role }}
+                {{ getUserPlanLabel() }}
               </span>
             </div>
           </div>
