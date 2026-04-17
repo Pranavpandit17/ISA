@@ -140,6 +140,17 @@ export class MemberManagementComponent implements OnInit {
   setTab(tab: 'APPLICATIONS' | 'APPROVED' | 'REJECTED'): void {
     this.activeTab = tab;
   }
+
+  getMemberPlanName(member: any): string {
+    if (!member) return 'No Plan';
+    return (
+      member.activePlanName ||
+      member.currentPlanName ||
+      member.planName ||
+      member.selectedPlanName ||
+      'No Plan'
+    );
+  }
 }
 
 

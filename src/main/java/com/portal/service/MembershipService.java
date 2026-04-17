@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -606,11 +607,25 @@ public class MembershipService {
         dto.setSubscriptionStartDate(member.getSubscriptionStartDate());
         dto.setSubscriptionEndDate(member.getSubscriptionEndDate());
         
-        // Populate current plan name from the User entity
+        // Populate current plan name from the User entity.
+        // Fallback to the latest PAID membership payment if selectedPlan is not set.
         if (member.getUser().getSelectedPlan() != null) {
             dto.setActivePlanName(member.getUser().getSelectedPlan().getName());
         } else {
-            dto.setActivePlanName("No Plan");
+            String activePlanName = null;
+            try {
+                Optional<MembershipPayment> latestPaidPayment =
+                        paymentRepository.findTopByMemberIdAndStatusOrderByCreatedAtDesc(
+                                member.getId(),
+                                MembershipPayment.PaymentStatus.PAID
+                        );
+                if (latestPaidPayment.isPresent() && latestPaidPayment.get().getPlan() != null) {
+                    activePlanName = latestPaidPayment.get().getPlan().getName();
+                }
+            } catch (Exception ignored) {
+                // Keep fallback below
+            }
+            dto.setActivePlanName(activePlanName != null && !activePlanName.isBlank() ? activePlanName : "No Plan");
         }
         
         dto.setCreatedAt(member.getCreatedAt());
