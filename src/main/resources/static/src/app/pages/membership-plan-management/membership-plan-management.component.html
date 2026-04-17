@@ -6,46 +6,48 @@
       <p class="text-sm font-medium text-slate-400">Design subscription structures, coordinate premium features, and
         monitor tiered growth.</p>
     </div>
-    <button *ngIf="isAdmin" (click)="startCreate()" [disabled]="showForm || isLoading"
+    <button *ngIf="isAdmin" (click)="onPrimaryButtonClick()" [disabled]="isLoading"
       class="btn-premium flex items-center gap-2">
-      <span class="text-xl">+</span> {{ showForm ? 'Form Active' : 'Create New Plan' }}
+      <span class="text-xl">+</span> {{ showForm ? 'View Active Plans' : 'Create New Plan' }}
     </button>
   </header>
+  
+  <ng-container *ngIf="!showForm">
+    <!-- Modern Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <p>Total Inventory</p>
+          <h3>{{ totalCount }}</h3>
+        </div>
+        <div class="stat-icon bg-indigo-50 text-indigo-600">🏛️</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <p>Active Offerings</p>
+          <h3 class="text-emerald-500">{{ activeCount }}</h3>
+        </div>
+        <div class="stat-icon bg-emerald-50 text-emerald-600">📡</div>
+      </div>
+      <div class="stat-card border-slate-100 opacity-60">
+        <div class="stat-info">
+          <p>Archived Plans</p>
+          <h3>{{ inactiveCount }}</h3>
+        </div>
+        <div class="stat-icon bg-slate-50 text-slate-400">📁</div>
+      </div>
+    </div>
 
-  <!-- Modern Statistics Cards -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-info">
-        <p>Total Inventory</p>
-        <h3>{{ totalCount }}</h3>
-      </div>
-      <div class="stat-icon bg-indigo-50 text-indigo-600">🏛️</div>
+    <!-- Messages -->
+    <div *ngIf="successMessage"
+      class="mb-8 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-2xl text-sm font-medium animate-pulse">
+      {{ successMessage }}
     </div>
-    <div class="stat-card">
-      <div class="stat-info">
-        <p>Active Offerings</p>
-        <h3 class="text-emerald-500">{{ activeCount }}</h3>
-      </div>
-      <div class="stat-icon bg-emerald-50 text-emerald-600">📡</div>
+    <div *ngIf="errorMessage"
+      class="mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse">
+      {{ errorMessage }}
     </div>
-    <div class="stat-card border-slate-100 opacity-60">
-      <div class="stat-info">
-        <p>Archived Plans</p>
-        <h3>{{ inactiveCount }}</h3>
-      </div>
-      <div class="stat-icon bg-slate-50 text-slate-400">📁</div>
-    </div>
-  </div>
-
-  <!-- Messages -->
-  <div *ngIf="successMessage"
-    class="mb-8 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-2xl text-sm font-medium animate-pulse">
-    {{ successMessage }}
-  </div>
-  <div *ngIf="errorMessage"
-    class="mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse">
-    {{ errorMessage }}
-  </div>
+  </ng-container>
 
   <!-- Design/Edit Editor Panel -->
   <div class="form-panel" *ngIf="showForm && isAdmin" id="plan-form">
@@ -141,7 +143,7 @@
   </div>
 
   <!-- Plans Database Table -->
-  <div class="table-wrapper">
+  <div class="table-wrapper" *ngIf="!showForm">
     <div *ngIf="isLoading && plans.length === 0"
       class="p-40 text-center flex flex-col items-center justify-center gap-4">
       <div class="h-10 w-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>

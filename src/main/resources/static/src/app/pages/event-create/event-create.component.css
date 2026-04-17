@@ -406,3 +406,18 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+/* Refine details modal performance mode */
+.modal-overlay {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.modal-container {
+  animation: none;
+}
+
+.btn-pill,
+.step-circle {
+  transition: none;
+}

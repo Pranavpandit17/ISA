@@ -22,6 +22,7 @@ export class AuthModalComponent implements OnChanges {
   step: 'PLAN_SELECTION' | 'AUTH_FORM' = 'AUTH_FORM';
   plans: any[] = [];
   selectedPlan: any = null;
+  hasCompletedPlanPayment = false;
 
   // Login fields
   loginEmail = '';
@@ -46,6 +47,7 @@ export class AuthModalComponent implements OnChanges {
   errorMessage = '';
   successMessage = '';
   showJoinIsa = false;
+  pendingApplicationData: any = null;
 
   ngOnChanges(): void {
     if (this.show) {
@@ -55,8 +57,10 @@ export class AuthModalComponent implements OnChanges {
       this.isLoading = false;
 
       if (this.mode === 'REGISTER') {
-        this.step = 'PLAN_SELECTION';
-        this.loadPlans();
+        this.step = 'AUTH_FORM';
+        this.selectedPlan = null;
+        this.hasCompletedPlanPayment = false;
+        this.pendingApplicationData = null;
       } else {
         this.step = 'AUTH_FORM';
       }
@@ -88,12 +92,14 @@ export class AuthModalComponent implements OnChanges {
 
   selectPlan(plan: any): void {
     this.selectedPlan = plan;
+    this.hasCompletedPlanPayment = false;
     if (plan.price > 0) {
       // Trigger payment through parent
       this.openPayment.emit(plan);
     } else {
-      // Direct to registration
-      this.step = 'AUTH_FORM';
+      // Free plan: submit application immediately
+      this.hasCompletedPlanPayment = true;
+      this.submitApplication();
     }
   }
 
@@ -106,7 +112,8 @@ export class AuthModalComponent implements OnChanges {
 
   // Called from parent after payment success
   onPaymentSuccess(): void {
-    this.step = 'AUTH_FORM';
+    this.hasCompletedPlanPayment = true;
+    this.submitApplication();
   }
 
   constructor(
@@ -122,7 +129,7 @@ export class AuthModalComponent implements OnChanges {
 
   handleAuth(): void {
     if (this.mode === 'REGISTER') {
-      this.submitApplication();
+      this.proceedToPlanSelection();
     } else {
       this.handleLogin();
     }
@@ -176,25 +183,62 @@ export class AuthModalComponent implements OnChanges {
     this.mode = 'REGISTER';
     this.errorMessage = '';
     this.showJoinIsa = false;
+    this.step = 'AUTH_FORM';
+    this.selectedPlan = null;
+    this.hasCompletedPlanPayment = false;
+    this.pendingApplicationData = null;
     // Prefill registration email from attempted login
     if (this.loginEmail) {
       this.regData.email = this.loginEmail;
     }
   }
 
-  submitApplication(): void {
+  private validateRegistrationForm(): boolean {
     // Validate required fields
-    if (!this.regData.applicantName || !this.regData.email || 
-        !this.regData.phone || !this.regData.company || 
+    if (!this.regData.applicantName || !this.regData.email ||
+        !this.regData.phone || !this.regData.company ||
         !this.regData.address || !this.regData.password) {
       this.errorMessage = 'Please fill in all required fields';
-      return;
+      return false;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.regData.email)) {
       this.errorMessage = 'Please enter a valid email address';
+      return false;
+    }
+    return true;
+  }
+
+  proceedToPlanSelection(): void {
+    this.errorMessage = '';
+    this.successMessage = '';
+    if (!this.validateRegistrationForm()) {
+      return;
+    }
+    this.pendingApplicationData = { ...this.regData };
+    this.step = 'PLAN_SELECTION';
+    if (this.plans.length === 0) {
+      this.loadPlans();
+    }
+  }
+
+  submitApplication(): void {
+    if (!this.selectedPlan?.id) {
+      this.errorMessage = 'Please select a membership plan to continue.';
+      this.step = 'PLAN_SELECTION';
+      return;
+    }
+
+    if (this.selectedPlan.price > 0 && !this.hasCompletedPlanPayment) {
+      this.errorMessage = 'Please complete payment for the selected membership plan before submitting your application.';
+      return;
+    }
+
+    const applicationPayload = this.pendingApplicationData || this.regData;
+    if (!applicationPayload) {
+      this.errorMessage = 'Please fill application details first.';
       return;
     }
 
@@ -203,7 +247,7 @@ export class AuthModalComponent implements OnChanges {
     this.successMessage = '';
 
     this.apiService.createMembershipApplication({
-      ...this.regData,
+      ...applicationPayload,
       planId: this.selectedPlan?.id
     }).subscribe({
       next: () => {

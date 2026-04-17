@@ -399,6 +399,14 @@ export class MembershipPlanManagementComponent implements OnInit, OnDestroy {
     return this.showFormFlag;
   }
 
+  onPrimaryButtonClick(): void {
+    if (this.showFormFlag) {
+      this.cancelEdit();
+    } else {
+      this.startCreate();
+    }
+  }
+
   getFeatureCategoryColor(category: string): string {
     switch (category) {
       case 'DIRECTORY': return 'bg-blue-100 text-blue-800';
