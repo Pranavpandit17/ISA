@@ -225,3 +225,13 @@ table tbody tr:hover {
 
 .btn-publish { background: #10b981; color: white; }
 .btn-publish:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* Event management performance mode */
+.management-container {
+  animation: none !important;
+}
+
+.management-container .animate-pulse,
+.management-container .animate-spin {
+  animation-duration: 1.8s;
+}

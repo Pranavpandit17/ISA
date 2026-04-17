@@ -484,3 +484,27 @@
   line-height: 1.6;
   font-size: 0.95rem;
 }
+
+/* Landing-page-only performance tuning for smoother scrolling */
+.home-page-root .reveal-up {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.home-page-root .hero-glow-1,
+.home-page-root .hero-glow-2 {
+  animation: none !important;
+  filter: blur(32px);
+}
+
+.home-page-root .hero-visual-img,
+.home-page-root .cta-badge-img {
+  animation: none !important;
+}
+
+.home-page-root .hero-card,
+.home-page-root .gallery-btn {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}

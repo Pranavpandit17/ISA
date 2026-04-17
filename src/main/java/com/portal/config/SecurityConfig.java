@@ -70,7 +70,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll() // Allow viewing individual
                                                                                        // events
                         .requestMatchers(HttpMethod.GET, "/api/home-slider").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/plans").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payment-plans").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payment-plans/**").permitAll()
                         // Role-based API endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/member/**").hasAnyRole("MEMBER", "ADMIN")

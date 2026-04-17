@@ -758,9 +758,9 @@ public class MembershipService {
         // Parse features JSON
         if (plan.getFeatures() != null && !plan.getFeatures().isEmpty()) {
             try {
-                List<String> features = objectMapper.readValue(plan.getFeatures(),
-                    new TypeReference<List<String>>() {});
-                dto.setFeatures(new ArrayList<>(features));
+                List<Object> features = objectMapper.readValue(plan.getFeatures(),
+                    new TypeReference<List<Object>>() {});
+                dto.setFeatures(features);
             } catch (Exception e) {
                 dto.setFeatures(new ArrayList<>());
             }

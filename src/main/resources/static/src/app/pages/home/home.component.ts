@@ -224,9 +224,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else if (plan.action === 'CONTACT') {
       const contactSection = document.getElementById('quick-contact');
       if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
+        contactSection.scrollIntoView({ behavior: 'auto' });
       } else {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' });
       }
     }
   }

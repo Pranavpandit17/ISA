@@ -211,3 +211,19 @@ table tbody td {
   color: #334155;
   border-bottom: 1px solid #f8fafc;
 }
+
+/* Event overview modal performance mode */
+.modal-overlay {
+  animation: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.modal-container {
+  animation: none;
+}
+
+.modal-header {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}

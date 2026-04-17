@@ -28,8 +28,8 @@
       <!-- Plan Selection Step (Registration) -->
       <ng-container *ngIf="mode === 'REGISTER' && step === 'PLAN_SELECTION'">
         <div class="mb-8 p-4 bg-blue-50 border border-blue-100 rounded-xl text-center">
-            <h3 class="text-lg font-black text-blue-900 mb-2">Select Your Membership Level</h3>
-            <p class="text-xs font-bold text-blue-700">Choose a plan to continue your Indore Software Association application</p>
+            <h3 class="text-lg font-black text-blue-900 mb-2">Final Step: Select Membership Plan</h3>
+            <p class="text-xs font-bold text-blue-700">Your application details are saved. Choose a plan and complete payment to submit to admin.</p>
         </div>
 
         <div *ngIf="isLoading" class="py-12 text-center text-slate-400 font-bold uppercase tracking-widest text-[10px]">
@@ -75,7 +75,7 @@
       </ng-container>
 
       <!-- Error/Success Messages -->
-      <div class="error-message flex items-center gap-3" *ngIf="errorMessage">
+      <div class="error-message flex items-center gap-3" *ngIf="errorMessage && (mode === 'LOGIN' || mode === 'REGISTER')">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
@@ -85,7 +85,7 @@
         <span>{{ errorMessage }}</span>
       </div>
 
-      <div class="success-message flex items-center gap-3" *ngIf="successMessage && (mode === 'LOGIN' || step === 'AUTH_FORM')">
+      <div class="success-message flex items-center gap-3" *ngIf="successMessage && (mode === 'LOGIN' || mode === 'REGISTER')">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -126,14 +126,6 @@
         <div class="mb-6">
           <h3 class="text-xl font-black text-slate-900 mb-1">Company Information</h3>
           <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Complete your Indore Software Association application</p>
-        </div>
-
-        <div class="mb-8 flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-           <div>
-              <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Selected Path</p>
-              <p class="text-sm font-black text-slate-900">{{ selectedPlan?.name || 'Standard Registration' }}</p>
-           </div>
-           <button *ngIf="plans.length > 0" (click)="step = 'PLAN_SELECTION'" class="text-[10px] font-black uppercase text-indigo-600 border-b-2 border-indigo-100">Change Plan</button>
         </div>
 
         <div class="register-grid">
