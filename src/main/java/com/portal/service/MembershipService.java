@@ -254,9 +254,24 @@ public class MembershipService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found for email: " + userEmail));
 
-        // Find member by user ID
+        // Find member by user ID. If not found (e.g. for Admin or newly registered user), create it on the fly.
         Member member = memberRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("Member not found for user: " + userEmail));
+                .orElseGet(() -> {
+                    Member newMember = new Member();
+                    newMember.setUser(user);
+                    newMember.setMembershipStatus(Member.MembershipStatus.PENDING);
+                    newMember.setMembershipType(Member.MembershipType.INDIVIDUAL); // Default
+                    
+                    // Generate a temporary membership number
+                    String membershipNumber = "MEM-TEMP-" + System.currentTimeMillis();
+                    newMember.setMembershipNumber(membershipNumber);
+
+                    // Set default dates to satisfy NOT NULL constraints
+                    newMember.setSubscriptionStartDate(LocalDate.now());
+                    newMember.setSubscriptionEndDate(LocalDate.now().plusYears(1));
+                    
+                    return memberRepository.save(newMember);
+                });
 
         // Determine previous PAID plan (for switch notification)
         Long previousPlanId = null;
@@ -590,6 +605,14 @@ public class MembershipService {
         dto.setMembershipNumber(member.getMembershipNumber());
         dto.setSubscriptionStartDate(member.getSubscriptionStartDate());
         dto.setSubscriptionEndDate(member.getSubscriptionEndDate());
+        
+        // Populate current plan name from the User entity
+        if (member.getUser().getSelectedPlan() != null) {
+            dto.setActivePlanName(member.getUser().getSelectedPlan().getName());
+        } else {
+            dto.setActivePlanName("No Plan");
+        }
+        
         dto.setCreatedAt(member.getCreatedAt());
 
         // Populate industry field

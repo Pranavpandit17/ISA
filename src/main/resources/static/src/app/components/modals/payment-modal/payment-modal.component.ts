@@ -25,7 +25,19 @@ export class PaymentModalComponent implements OnInit {
   processingPayment = false;
   errorMessage = '';
   currentUser: any = null;
-  selectedPaymentMethod: string = 'CREDIT_CARD';
+  selectedPaymentMethod: 'CREDIT_CARD' | 'UPI' = 'CREDIT_CARD';
+
+  // Card Details
+  cardDetails = {
+    number: '',
+    expiry: '',
+    cvv: '',
+    name: ''
+  };
+
+  // UPI Details
+  selectedUpiOption: 'GPAY' | 'PHONEPE' | 'PAYTM' | 'OTHER' | null = null;
+  upiId: string = '';
 
   constructor(
     private apiService: ApiService,
@@ -42,6 +54,36 @@ export class PaymentModalComponent implements OnInit {
     this.close.emit();
     this.errorMessage = '';
     this.processingPayment = false;
+    this.resetForm();
+  }
+
+  resetForm(): void {
+    this.cardDetails = { number: '', expiry: '', cvv: '', name: '' };
+    this.selectedUpiOption = null;
+    this.upiId = '';
+  }
+
+  setPaymentMethod(method: 'CREDIT_CARD' | 'UPI'): void {
+    this.selectedPaymentMethod = method;
+    this.errorMessage = '';
+  }
+
+  setUpiOption(option: 'GPAY' | 'PHONEPE' | 'PAYTM' | 'OTHER'): void {
+    this.selectedUpiOption = option;
+    this.errorMessage = '';
+    if (option !== 'OTHER') {
+      this.upiId = '';
+    }
+  }
+
+  isFormValid(): boolean {
+    if (this.selectedPaymentMethod === 'CREDIT_CARD') {
+      return !!(this.cardDetails.number && this.cardDetails.expiry && this.cardDetails.cvv && this.cardDetails.name);
+    } else {
+      if (!this.selectedUpiOption) return false;
+      if (this.selectedUpiOption === 'OTHER') return !!this.upiId;
+      return true;
+    }
   }
 
   getPaymentTitle(): string {
@@ -113,6 +155,22 @@ export class PaymentModalComponent implements OnInit {
   }
 
   processPayment(): void {
+    if (this.selectedPaymentMethod === 'CREDIT_CARD') {
+      if (!this.cardDetails.number || !this.cardDetails.expiry || !this.cardDetails.cvv || !this.cardDetails.name) {
+        this.errorMessage = 'Please fill all card details';
+        return;
+      }
+    } else if (this.selectedPaymentMethod === 'UPI') {
+      if (!this.selectedUpiOption) {
+        this.errorMessage = 'Please select a UPI option';
+        return;
+      }
+      if (this.selectedUpiOption === 'OTHER' && !this.upiId) {
+        this.errorMessage = 'Please enter your UPI ID';
+        return;
+      }
+    }
+
     if (this.paymentType === 'EVENT' && this.event) {
       this.processEventPayment();
     } else {

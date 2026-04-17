@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Event, ViewState } from '../../models/interfaces';
+import { Router } from '@angular/router';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
@@ -34,7 +35,8 @@ export class EventsComponent implements OnInit {
     private authService: AuthService,
     private apiService: ApiService,
     private membershipService: MembershipService,
-    private modalService: AppModalService
+    private modalService: AppModalService,
+    private router: Router
   ) {
     this.currentUser = this.authService.getCurrentUser();
   }
@@ -155,8 +157,9 @@ export class EventsComponent implements OnInit {
   }
 
   onViewEvent(event: Event): void {
-    this.viewEvent.emit(event);
-    this.modalService.openEventDetail(event);
+    if (event && event.id) {
+      this.router.navigate(['/events', event.id]);
+    }
   }
 
   applyFilters(): void {

@@ -109,6 +109,7 @@
             <th>Registered Member</th>
             <th>Current Organization</th>
             <th>Direct Email</th>
+            <th>Subscription</th>
             <th>Specialization</th>
             <th>Account Status</th>
             <th class="text-right">Actions</th>
@@ -122,6 +123,12 @@
             </td>
             <td class="text-sm font-medium text-slate-600">{{ member.company || 'Private' }}</td>
             <td class="text-sm text-slate-500">{{ member.email }}</td>
+            <td>
+              <span
+                class="text-[10px] font-black uppercase px-2 py-1 rounded-md bg-indigo-50 text-indigo-600 border border-indigo-100">
+                {{ member.activePlanName || 'No Plan' }}
+              </span>
+            </td>
             <td class="text-sm text-slate-500">{{ member.industry }}</td>
             <td>
               <span class="status-pill status-approved">Active Member</span>

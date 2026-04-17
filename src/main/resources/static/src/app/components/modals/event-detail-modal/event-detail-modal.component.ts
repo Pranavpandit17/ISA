@@ -185,8 +185,14 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
 
   getEventCost(): string {
     if (!this.event) return 'Free';
+
+    // Prioritize selected ticket price
+    const selected = this.getSelectedTicketType();
+    if (selected) {
+      return selected.price === 0 ? 'Free' : `₹${selected.price.toLocaleString('en-IN')}`;
+    }
     
-    // Check pricingType first
+    // Fallback to base pricing if no ticket selected
     const pricingType = this.event.pricingType || this.event.pricing?.type;
     if (pricingType === 'FREE' || (!pricingType && !this.event.price && !this.event.memberPrice && !this.event.pricing?.memberPrice)) {
       return 'Free';
@@ -559,6 +565,10 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
 
   isTicketEligible(ticket: any): boolean {
     if (!ticket || !this.currentUser) return false;
+    
+    // If ticket is free, it should be available for everyone
+    if (ticket.price === 0 || ticket.price === '0' || Number(ticket.price) === 0) return true;
+
     const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
     switch (ticket.type) {
       case 'VIP':

@@ -124,37 +124,46 @@ export class MembershipPlansComponent implements OnInit {
   }
 
   private getPlanLevel(plan: MembershipPlan): number {
-    if (typeof plan.level === 'number' && plan.level > 0) {
+    if (plan.level != null && plan.level > 0) {
       return plan.level;
     }
-    if ((plan.price || 0) <= 0) {
-      return 1;
-    }
-    if ((plan.price || 0) <= 3500) {
-      return 2;
-    }
-    if ((plan.price || 0) <= 7000) {
-      return 3;
-    }
+    // Fallback based on price if level is missing
+    const price = plan.price || 0;
+    if (price <= 0) return 1;
+    if (price <= 3500) return 2;
+    if (price <= 7000) return 3;
     return 4;
   }
 
   private getCurrentPlanLevel(): number {
-    if (this.currentUser?.currentPlanLevel && this.currentUser.currentPlanLevel > 0) {
-      return this.currentUser.currentPlanLevel;
+    if (!this.currentUser) return 0;
+    
+    // If user has a plan ID but no level, try to find it in the loaded plans
+    if (this.currentUser.currentPlanId && (!this.currentUser.currentPlanLevel || this.currentUser.currentPlanLevel === 0)) {
+      const current = this.plans.find(p => p.id === this.currentUser?.currentPlanId);
+      if (current) return this.getPlanLevel(current);
     }
-    const current = this.plans.find(p => p.id === this.currentUser?.currentPlanId);
-    return current ? this.getPlanLevel(current) : 0;
+    
+    return this.currentUser.currentPlanLevel || 0;
   }
 
   canSelectPlan(plan: MembershipPlan): boolean {
+    if (!this.currentUser) return true; // Let them click, they'll be prompted to login/register
+    
+    // Admin bypass: Admins can select/test any plan
+    const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
+    if (isAdmin) return !this.isCurrentPlan(plan);
+
     if (this.isCurrentPlan(plan)) {
       return false;
     }
+
     const currentLevel = this.getCurrentPlanLevel();
-    if (!currentLevel) {
+    if (!currentLevel || currentLevel === 0) {
       return true;
     }
+
+    // Allow upgrades (selecting a plan with a higher level)
     return this.getPlanLevel(plan) > currentLevel;
   }
 

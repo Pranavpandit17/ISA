@@ -27,17 +27,20 @@ public class PlanController {
     private final UserRepository userRepository;
     private final MembershipFeePlanRepository planRepository;
     private final AuthService authService;
+    private final com.portal.service.MembershipService membershipService;
 
     public PlanController(
             PaymentPlanService paymentPlanService,
             UserRepository userRepository,
             MembershipFeePlanRepository planRepository,
-            AuthService authService
+            AuthService authService,
+            com.portal.service.MembershipService membershipService
     ) {
         this.paymentPlanService = paymentPlanService;
         this.userRepository = userRepository;
         this.planRepository = planRepository;
         this.authService = authService;
+        this.membershipService = membershipService;
     }
 
     @GetMapping
@@ -91,6 +94,20 @@ public class PlanController {
             user.setPlanStartDate(startDate);
             user.setPlanExpiryDate(durationMonths != null ? startDate.plusMonths(durationMonths).minusDays(1) : null);
             userRepository.save(user);
+
+            // Record this selection in the Financial Ledger (Membership Payments)
+            // This ensures that 'Population' counts and 'Member History' are updated immediately.
+            try {
+                membershipService.createMembershipPayment(
+                    email, 
+                    selected.getId(), 
+                    "UPI", 
+                    "DASHBOARD-" + System.currentTimeMillis()
+                );
+            } catch (Exception e) {
+                // We log the error but don't fail the overall selection if payment record fails
+                System.err.println("Note: Plan selected but ledger update failed: " + e.getMessage());
+            }
 
             return ResponseEntity.ok(authService.getCurrentProfile(email));
         } catch (RuntimeException ex) {

@@ -34,6 +34,9 @@ public class PaymentPlanService {
     @Autowired
     private PlanFeatureRepository planFeatureRepository;
 
+    @Autowired
+    private com.portal.repository.UserRepository userRepository;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<MembershipFeePlanDTO> getAllPlans() {
@@ -161,10 +164,9 @@ public class PaymentPlanService {
         }
         dto.setFeatures(resolvedFeatures);
 
-        // Count ACTIVE members whose LATEST payment is for this plan (current plan)
-        // This ensures that when a member switches plans, they're only counted in their current plan
+        // Count members assigned to this plan in the User table
         try {
-            long memberCount = paymentRepository.countActiveMembersWithLatestPaymentForPlan(plan.getId());
+            long memberCount = userRepository.countBySelectedPlanId(plan.getId());
             dto.setMemberCount(memberCount);
         } catch (Exception e) {
             dto.setMemberCount(0L);
