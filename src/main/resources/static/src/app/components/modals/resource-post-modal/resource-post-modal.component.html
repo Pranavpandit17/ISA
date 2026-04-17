@@ -1,0 +1,128 @@
+<div *ngIf="show" class="post-overlay fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8" (click)="onClose()">
+    
+    <div class="glass-editor w-full max-w-5xl" (click)="$event.stopPropagation()">
+      <!-- Editor Header -->
+      <div class="editor-header">
+        <div class="flex items-center justify-between mb-2">
+            <h2 class="editor-title tracking-tight">{{ isEditMode ? 'Modify Registry' : 'Resource Allocation' }}</h2>
+            <button (click)="onClose()" class="h-12 w-12 flex items-center justify-center bg-slate-50 rounded-full hover:bg-slate-100 transition-colors text-slate-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <p class="editor-subtitle uppercase tracking-widest">{{ isEditMode ? 'Synchronizing resource parameters with the live market' : 'Define technical bench capacity for collaborative outreach' }}</p>
+      </div>
+  
+      <div class="editor-body">
+        <form (ngSubmit)="onSubmit()" id="resourcePostForm">
+          
+          <!-- Core Identity Section -->
+          <h4 class="form-section-title">Professional Identity</h4>
+          <div class="form-grid">
+            <div class="field-group">
+                <label class="field-label">Architectural Role Title</label>
+                <input [(ngModel)]="resource.role" name="role" type="text" placeholder="e.g. Principal Cloud Engineer" class="premium-input" required>
+            </div>
+            <div class="field-group">
+                <label class="field-label">Core Technical Stack</label>
+                <input [(ngModel)]="resource.stack" name="stack" type="text" placeholder="e.g. AWS, React, Kubernetes" class="premium-input" required>
+            </div>
+            <div class="field-group">
+                <label class="field-label">Domain Seniority / Experience</label>
+                <input [(ngModel)]="resource.experience" name="experience" type="text" placeholder="e.g. 10+ Years / Lead Level" class="premium-input" required>
+            </div>
+            <div class="field-group">
+                <label class="field-label">Operational Availability</label>
+                <select [(ngModel)]="resource.availability" name="availability" class="premium-input appearance-none bg-white font-bold" required>
+                    <option value="Immediate">IMMEDIATE DEPLOY</option>
+                    <option value="1 Week">1 WEEK BUFFER</option>
+                    <option value="2 Weeks">2 WEEKS BUFFER</option>
+                    <option value="1 Month">1 MONTH BUFFER</option>
+                </select>
+            </div>
+          </div>
+  
+          <!-- Narrative Section -->
+          <h4 class="form-section-title">Competency & Narrative</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+            <div class="field-group">
+                <label class="field-label">Expertise Narrative</label>
+                <textarea [(ngModel)]="resource.description" name="description" rows="5" placeholder="Define the resource's strategic value and integration capacity..." class="premium-input !resize-none"></textarea>
+            </div>
+            <div class="space-y-10">
+                <div class="field-group">
+                    <label class="field-label">Skill Inventory Tags (CSV)</label>
+                    <input [(ngModel)]="skillsInput" name="skills" type="text" placeholder="JavaScript, Python, Docker, microservices..." class="premium-input">
+                </div>
+                <div class="flex items-center gap-6">
+                    <label class="checkbox-wrapper flex-1">
+                        <input [(ngModel)]="resource.isRemote" name="isRemote" type="checkbox" class="h-5 w-5 rounded-lg border-2 border-slate-300 text-indigo-600 focus:ring-indigo-600">
+                        <span class="text-xs font-black uppercase text-slate-600 tracking-widest">Remote Deployment</span>
+                    </label>
+                    <div class="field-group flex-1">
+                        <input [(ngModel)]="resource.location" name="location" type="text" placeholder="Geographic Base (e.g. USA)" class="premium-input py-[0.85rem]">
+                    </div>
+                </div>
+            </div>
+          </div>
+  
+          <!-- Logistics Section -->
+          <h4 class="form-section-title">Authorized Logistics</h4>
+          <div class="form-grid">
+            <div class="field-group">
+                <label class="field-label">Authorization Hourly Rate</label>
+                <div class="flex gap-2">
+                    <select [(ngModel)]="resource.currency" name="currency" class="premium-input !w-1/3 appearance-none bg-white font-bold">
+                        <option value="USD">USD</option>
+                        <option value="INR">INR</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                    <input [(ngModel)]="resource.hourlyRate" name="hourlyRate" type="number" step="0.01" placeholder="Rate Amount" class="premium-input flex-1">
+                </div>
+            </div>
+            <div class="field-group">
+                <label class="field-label">Registry Expiry Timestamp</label>
+                <input [(ngModel)]="resource.expiryDate" name="expiryDate" type="date" class="premium-input font-bold">
+            </div>
+            <div class="field-group">
+                <label class="field-label">Response Email Endpoint</label>
+                <input [(ngModel)]="resource.contactEmail" name="contactEmail" type="email" placeholder="official@endpoint.com" class="premium-input">
+            </div>
+            <div class="field-group">
+                <label class="field-label">Direct Voice Transmission (Optional)</label>
+                <input [(ngModel)]="resource.contactPhone" name="contactPhone" type="tel" placeholder="+1 (000) 000-0000" class="premium-input">
+            </div>
+          </div>
+  
+          <!-- Heritage Section -->
+          <h4 class="form-section-title">Certification & Heritage</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div class="field-group">
+                  <label class="field-label">Professional Accreditations</label>
+                  <textarea [(ngModel)]="resource.certifications" name="certifications" rows="3" placeholder="AWS Solution Architect, GCP Professional Data Engineer..." class="premium-input !resize-none"></textarea>
+              </div>
+              <div class="field-group">
+                  <label class="field-label">Project Retrospective</label>
+                  <textarea [(ngModel)]="resource.previousProjects" name="previousProjects" rows="3" placeholder="Historical deployment success stories and architectural contributions..." class="premium-input !resize-none"></textarea>
+              </div>
+          </div>
+  
+          <!-- Messaging Status -->
+          <div *ngIf="errorMessage" class="mt-12 p-6 bg-rose-50 border border-rose-100 rounded-[32px] text-rose-500 font-bold uppercase tracking-widest text-[10px] animate-bounce">
+            ⚠️ {{ errorMessage }}
+          </div>
+          <div *ngIf="successMessage" class="mt-12 p-6 bg-emerald-50 border border-emerald-100 rounded-[32px] text-emerald-600 font-bold uppercase tracking-widest text-[10px]">
+            ✅ {{ successMessage }}
+          </div>
+  
+        </form>
+      </div>
+  
+      <div class="editor-footer">
+        <button (click)="onClose()" class="btn-dismiss">Abort Modification</button>
+        <button type="submit" form="resourcePostForm" [disabled]="isSubmitting" class="btn-authorize">
+            <span *ngIf="isSubmitting">Processing Auth...</span>
+            <span *ngIf="!isSubmitting">{{ isEditMode ? 'Authorize Update' : 'Initialize Listing' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>

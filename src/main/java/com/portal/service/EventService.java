@@ -3,6 +3,7 @@ package com.portal.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.portal.dto.EventDTO;
+import com.portal.dto.EventRegistrationDTO;
 import com.portal.dto.EventScheduleDTO;
 import com.portal.dto.SpeakerDTO;
 import com.portal.dto.TicketTypeDTO;
@@ -27,7 +28,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -124,8 +127,8 @@ public class EventService {
         // Create ticket types based on pricing
         List<TicketType> ticketTypes = new ArrayList<>();
         if (eventDTO.getTicketTypes() != null && !eventDTO.getTicketTypes().isEmpty()) {
-            // Use provided ticket types
-            for (TicketTypeDTO ticketDTO : eventDTO.getTicketTypes()) {
+            // Use provided ticket types with type-level deduplication
+            for (TicketTypeDTO ticketDTO : normalizeTicketTypeDTOs(eventDTO.getTicketTypes())) {
                 TicketType ticketType = convertTicketTypeToEntity(ticketDTO, savedEvent);
                 ticketTypes.add(ticketType);
             }
@@ -301,7 +304,7 @@ public class EventService {
         
         // Convert related entities to DTOs
         if (event.getTicketTypes() != null && !event.getTicketTypes().isEmpty()) {
-            dto.setTicketTypes(event.getTicketTypes().stream()
+            dto.setTicketTypes(normalizeTicketTypes(event.getTicketTypes()).stream()
                     .map(this::convertTicketTypeToDTO)
                     .collect(Collectors.toList()));
         } else {
@@ -341,6 +344,11 @@ public class EventService {
         } else {
             dto.setAvailableSeats(null); // No capacity limit
         }
+
+        // Populate attendees for frontend to check registration status
+        dto.setAttendees(registrations.stream()
+                .map(this::convertRegistrationToDTO)
+                .collect(Collectors.toList()));
         
         return dto;
     }
@@ -371,6 +379,10 @@ public class EventService {
         event.setOrganizerPhone(dto.getOrganizerPhone());
         if (dto.getFormat() != null) {
             event.setFormat(Event.EventFormat.valueOf(dto.getFormat()));
+        } else if (dto.getLocationType() != null) {
+            event.setFormat(Event.EventFormat.valueOf(dto.getLocationType()));
+        } else {
+            event.setFormat(Event.EventFormat.IN_PERSON);
         }
         event.setCapacity(dto.getCapacity());
         if (dto.getVisibility() != null) {
@@ -502,6 +514,71 @@ public class EventService {
         ticketType.setAvailableQuantity(dto.getAvailableQuantity() != null ? dto.getAvailableQuantity() : event.getCapacity());
         ticketType.setDescription(dto.getDescription());
         return ticketType;
+    }
+
+    private List<TicketTypeDTO> normalizeTicketTypeDTOs(List<TicketTypeDTO> ticketTypes) {
+        if (ticketTypes == null || ticketTypes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Map<String, TicketTypeDTO> unique = new LinkedHashMap<>();
+        for (TicketTypeDTO ticketType : ticketTypes) {
+            if (ticketType == null || ticketType.getName() == null || ticketType.getName().trim().isEmpty()) {
+                continue;
+            }
+            String key = buildTicketTypeKey(ticketType.getType(), ticketType.getName());
+            unique.putIfAbsent(key, ticketType);
+        }
+        return new ArrayList<>(unique.values());
+    }
+
+    private List<TicketType> normalizeTicketTypes(List<TicketType> ticketTypes) {
+        if (ticketTypes == null || ticketTypes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Map<String, TicketType> unique = new LinkedHashMap<>();
+        for (TicketType ticketType : ticketTypes) {
+            if (ticketType == null || ticketType.getName() == null || ticketType.getName().trim().isEmpty()) {
+                continue;
+            }
+            String key = buildTicketTypeKey(
+                    ticketType.getType() != null ? ticketType.getType().name() : null,
+                    ticketType.getName()
+            );
+            unique.putIfAbsent(key, ticketType);
+        }
+        return new ArrayList<>(unique.values());
+    }
+
+    private String buildTicketTypeKey(String type, String name) {
+        if (type != null && !type.trim().isEmpty()) {
+            return type.trim().toUpperCase();
+        }
+        return name != null ? name.trim().toUpperCase() : "UNKNOWN";
+    }
+
+    private EventRegistrationDTO convertRegistrationToDTO(com.portal.entity.EventRegistration registration) {
+        EventRegistrationDTO dto = new EventRegistrationDTO();
+        dto.setId(registration.getId());
+        dto.setEventId(registration.getEvent().getId());
+        dto.setEventName(registration.getEvent().getName());
+        dto.setUserId(registration.getUser().getId());
+        dto.setUserName(registration.getUser().getName());
+        dto.setUserEmail(registration.getUser().getEmail());
+        dto.setName(registration.getUser().getName()); // Alias for frontend
+        dto.setEmail(registration.getUser().getEmail()); // Alias for frontend
+        if (registration.getTicketType() != null) {
+            dto.setTicketTypeId(registration.getTicketType().getId());
+            dto.setTicketTypeName(registration.getTicketType().getName());
+        }
+        dto.setQuantity(registration.getQuantity());
+        dto.setTotalAmount(registration.getTotalAmount());
+        dto.setStatus(registration.getStatus().name());
+        dto.setRegistrationId(registration.getRegistrationId());
+        dto.setPaymentStatus(registration.getPaymentStatus().name());
+        dto.setCheckedIn(registration.getCheckedIn());
+        dto.setCheckedInAt(registration.getCheckedInAt());
+        dto.setRegisteredAt(registration.getRegisteredAt());
+        return dto;
     }
 }
 

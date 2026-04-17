@@ -16,6 +16,7 @@ public class MembershipApplicationDTO {
     private String techStack;
     private String address;
     private String password;
+    private Long planId;
     private String membershipType;
     private String status;
     private LocalDateTime submittedAt;
@@ -153,6 +154,14 @@ public class MembershipApplicationDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(Long planId) {
+        this.planId = planId;
     }
 
     public void setNotes(String notes) {

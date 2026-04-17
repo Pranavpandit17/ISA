@@ -32,3 +32,13 @@ build/
 ### VS Code ###
 .vscode/
 
+### Uploaded media (runtime) ###
+uploads/
+
+### Node ###
+node_modules/
+src/main/resources/static/node_modules/
+.env
+.env.local
+.env.development
+.env.production

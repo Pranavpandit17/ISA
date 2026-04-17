@@ -24,6 +24,11 @@ public class StaticResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/assets/**")
                 .addResourceLocations("classpath:/static/assets/", "classpath:/static/browser/assets/")
                 .resourceChain(true);
+
+        // User-generated uploads (event images, speaker avatars, etc.)
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:uploads/")
+                .resourceChain(true);
         
         // Serve specific static files (JS, CSS, images, etc.) from /static/
         // These patterns are specific enough to not conflict with API routes

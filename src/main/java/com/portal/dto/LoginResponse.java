@@ -3,6 +3,7 @@ package com.portal.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +16,15 @@ public class LoginResponse {
     private String email;
     private String name;
     private String role;
+    private String userType; // ADMIN | PREMIUM | REGULAR
+    private String membershipStatus; // ACTIVE | EXPIRED | INACTIVE | etc.
+    private Long currentPlanId;
+    private String currentPlanName;
+    private Integer currentPlanLevel;
+    private String planStatus; // SELECTED | NOT_SELECTED
+    private Boolean hasPlan;
+    private LocalDate planStartDate;
+    private LocalDate planExpiryDate;
 
     public String getToken() {
         return token;
@@ -70,6 +80,78 @@ public class LoginResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getMembershipStatus() {
+        return membershipStatus;
+    }
+
+    public void setMembershipStatus(String membershipStatus) {
+        this.membershipStatus = membershipStatus;
+    }
+
+    public Long getCurrentPlanId() {
+        return currentPlanId;
+    }
+
+    public void setCurrentPlanId(Long currentPlanId) {
+        this.currentPlanId = currentPlanId;
+    }
+
+    public String getCurrentPlanName() {
+        return currentPlanName;
+    }
+
+    public void setCurrentPlanName(String currentPlanName) {
+        this.currentPlanName = currentPlanName;
+    }
+
+    public Integer getCurrentPlanLevel() {
+        return currentPlanLevel;
+    }
+
+    public void setCurrentPlanLevel(Integer currentPlanLevel) {
+        this.currentPlanLevel = currentPlanLevel;
+    }
+
+    public String getPlanStatus() {
+        return planStatus;
+    }
+
+    public void setPlanStatus(String planStatus) {
+        this.planStatus = planStatus;
+    }
+
+    public Boolean getHasPlan() {
+        return hasPlan;
+    }
+
+    public void setHasPlan(Boolean hasPlan) {
+        this.hasPlan = hasPlan;
+    }
+
+    public LocalDate getPlanStartDate() {
+        return planStartDate;
+    }
+
+    public void setPlanStartDate(LocalDate planStartDate) {
+        this.planStartDate = planStartDate;
+    }
+
+    public LocalDate getPlanExpiryDate() {
+        return planExpiryDate;
+    }
+
+    public void setPlanExpiryDate(LocalDate planExpiryDate) {
+        this.planExpiryDate = planExpiryDate;
     }
 
 

@@ -47,6 +47,7 @@ public class EventDTO {
     private Integer registrationCount; // Number of registrations
     private Integer totalRegisteredSeats; // Total seats registered (sum of quantities)
     private Integer availableSeats; // Available seats = capacity - totalRegisteredSeats
+    private List<EventRegistrationDTO> attendees; // List of registered users as attendees
 
     public Long getId() {
         return id;
@@ -310,6 +311,14 @@ public class EventDTO {
 
     public void setAvailableSeats(Integer availableSeats) {
         this.availableSeats = availableSeats;
+    }
+
+    public List<EventRegistrationDTO> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(List<EventRegistrationDTO> attendees) {
+        this.attendees = attendees;
     }
 }
 

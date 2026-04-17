@@ -1,0 +1,147 @@
+<div *ngIf="show" class="modal-overlay" (click)="onClose()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Premium Header -->
+    <div class="modal-header">
+      <h2>Application Review</h2>
+      <button (click)="onClose()" class="btn-close" title="Close Panel">&times;</button>
+    </div>
+
+    <!-- Modal Content -->
+    <div *ngIf="application" class="modal-body">
+      
+      <!-- Primary Identity & Status -->
+      <div class="status-track">
+        <h1 class="text-4xl font-black text-slate-900 tracking-tighter">{{ application.company }}</h1>
+        <span class="status-badge" 
+              [ngClass]="{
+                'status-pending': application.status === 'PENDING',
+                'status-approved': application.status === 'APPROVED',
+                'status-rejected': application.status === 'REJECTED'
+              }">
+          {{ application.status }}
+        </span>
+      </div>
+
+      <!-- Applicant Segment -->
+      <div class="content-group">
+        <span class="group-title">Primary Applicant</span>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Legal Name</label>
+            <div class="value">{{ application.applicantName }}</div>
+          </div>
+          <div class="info-item">
+            <label>Secure Email</label>
+            <div class="value">{{ application.email }}</div>
+          </div>
+          <div class="info-item">
+            <label>Contact Phone</label>
+            <div class="value">{{ application.phone || '—' }}</div>
+          </div>
+          <div class="info-item">
+            <label>Submission Date</label>
+            <div class="value">{{ application.createdAt | date:'MMM d, y, h:mm a' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Profile -->
+      <div class="content-group">
+        <span class="group-title">Professional Profile</span>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Entity Name</label>
+            <div class="value font-bold text-indigo-600">{{ application.company }}</div>
+          </div>
+          <div class="info-item">
+            <label>Industry Segment</label>
+            <div class="value">{{ application.industry || '—' }}</div>
+          </div>
+          <div class="info-item">
+            <label>Workforce Size</label>
+            <div class="value">{{ application.teamSize || '—' }}</div>
+          </div>
+          <div class="info-item" *ngIf="application.website">
+            <label>Digital Presence</label>
+            <a [href]="application.website" target="_blank" class="value text-indigo-600 hover:underline">
+              {{ application.website }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical & Physical Assets -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="content-group mb-0" *ngIf="application.address">
+          <span class="group-title">Headquarters</span>
+          <div class="value text-sm leading-relaxed">{{ application.address }}</div>
+        </div>
+        <div class="content-group mb-0" *ngIf="application.techStack">
+          <span class="group-title">Intelligence Stack</span>
+          <div class="value text-sm leading-relaxed">{{ application.techStack }}</div>
+        </div>
+      </div>
+
+      <!-- Rejected Narrative -->
+      <div *ngIf="application.status === 'REJECTED' && application.rejectionReason" class="mt-8">
+        <div class="bg-rose-50 border-l-4 border-rose-500 rounded-r-2xl p-6">
+          <label class="info-item label text-rose-800 mb-2">Rejection Narrative</label>
+          <div class="text-rose-900 font-medium whitespace-pre-wrap">{{ application.rejectionReason }}</div>
+          <div class="text-[10px] text-rose-400 mt-4 uppercase font-black">Finalized On: {{ application.reviewedAt | date:'medium' }}</div>
+        </div>
+      </div>
+
+      <!-- Financial Ledger (Approved Only) -->
+      <div *ngIf="isApprovedMember()" class="mt-8">
+        <div class="flex items-center justify-between mb-4 px-2">
+          <span class="text-sm font-black text-slate-900 uppercase tracking-widest">Financial Ledger</span>
+          <button (click)="togglePaymentHistory()" class="btn-pill btn-secondary text-[10px] py-1.5">
+            {{ showPaymentHistory ? 'Archive History' : 'Examine Ledger' }}
+          </button>
+        </div>
+
+        <div *ngIf="showPaymentHistory" class="animate-fadeIn">
+          <div *ngIf="isLoadingPayments" class="py-12 text-center">
+            <div class="h-8 w-8 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-[10px] font-black text-slate-400 uppercase">Synchronizing Records...</p>
+          </div>
+
+          <div *ngIf="!isLoadingPayments && payments.length > 0" class="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+            <table class="min-w-full text-left">
+              <thead class="bg-slate-50">
+                <tr>
+                  <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase">Transacted</th>
+                  <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase">Identity</th>
+                  <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase">Value</th>
+                  <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-50">
+                <tr *ngFor="let p of payments" class="hover:bg-slate-50 transition-colors">
+                  <td class="px-6 py-4 text-xs font-medium text-slate-500">{{ (p.paidDate || p.createdAt) | date:'shortDate' }}</td>
+                  <td class="px-6 py-4 text-xs font-bold text-slate-900">{{ p.planName }}</td>
+                  <td class="px-6 py-4">
+                    <span class="text-xs font-black text-emerald-600">{{ p.currency }} {{ p.amount }}</span>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <button (click)="downloadInvoice(p.id, p.invoiceNumber)" class="text-[10px] font-black text-indigo-600 hover:underline">EXTRACT PDF</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control Actions -->
+    <div *ngIf="showActions && application.status === 'PENDING'" class="modal-footer">
+      <button (click)="onReject()" [disabled]="isLoading" class="btn-pill btn-secondary">Reject Access</button>
+      <button (click)="onApprove()" [disabled]="isLoading" class="btn-pill btn-primary">Authorize Member</button>
+    </div>
+    
+    <div *ngIf="!showActions || application.status !== 'PENDING'" class="modal-footer">
+      <button (click)="onClose()" class="btn-pill btn-secondary">Close Dossier</button>
+    </div>
+  </div>
+</div>
