@@ -230,3 +230,15 @@
   border-radius: 32px;
   border: 2px dashed #e2e8f0;
 }
+
+/* Events page performance mode */
+.events-page-root .reveal-up {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.events-page-root .event-date-badge {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}

@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
         this.currentView = null; // Default dashboard view holds the plans
         setTimeout(() => {
           const el = document.getElementById('membership-plans-section');
-          el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el?.scrollIntoView({ behavior: 'auto', block: 'start' });
         }, 300);
       } else if (view) {
         this.onSelectView(view as DashboardView);
@@ -134,7 +134,7 @@ export class DashboardComponent implements OnInit {
   scrollToPlans(): void {
     const el = document.getElementById('membership-plans-section');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.scrollIntoView({ behavior: 'auto', block: 'start' });
     }
   }
 
@@ -246,7 +246,7 @@ export class DashboardComponent implements OnInit {
       this.closeNotifications();
       setTimeout(() => {
         const el = document.getElementById('membership-plans-section');
-        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el?.scrollIntoView({ behavior: 'auto', block: 'start' });
       }, 0);
       return;
     }
@@ -300,7 +300,7 @@ export class DashboardComponent implements OnInit {
       this.closeNotifications();
       setTimeout(() => {
         const el = document.getElementById('membership-plans-section');
-        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        el?.scrollIntoView({ behavior: 'auto', block: 'start' });
       }, 0);
       return;
     }

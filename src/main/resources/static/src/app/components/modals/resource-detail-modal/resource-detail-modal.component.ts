@@ -135,7 +135,7 @@ export class ResourceDetailModalComponent implements OnInit, OnChanges {
     setTimeout(() => {
       const element = document.getElementById('interests-section');
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        element.scrollIntoView({ behavior: 'auto', block: 'start' });
       }
     }, 300);
   }

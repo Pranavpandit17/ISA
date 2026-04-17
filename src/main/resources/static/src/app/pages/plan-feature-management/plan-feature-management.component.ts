@@ -139,14 +139,6 @@ export class PlanFeatureManagementComponent implements OnInit, OnDestroy {
     this.showForm = true;
     this.errorMessage = '';
     this.successMessage = '';
-
-    // Scroll to form after a short delay to ensure it's rendered
-    setTimeout(() => {
-      const formElement = document.querySelector('.feature-form-panel');
-      if (formElement) {
-        formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
   }
 
   startEdit(feature: PlanFeature): void {
@@ -337,6 +329,14 @@ export class PlanFeatureManagementComponent implements OnInit, OnDestroy {
 
   getCategoryCount(category: string): number {
     return this.features.filter(f => f.category === category).length;
+  }
+
+  onPrimaryButtonClick(): void {
+    if (this.showForm) {
+      this.cancelEdit();
+    } else {
+      this.startCreate();
+    }
   }
 }
 

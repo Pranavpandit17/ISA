@@ -6,44 +6,46 @@
       <p class="text-sm font-medium text-slate-400">Assemble core capabilities, define access permissions, and calibrate
         subscriber benefits.</p>
     </div>
-    <button *ngIf="isAdmin" (click)="startCreate()" [disabled]="showForm || isLoading"
+    <button *ngIf="isAdmin" (click)="onPrimaryButtonClick()" [disabled]="isLoading"
       class="btn-premium flex items-center gap-2">
-      <span class="text-xl">+</span> {{ showForm ? 'Form Active' : 'Define New Feature' }}
+      <span class="text-xl">+</span> {{ showForm ? 'View Feature List' : 'Define New Feature' }}
     </button>
   </header>
 
-  <!-- Modern Statistics Cards -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-info">
-        <p>Total Features</p>
-        <h3 class="text-slate-900 font-black">{{ totalCount }}</h3>
+  <ng-container *ngIf="!showForm">
+    <!-- Modern Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <p>Total Features</p>
+          <h3 class="text-slate-900 font-black">{{ totalCount }}</h3>
+        </div>
+        <div class="stat-icon bg-indigo-50 text-indigo-600">🛠️</div>
       </div>
-      <div class="stat-icon bg-indigo-50 text-indigo-600">🛠️</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-info">
-        <p>Active Privileges</p>
-        <h3 class="text-emerald-500 font-black">{{ activeCount }}</h3>
+      <div class="stat-card">
+        <div class="stat-info">
+          <p>Active Privileges</p>
+          <h3 class="text-emerald-500 font-black">{{ activeCount }}</h3>
+        </div>
+        <div class="stat-icon bg-emerald-50 text-emerald-600">📡</div>
       </div>
-      <div class="stat-icon bg-emerald-50 text-emerald-600">📡</div>
-    </div>
-    <div class="stat-card border-slate-100 opacity-60">
-      <div class="stat-info">
-        <p>Suspended</p>
-        <h3 class="text-slate-400 font-black">{{ inactiveCount }}</h3>
+      <div class="stat-card border-slate-100 opacity-60">
+        <div class="stat-info">
+          <p>Suspended</p>
+          <h3 class="text-slate-400 font-black">{{ inactiveCount }}</h3>
+        </div>
+        <div class="stat-icon bg-slate-50 text-slate-400">🔇</div>
       </div>
-      <div class="stat-icon bg-slate-50 text-slate-400">🔇</div>
     </div>
-  </div>
 
-  <!-- Global Messaging -->
-  <div *ngIf="successMessage"
-    class="mb-8 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-2xl text-sm font-medium animate-pulse">
-    {{ successMessage }}</div>
-  <div *ngIf="errorMessage"
-    class="mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse">
-    {{ errorMessage }}</div>
+    <!-- Global Messaging -->
+    <div *ngIf="successMessage"
+      class="mb-8 p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-2xl text-sm font-medium animate-pulse">
+      {{ successMessage }}</div>
+    <div *ngIf="errorMessage"
+      class="mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse">
+      {{ errorMessage }}</div>
+  </ng-container>
 
   <!-- Feature Editor Form Panel -->
   <div class="form-card" *ngIf="showForm && isAdmin" id="feature-form">
@@ -104,14 +106,14 @@
   </div>
 
   <!-- Category Navigation Shell -->
-  <nav class="cat-nav">
+  <nav class="cat-nav" *ngIf="!showForm">
     <button (click)="onTabChange('ALL')" [class.active]="activeTab === 'ALL'" class="cat-btn">All Collections</button>
     <button *ngFor="let cat of categories" (click)="onTabChange(cat)" [class.active]="activeTab === cat"
       class="cat-btn">{{ cat }}</button>
   </nav>
 
   <!-- Feature Database Registry Shell -->
-  <div class="table-wrapper">
+  <div class="table-wrapper" *ngIf="!showForm">
     <div *ngIf="isLoading" class="p-40 text-center flex flex-col items-center justify-center gap-4">
       <div class="h-10 w-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
       <p class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Opening Feature Registry...</p>
