@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/pages/membership-plans/membership-plans.component.css"],
-  "sourcesContent": [".plan-card-current {\r\n  border-color: #2563eb;\r\n  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);\r\n}\r\n\r\n"],
-  "mappings": ";AAAA,CAAC;AACC,gBAAc;AACd,cAAY,EAAE,EAAE,EAAE,IAAI,KAAK,EAAE,EAAE,EAAE,EAAE,GAAG,EAAE;AAC1C;",
-  "names": []
-}

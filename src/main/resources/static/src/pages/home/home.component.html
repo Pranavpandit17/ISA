@@ -1,0 +1,273 @@
+<div class="flex flex-col">
+  <!-- Hero Section -->
+  <div class="relative bg-slate-900 overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-slate-900 to-black mix-blend-multiply"></div>
+      <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-blue-500 rounded-full blur-[100px] opacity-20 animate-pulse"></div>
+      <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-indigo-500 rounded-full blur-[100px] opacity-20"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto pt-24 pb-32 px-4 sm:px-6 lg:px-8 text-center lg:text-left flex flex-col lg:flex-row items-center gap-12">
+      <div class="lg:w-1/2">
+        <div class="inline-flex items-center px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs font-semibold uppercase tracking-wider mb-6">
+          🚀 Establishing Indore as a Global Tech Hub
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6 leading-tight">
+          Connect. Collaborate. <br/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Scale Together.</span>
+        </h1>
+        <p class="mt-4 text-xl text-slate-300 max-w-2xl leading-relaxed">
+          The definitive ecosystem for Indore's IT Founders, CXOs, and Tech Leaders. We foster innovation, policy advocacy, and resource sharing to accelerate growth.
+        </p>
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <button (click)="onOpenAuth('REGISTER')" class="px-8 py-4 text-base font-bold rounded-full text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition-all hover:-translate-y-1">
+            Become a Member
+          </button>
+          <button (click)="onNavigate('EVENTS')" class="px-8 py-4 text-base font-bold rounded-full text-slate-200 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm transition-all">
+            Explore Events
+          </button>
+        </div>
+      </div>
+      <div class="lg:w-1/2 relative hidden lg:block">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="space-y-4 translate-y-8">
+            <div class="bg-slate-800/50 p-6 rounded-2xl border border-white/10 backdrop-blur-md">
+              <div class="text-3xl font-bold text-blue-400 mb-1">200+</div>
+              <div class="text-slate-400 text-sm">Active CXOs</div>
+            </div>
+            <div class="bg-slate-800/50 p-6 rounded-2xl border border-white/10 backdrop-blur-md">
+              <div class="text-3xl font-bold text-indigo-400 mb-1">₹ 500Cr+</div>
+              <div class="text-slate-400 text-sm">Combined Revenue</div>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-slate-800/50 p-6 rounded-2xl border border-white/10 backdrop-blur-md">
+              <div class="text-3xl font-bold text-green-400 mb-1">50+</div>
+              <div class="text-slate-400 text-sm">Annual Events</div>
+            </div>
+            <div class="bg-slate-800/50 p-6 rounded-2xl border border-white/10 backdrop-blur-md">
+              <div class="text-3xl font-bold text-purple-400 mb-1">10k+</div>
+              <div class="text-slate-400 text-sm">Talent Pool</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission / About Section -->
+  <div class="py-20 bg-white" id="about">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl">Why ISA Exists</h2>
+        <p class="mt-4 text-lg text-slate-500 max-w-3xl mx-auto">
+          Indore is rapidly emerging as Central India's Silicon Valley. ISA bridges the gap between startups, established IT firms, and government bodies.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">🤝</div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Networking</h3>
+          <p class="text-slate-600 leading-relaxed">Connect with peers, find mentors, and explore partnerships. Our directory includes the region's top decision-makers.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">📚</div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Knowledge Sharing</h3>
+          <p class="text-slate-600 leading-relaxed">Access exclusive reports, participate in technical workshops, and learn scaling strategies from industry veterans.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">🚀</div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">Growth & Advocacy</h3>
+          <p class="text-slate-600 leading-relaxed">We represent the industry's voice to the government, helping shape policies that favor IT growth in MP.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured Events Teaser -->
+  <div class="py-20 bg-slate-50 border-y border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-end mb-12">
+        <div>
+          <h2 class="text-3xl font-bold text-slate-900">Upcoming Events</h2>
+          <p class="mt-2 text-slate-500">Don't miss out on what's happening in Indore.</p>
+        </div>
+        <button (click)="onNavigate('EVENTS')" class="text-blue-600 font-semibold hover:text-blue-800 flex items-center gap-1">View Calendar →</button>
+      </div>
+      <!-- Loading State -->
+      <div *ngIf="isLoadingEvents" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+        <p class="text-slate-500">Loading upcoming events...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoadingEvents && events.length === 0" class="text-center py-12 bg-white rounded-xl border border-slate-200">
+        <p class="text-slate-500">No upcoming events at the moment. Check back soon!</p>
+      </div>
+
+      <!-- Events Grid -->
+      <div *ngIf="!isLoadingEvents && events.length > 0" class="grid gap-6 md:grid-cols-3">
+        <div *ngFor="let event of events" class="bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-6 border border-slate-200">
+          <div class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">
+            {{ (event.startDate || event.date) | date:'mediumDate' }}
+            <span *ngIf="event.startTime" class="text-slate-500 normal-case"> • {{ event.startTime }}</span>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">{{ event.title || event.name }}</h3>
+          <p class="text-slate-500 text-sm mb-4">{{ event.venue || event.location || 'Location TBA' }}</p>
+          <button (click)="onViewEvent(event)" class="text-sm font-medium text-slate-700 hover:text-blue-600 border-b border-slate-300 hover:border-blue-600 pb-0.5 transition-colors">Register Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Membership Tiers -->
+  <div class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-slate-900">Membership Plans</h2>
+        <p class="mt-4 text-xl text-slate-500">Invest in your professional network.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Free Tier -->
+        <div class="border border-slate-200 rounded-2xl p-8 hover:border-blue-300 transition-colors relative">
+          <h3 class="text-lg font-bold text-slate-900">Regular Member</h3>
+          <div class="mt-4 mb-6"><span class="text-4xl font-extrabold text-slate-900">Free</span></div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-start text-slate-600"><span class="text-green-500 mr-2">✓</span> Public Event Access</li>
+            <li class="flex items-start text-slate-600"><span class="text-green-500 mr-2">✓</span> Community Newsletter</li>
+            <li class="flex items-start text-slate-600"><span class="text-green-500 mr-2">✓</span> Basic Profile</li>
+          </ul>
+          <button (click)="onOpenAuth('REGISTER')" class="w-full py-3 bg-slate-100 text-slate-700 font-bold rounded-lg hover:bg-slate-200">Join for Free</button>
+        </div>
+
+        <!-- Premium Tier -->
+        <div class="border-2 border-blue-600 rounded-2xl p-8 relative shadow-xl bg-white">
+          <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg uppercase">Recommended</div>
+          <h3 class="text-lg font-bold text-slate-900">Premium Member</h3>
+          <div class="mt-4 mb-6"><span class="text-4xl font-extrabold text-slate-900">₹ 12,000</span><span class="text-slate-500">/year</span></div>
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-start text-slate-700 font-medium"><span class="text-green-500 mr-2">✓</span> Full Directory Access</li>
+            <li class="flex items-start text-slate-700 font-medium"><span class="text-green-500 mr-2">✓</span> Exclusive CXO Dinners</li>
+            <li class="flex items-start text-slate-700 font-medium"><span class="text-green-500 mr-2">✓</span> Bench & Project Exchange</li>
+            <li class="flex items-start text-slate-700 font-medium"><span class="text-green-500 mr-2">✓</span> Voting Rights</li>
+          </ul>
+          <button (click)="onOpenPayment()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition-all">Upgrade Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Our Gallery -->
+  <div class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-slate-900">Our Gallery</h2>
+        <p class="mt-3 text-slate-500 max-w-2xl mx-auto">
+          Glimpses from ISA events, meetups, and community initiatives.
+        </p>
+      </div>
+
+      <div class="relative">
+        <!-- Carousel Controls -->
+        <button
+          type="button"
+          (click)="prevGallery()"
+          class="hidden sm:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          (click)="nextGallery()"
+          class="hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 items-center justify-center rounded-full bg-white shadow-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+        >
+          ›
+        </button>
+
+        <!-- Carousel Slide -->
+        <div class="max-w-3xl mx-auto">
+          <div class="relative overflow-hidden rounded-2xl shadow-lg border border-slate-200 bg-slate-200">
+            <div class="aspect-[16/9] w-full bg-slate-200">
+              <img
+                [src]="galleryImages[currentGalleryIndex]"
+                [alt]="'Gallery photo ' + (currentGalleryIndex + 1)"
+                class="w-full h-full object-cover transition-transform duration-700"
+              />
+            </div>
+            <div
+              class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"
+            ></div>
+          </div>
+
+          <!-- Dots Indicators -->
+          <div class="flex justify-center mt-4 gap-2">
+            <button
+              *ngFor="let img of galleryImages; let i = index"
+              type="button"
+              (click)="goToGallery(i)"
+              class="w-2.5 h-2.5 rounded-full"
+              [ngClass]="
+                i === currentGalleryIndex
+                  ? 'bg-blue-600'
+                  : 'bg-slate-300 hover:bg-slate-400'
+              "
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board Members -->
+  <div class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-slate-900 text-center mb-12">Leadership Team</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div *ngFor="let member of boardMembers" class="text-center group">
+          <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 border-4 border-white shadow-md group-hover:scale-105 transition-transform">
+            <img [src]="member.image" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all">
+          </div>
+          <h3 class="font-bold text-slate-900">{{ member.name }}</h3>
+          <div class="text-xs font-bold text-blue-600 uppercase mb-1">{{ member.role }}</div>
+          <div class="text-sm text-slate-500">{{ member.company }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ & Contact -->
+  <div class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16">
+      <!-- FAQ -->
+      <div>
+        <h2 class="text-3xl font-bold text-slate-900 mb-8">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          <div *ngFor="let faq of faqs" class="border border-slate-200 rounded-lg overflow-hidden">
+            <button (click)="toggleFaq(faq)" class="w-full flex justify-between items-center p-4 text-left font-medium text-slate-800 bg-slate-50 hover:bg-slate-100">
+              {{ faq.question }}
+              <span>{{ faq.isOpen ? '−' : '+' }}</span>
+            </button>
+            <div *ngIf="faq.isOpen" class="p-4 text-slate-600 text-sm bg-white border-t border-slate-200">
+              {{ faq.answer }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="bg-slate-900 rounded-2xl p-8 text-white shadow-2xl">
+        <h2 class="text-2xl font-bold mb-2">Get in Touch</h2>
+        <p class="text-slate-400 mb-6 text-sm">Have questions about membership or sponsorship?</p>
+        <div class="space-y-4">
+          <div><label class="text-xs font-bold uppercase text-slate-400">Name</label><input type="text" class="w-full bg-slate-800 border-slate-700 rounded p-2 mt-1 focus:ring-2 focus:ring-blue-500"></div>
+          <div><label class="text-xs font-bold uppercase text-slate-400">Email</label><input type="email" class="w-full bg-slate-800 border-slate-700 rounded p-2 mt-1 focus:ring-2 focus:ring-blue-500"></div>
+          <div><label class="text-xs font-bold uppercase text-slate-400">Message</label><textarea rows="3" class="w-full bg-slate-800 border-slate-700 rounded p-2 mt-1 focus:ring-2 focus:ring-blue-500"></textarea></div>
+          <button class="w-full py-3 bg-blue-600 font-bold rounded hover:bg-blue-500 transition-colors">Send Message</button>
+        </div>
+        <div class="mt-6 pt-6 border-t border-slate-800 flex items-center gap-4 text-sm text-slate-400">
+          <span>📧 contact&#64;isaindore.com</span>
+          <span>📞 +91 731 123 4567</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,236 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Sidebar - Fixed -->
+    <div class="space-y-6">
+      <!-- Profile Card (Blue Box) -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <div class="flex items-start justify-between gap-4 mb-4">
+          <div class="flex items-center space-x-4">
+            <div class="h-16 w-16 rounded-full bg-purple-100 flex items-center justify-center overflow-hidden">
+              <img *ngIf="currentUser?.image" [src]="currentUser?.image" [alt]="currentUser?.name || 'Admin'" class="w-full h-full object-cover">
+              <span *ngIf="!currentUser?.image" class="text-2xl">👤</span>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">{{ currentUser?.name || 'Admin' }}</h2>
+              <p class="text-sm text-slate-500">{{ currentUser?.email || 'admin@isa.com' }}</p>
+              <span class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">ADMIN</span>
+            </div>
+          </div>
+
+          <!-- Notifications bell -->
+          <button
+            type="button"
+            (click)="openNotifications()"
+            class="relative inline-flex items-center justify-center h-10 w-10 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
+            title="Notifications">
+            <span class="text-lg">🔔</span>
+            <span
+              *ngIf="unreadCount > 0"
+              class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5 min-w-[20px] text-center">
+              {{ unreadCount }}
+            </span>
+          </button>
+        </div>
+        <div *ngIf="currentUser?.company" class="text-sm text-slate-600 mt-2">
+          <p>{{ currentUser?.company }}</p>
+        </div>
+      </div>
+
+      <!-- Notifications Modal -->
+      <div *ngIf="showNotifications" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4" (click)="closeNotifications()">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col" (click)="$event.stopPropagation()">
+          <div class="flex items-center justify-between p-6 border-b border-slate-200">
+            <div>
+              <h3 class="text-xl font-bold text-slate-900">Notifications</h3>
+              <p class="text-sm text-slate-600 mt-1">Updates about registrations, payments, posts</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                (click)="markAllNotificationsRead()"
+                class="px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-700 hover:bg-slate-50">
+                Mark all read
+              </button>
+              <button
+                type="button"
+                (click)="clearAllNotifications()"
+                [disabled]="isLoadingNotifications"
+                class="px-3 py-2 border border-red-300 text-red-700 rounded-md text-sm hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                Clear all
+              </button>
+              <button (click)="closeNotifications()" class="text-slate-400 hover:text-slate-600 text-2xl font-bold">×</button>
+            </div>
+          </div>
+
+          <div class="p-6 overflow-y-auto flex-1">
+            <div *ngIf="notificationsError" class="mb-4 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-r-lg">
+              {{ notificationsError }}
+            </div>
+
+            <div *ngIf="isLoadingNotifications" class="text-center py-8 text-slate-600">
+              <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-3"></div>
+              Loading...
+            </div>
+
+            <div *ngIf="!isLoadingNotifications && !notificationsError && notifications.length === 0" class="text-center py-8 text-slate-600">
+              No notifications yet.
+            </div>
+
+            <div *ngIf="!isLoadingNotifications && !notificationsError && notifications.length > 0" class="space-y-3">
+              <div
+                *ngFor="let n of notifications"
+                (click)="onNotificationClick(n)"
+                class="p-4 rounded-lg border transition-colors cursor-pointer"
+                [ngClass]="n.read ? 'bg-white border-slate-200' : 'bg-blue-50 border-blue-200'">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex-1">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <p class="text-sm font-semibold text-slate-900">{{ n.title }}</p>
+                      <span *ngIf="!n.read" class="text-xs font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">NEW</span>
+                      <span *ngIf="n.category" class="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">{{ n.category }}</span>
+                    </div>
+                    <p class="text-sm text-slate-700 mt-1">{{ n.message }}</p>
+                    <p class="text-xs text-slate-500 mt-2" *ngIf="n.createdAt">{{ n.createdAt | date:'medium' }}</p>
+                  </div>
+                  <button
+                    *ngIf="!n.read"
+                    type="button"
+                    (click)="$event.stopPropagation(); markNotificationRead(n)"
+                    class="px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg hover:bg-slate-800">
+                    Mark read
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 border-t border-slate-200 flex justify-end gap-3">
+            <button type="button" (click)="loadNotifications()" class="px-4 py-2 border border-slate-300 rounded-md text-sm text-slate-700 hover:bg-slate-50">
+              Refresh
+            </button>
+            <button type="button" (click)="closeNotifications()" class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Stats (Brown Box) -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <h3 class="text-lg font-medium text-slate-900 mb-4">Quick Stats</h3>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-slate-600">Pending Applications</span>
+            <span class="text-lg font-bold text-blue-600">{{ pendingCount }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-slate-600">Total Members</span>
+            <span class="text-lg font-bold text-slate-900">{{ totalMembers }}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-slate-600">Active Events</span>
+            <span class="text-lg font-bold text-green-600">{{ activeEvents }}</span>
+          </div>
+          <div *ngIf="currentView === 'POST_MANAGEMENT'" class="flex justify-between items-center">
+            <span class="text-sm text-slate-600">Total Posts</span>
+            <span class="text-lg font-bold text-purple-600">{{ totalPosts }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Content Area -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Management Icons (Red Box - Fixed) -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100 sticky top-0 z-10">
+        <h3 class="text-lg font-medium text-slate-900 mb-4">Management</h3>
+        <div class="grid grid-cols-5 gap-4">
+          <button 
+            (click)="onSelectView('MEMBER_MANAGEMENT')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'MEMBER_MANAGEMENT'}"
+            class="p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">👥</span>
+            <div class="text-sm font-medium">Member Management</div>
+          </button>
+          <button 
+            (click)="onSelectView('EVENT_MANAGEMENT')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'EVENT_MANAGEMENT'}"
+            class="p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">📅</span>
+            <div class="text-sm font-medium">Event Management</div>
+          </button>
+          <button 
+            (click)="onSelectView('POST_MANAGEMENT')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'POST_MANAGEMENT'}"
+            class="p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">📝</span>
+            <div class="text-sm font-medium">Post Management</div>
+          </button>
+          <button 
+            (click)="onSelectView('PLAN_MANAGEMENT')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'PLAN_MANAGEMENT'}"
+            class="p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">💳</span>
+            <div class="text-sm font-medium">Membership Plans</div>
+          </button>
+          <button 
+            (click)="onSelectView('FEATURE_MANAGEMENT')" 
+            [ngClass]="{'bg-blue-100 border-blue-300': currentView === 'FEATURE_MANAGEMENT'}"
+            class="p-4 bg-slate-50 rounded-lg text-center hover:bg-slate-100 transition border border-slate-200">
+            <span class="text-2xl block mb-2">⚙️</span>
+            <div class="text-sm font-medium">Plan Features</div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Content Area (Green Box) -->
+      <div class="bg-white shadow rounded-lg p-6 border border-slate-100">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="text-center py-8 text-slate-500">
+          Loading...
+        </div>
+
+        <!-- Member Management Component (Full List with Tabs) -->
+        <div *ngIf="!isLoading && currentView === 'MEMBER_MANAGEMENT'">
+          <app-member-management></app-member-management>
+        </div>
+
+        <!-- Event Management Component (Full List with Tabs) -->
+        <div *ngIf="!isLoading && currentView === 'EVENT_MANAGEMENT'">
+          <app-event-management></app-event-management>
+        </div>
+
+        <!-- Post Management - Job Management Component (Full List with Tabs) -->
+        <div *ngIf="!isLoading && currentView === 'POST_MANAGEMENT'">
+          <app-job-management></app-job-management>
+        </div>
+
+        <!-- Membership Plan Management -->
+        <div *ngIf="!isLoading && currentView === 'PLAN_MANAGEMENT'">
+          <app-membership-plan-management></app-membership-plan-management>
+        </div>
+
+        <!-- Feature Management -->
+        <div *ngIf="!isLoading && currentView === 'FEATURE_MANAGEMENT'">
+          <app-plan-feature-management></app-plan-feature-management>
+        </div>
+
+        <!-- Default State -->
+        <div *ngIf="!isLoading && !currentView" class="text-center py-12 text-slate-500">
+          <p class="text-lg mb-2">Select a management option above to get started</p>
+          <p class="text-sm">Choose Member Management, Event Management, or Post Management</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Create/Edit Modal -->
+  <app-event-create
+    [isModal]="true"
+    [show]="showEventModal"
+    [editEvent]="selectedEventForEdit"
+    (close)="closeEventModal()"
+    [saveEvent]="saveEvent"
+    (saved)="onEventSaved()">
+  </app-event-create>
+</div>
