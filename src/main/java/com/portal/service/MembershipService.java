@@ -85,9 +85,10 @@ public class MembershipService {
             throw new RuntimeException("Application is already approved");
         }
 
-        // Find the user associated with this application
-        User user = userRepository.findByEmail(application.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found for this application"));
+        // Find user associated with this application.
+        // For legacy applications created before user auto-provisioning, create the user now.
+        User user = userRepository.findByEmailIgnoreCase(application.getEmail())
+                .orElseGet(() -> createUserFromApprovedApplication(application));
 
         boolean isNewMember = false;
         String membershipNumberForNotification = null;
@@ -197,9 +198,12 @@ public class MembershipService {
     public List<MemberDTO> getApprovedMembers() {
         return memberRepository.findAll().stream()
                 .filter(m -> m.getMembershipStatus() == Member.MembershipStatus.ACTIVE)
+                .filter(m -> m.getUser() != null) // Ensure user is present
                 .map(this::convertMemberToDTO)
                 .collect(Collectors.toList());
     }
+
+
 
     public List<MembershipFeePlanDTO> getFeePlans() {
         return feePlanRepository.findByIsActiveTrue().stream()
@@ -273,6 +277,27 @@ public class MembershipService {
         MembershipFeePlan plan = feePlanRepository.findById(planId)
                 .orElseThrow(() -> new RuntimeException("Plan not found: " + planId));
 
+        // Upgrade-only rule: prevent buying a lower/equal plan again when a paid plan already exists.
+        // Priority is inferred by price so plans remain dynamic without hardcoded names.
+        if (previousPlanId != null) {
+            java.util.Optional<MembershipFeePlan> previousPlanOpt = feePlanRepository.findById(previousPlanId);
+            if (previousPlanOpt.isPresent()) {
+                MembershipFeePlan previousPlan = previousPlanOpt.get();
+                java.math.BigDecimal previousPrice = previousPlan.getPrice() != null ? previousPlan.getPrice() : java.math.BigDecimal.ZERO;
+                java.math.BigDecimal newPrice = plan.getPrice() != null ? plan.getPrice() : java.math.BigDecimal.ZERO;
+
+                // Same plan repurchase is blocked; renewals can be handled separately later.
+                if (previousPlanId.equals(planId)) {
+                    throw new RuntimeException("You already have this plan. Please choose a higher plan to upgrade.");
+                }
+
+                // No downgrades or same-level changes.
+                if (newPrice.compareTo(previousPrice) <= 0) {
+                    throw new RuntimeException("Only upgrades are allowed. You cannot buy a lower or equal plan.");
+                }
+            }
+        }
+
         // Create membership payment
         MembershipPayment payment = new MembershipPayment();
         payment.setMember(member);
@@ -306,6 +331,29 @@ public class MembershipService {
         payment.setInvoiceNumber(invoiceNumber);
 
         MembershipPayment saved = paymentRepository.save(payment);
+
+        // Update member subscription/profile to reflect current paid membership plan.
+        try {
+            LocalDate today = LocalDate.now();
+            LocalDate newStart = today;
+            LocalDate currentEnd = member.getSubscriptionEndDate();
+
+            // For renewals, extend from current end date if still active in future.
+            if (currentEnd != null && !currentEnd.isBefore(today)) {
+                newStart = currentEnd.plusDays(1);
+            }
+            int durationMonths = plan.getDurationMonths() != null && plan.getDurationMonths() > 0
+                    ? plan.getDurationMonths()
+                    : 12;
+            LocalDate newEnd = newStart.plusMonths(durationMonths).minusDays(1);
+
+            if (member.getSubscriptionStartDate() == null || member.getSubscriptionStartDate().isAfter(newStart)) {
+                member.setSubscriptionStartDate(newStart);
+            }
+            member.setSubscriptionEndDate(newEnd);
+            member.setMembershipStatus(Member.MembershipStatus.ACTIVE);
+            memberRepository.save(member);
+        } catch (Exception ignored) { /* keep payment successful even if profile update fails */ }
 
         // Notify admins when a member switches plan (previous PAID plan differs from new plan)
         try {
@@ -373,11 +421,16 @@ public class MembershipService {
 //            username = baseUsername + counter++;
 //        }
 
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new RuntimeException("Password is required");
+        }
+
         // 🔐 Use password from request (not hardcoded)
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
         User newUser = new User();
         newUser.setUsername(dto.getEmail());
         newUser.setEmail(dto.getEmail());
-        newUser.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
+        newUser.setPasswordHash(encodedPassword);
         newUser.setRole(User.Role.MEMBER);
         newUser.setName(dto.getApplicantName());
         newUser.setPhone(dto.getPhone());
@@ -406,6 +459,8 @@ public class MembershipService {
             MembershipApplication.MembershipType.valueOf(dto.getMembershipType())
         );
         application.setStatus(MembershipApplication.ApplicationStatus.PENDING);
+        // Keep a copy for legacy approval recovery if user row is missing later.
+        application.setPasswordHash(encodedPassword);
 
         MembershipApplication saved = applicationRepository.save(application);
 
@@ -467,6 +522,40 @@ public class MembershipService {
         return dto;
     }
 
+    private User createUserFromApprovedApplication(MembershipApplication application) {
+        User user = new User();
+        String email = application.getEmail() != null ? application.getEmail().trim().toLowerCase() : null;
+        if (email == null || email.isBlank()) {
+            throw new RuntimeException("Application email is missing, cannot create user");
+        }
+
+        // Keep username unique; fallback suffix if needed.
+        String usernameBase = email;
+        String username = usernameBase;
+        int counter = 1;
+        while (userRepository.existsByUsername(username)) {
+            username = usernameBase + "_" + counter++;
+        }
+
+        user.setUsername(username);
+        user.setEmail(email);
+        String applicationPasswordHash = application.getPasswordHash();
+        if (applicationPasswordHash != null && !applicationPasswordHash.isBlank()) {
+            // Use the original registration password (already encoded)
+            user.setPasswordHash(applicationPasswordHash);
+        } else {
+            // Legacy fallback for very old applications that don't have password hash stored.
+            String temporaryPasswordRaw = "Temp@" + UUID.randomUUID().toString().substring(0, 8);
+            user.setPasswordHash(passwordEncoder.encode(temporaryPasswordRaw));
+        }
+        user.setRole(User.Role.MEMBER);
+        user.setName(application.getApplicantName() != null ? application.getApplicantName() : email);
+        user.setPhone(application.getPhone());
+        user.setCompany(application.getCompany());
+        user.setIsActive(true);
+        return userRepository.save(user);
+    }
+
     private MemberDTO convertMemberToDTO(Member member) {
         MemberDTO dto = new MemberDTO();
         dto.setId(member.getId());
@@ -510,7 +599,8 @@ public class MembershipService {
         if (industry == null || industry.isBlank()) {
             String email = member.getUser().getEmail();
             if (email != null) {
-                applicationRepository.findByEmailIgnoreCase(email.trim().toLowerCase())
+                applicationRepository.findAllByEmailIgnoreCase(email.trim().toLowerCase()).stream()
+                    .findFirst()
                     .ifPresent(app -> {
                         if (app.getIndustry() != null && !app.getIndustry().isBlank()) {
                             dto.setIndustry(app.getIndustry());
@@ -570,7 +660,7 @@ public class MembershipService {
         if (email != null) {
             String normalizedEmail = email.trim().toLowerCase();
             java.util.Optional<MembershipApplication> optApp =
-                    applicationRepository.findByEmailIgnoreCase(normalizedEmail);
+                    applicationRepository.findAllByEmailIgnoreCase(normalizedEmail).stream().findFirst();
 
             if (optApp.isPresent()) {
                 MembershipApplication app = optApp.get();
@@ -630,8 +720,8 @@ public class MembershipService {
         // Parse features JSON
         if (plan.getFeatures() != null && !plan.getFeatures().isEmpty()) {
             try {
-                List<String> features = objectMapper.readValue(plan.getFeatures(),
-                    new TypeReference<List<String>>() {});
+                List<Object> features = objectMapper.readValue(plan.getFeatures(),
+                    new TypeReference<List<Object>>() {});
                 dto.setFeatures(features);
             } catch (Exception e) {
                 dto.setFeatures(new ArrayList<>());

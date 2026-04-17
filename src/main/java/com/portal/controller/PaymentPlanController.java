@@ -18,7 +18,6 @@ public class PaymentPlanController {
     private PaymentPlanService planService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('MEMBER', 'ADMIN')")
     public ResponseEntity<List<MembershipFeePlanDTO>> getAllPlans() {
         return ResponseEntity.ok(planService.getActivePlans());
     }

@@ -15,6 +15,10 @@ public class LoginResponse {
     private String email;
     private String name;
     private String role;
+    private String userType; // ADMIN | PREMIUM | REGULAR
+    private String membershipStatus; // ACTIVE | EXPIRED | INACTIVE | etc.
+    private Long currentPlanId;
+    private String currentPlanName;
 
     public String getToken() {
         return token;
@@ -70,6 +74,38 @@ public class LoginResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getMembershipStatus() {
+        return membershipStatus;
+    }
+
+    public void setMembershipStatus(String membershipStatus) {
+        this.membershipStatus = membershipStatus;
+    }
+
+    public Long getCurrentPlanId() {
+        return currentPlanId;
+    }
+
+    public void setCurrentPlanId(Long currentPlanId) {
+        this.currentPlanId = currentPlanId;
+    }
+
+    public String getCurrentPlanName() {
+        return currentPlanName;
+    }
+
+    public void setCurrentPlanName(String currentPlanName) {
+        this.currentPlanName = currentPlanName;
     }
 
 

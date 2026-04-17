@@ -52,35 +52,38 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider());
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .exceptionHandling(exception -> exception
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authorizeHttpRequests(auth -> auth
-                // Public API endpoints (must come before /api/**)
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/test/**").permitAll() // Temporary - remove in production
-                .requestMatchers(HttpMethod.POST, "/api/membership/applications").permitAll() // Public registration
-                // Public event endpoints - allow viewing events without authentication
-                .requestMatchers(HttpMethod.GET, "/api/events").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/events/published").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll() // Allow viewing individual events
-                // Role-based API endpoints
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/member/**").hasAnyRole("MEMBER", "ADMIN")
-                // All other API endpoints require authentication
-                .requestMatchers("/api/**").authenticated()
-                // Static resources and Angular routes (for production when serving Angular from Spring Boot)
-                // These patterns must come after API patterns to avoid conflicts
-                .requestMatchers("/assets/**", "/favicon.ico", "/index.html").permitAll()
-                // Allow root and all non-API requests (for Angular client-side routing)
-                .requestMatchers("/").permitAll()
-                .anyRequest().permitAll()
-            );
+                .csrf(csrf -> csrf.disable())
+                .cors(org.springframework.security.config.Customizer.withDefaults())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Public API endpoints (must come before /api/**)
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/test/**").permitAll() // Temporary - remove in production
+                        .requestMatchers(HttpMethod.POST, "/api/membership/applications").permitAll() // Public
+                                                                                                      // registration
+                        // Public event endpoints - allow viewing events without authentication
+                        .requestMatchers(HttpMethod.GET, "/api/events").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/events/published").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll() // Allow viewing individual
+                                                                                       // events
+                        .requestMatchers(HttpMethod.GET, "/api/home-slider").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payment-plans").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/payment-plans/**").permitAll()
+                        // Role-based API endpoints
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/member/**").hasAnyRole("MEMBER", "ADMIN")
+                        // All other API endpoints require authentication
+                        .requestMatchers("/api/**").authenticated()
+                        // Static resources and Angular routes (for production when serving Angular from
+                        // Spring Boot)
+                        // These patterns must come after API patterns to avoid conflicts
+                        .requestMatchers("/assets/**", "/favicon.ico", "/index.html").permitAll()
+                        // Allow root and all non-API requests (for Angular client-side routing)
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().permitAll());
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -88,18 +91,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // Allow both development (Angular dev server) and production (integrated) origins
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
+    public org.springframework.web.filter.CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:58755",
+                "http://127.0.0.1:4200", "http://127.0.0.1:58755"));
+        config.addAllowedOriginPattern("*");
+        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        source.registerCorsConfiguration("/**", config);
+        return new org.springframework.web.filter.CorsFilter(source);
     }
 
     @Bean
@@ -112,4 +116,3 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
-

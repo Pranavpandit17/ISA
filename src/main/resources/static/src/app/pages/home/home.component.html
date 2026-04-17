@@ -1,0 +1,469 @@
+<div class="home-page-root overflow-x-hidden">
+
+  <!-- ══════════════ 1. HERO SECTION (PREMIUM DARK) ══════════════ -->
+  <section class="hero-dark min-h-[95vh] flex items-center justify-center px-6 overflow-hidden">
+    <!-- Sophisticated Glow Backgrounds -->
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+
+    <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10 py-20">
+
+      <!-- HERO TEXT -->
+      <div class="reveal-up">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          Establishing Indore as a Global Tech Hub
+        </div>
+
+        <h1 class="text-4xl lg:text-6xl font-black mb-8 leading-[1] tracking-tight">
+          <span class="hero-text-gradient">Connect.</span> <br>
+          <span class="hero-text-gradient">Collaborate.</span> <br>
+          <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">Scale
+            Together.</span>
+        </h1>
+
+        <p class="text-xl text-slate-400 mb-12 max-w-lg leading-relaxed font-medium">
+          The ultimate ecosystem for the next generation of tech leaders in Central India. Join 200+ CXOs driving
+          Indore's digital revolution.
+        </p>
+
+        <div class="flex flex-wrap gap-5">
+          <button (click)="onOpenAuth('REGISTER')"
+            class="bg-blue-600 text-white px-12 py-5 rounded-2xl text-lg font-bold hover:bg-blue-500 transition-all shadow-[0_20px_50px_rgba(37,99,235,0.3)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.5)] transform hover:-translate-y-1">
+            Become a Member
+          </button>
+          <button (click)="onNavigate('EVENTS')"
+            class="bg-white/5 backdrop-blur-xl text-white border border-white/10 px-12 py-5 rounded-2xl text-lg font-bold hover:bg-white/10 transition-all">
+            Explore Events
+          </button>
+        </div>
+
+        <!-- Social Proof on Dark -->
+        <div class="mt-16 flex items-center gap-5">
+          <div class="flex -space-x-3">
+            <div *ngFor="let m of boardMembers.slice(0,5)"
+              class="w-12 h-12 rounded-full border-2 border-slate-900 overflow-hidden ring-1 ring-white/10 shadow-2xl">
+              <img [src]="m.image || 'assets/default-avatar.png'" class="w-full h-full object-cover">
+            </div>
+            <div
+              class="w-12 h-12 rounded-full bg-blue-600 border-2 border-slate-900 flex items-center justify-center text-[10px] font-black text-white ring-1 ring-white/10">
+              +200
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-white leading-none mb-1">Indore's Top 200+ CXOs</span>
+            <span class="text-[11px] text-slate-500 font-bold uppercase tracking-widest">Industry Leaders from global IT
+              hubs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO VISUAL (GENERATED 3D ART) -->
+      <div class="hero-visual-wrapper hidden lg:block reveal-up delay-2">
+        <div class="relative">
+          <!-- Floating Stats Over the Visual -->
+          <div class="absolute -top-10 -right-[-20px] hero-card p-5 rounded-3xl z-20 reveal-up delay-3">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-green-500/20 rounded-2xl flex items-center justify-center text-xl">📈</div>
+              <div>
+                <p class="text-[10px] uppercase font-black text-slate-500 tracking-widest mb-1">Industry Growth</p>
+                <p class="text-xl font-black text-white">+22% YoY</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-10 -left-10 hero-card p-5 rounded-3xl z-20 reveal-up delay-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center text-xl">🤝</div>
+              <div>
+                <p class="text-[10px] uppercase font-black text-slate-500 tracking-widest mb-1">Collaborations</p>
+                <p class="text-xl font-black text-white">500+</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Generated Image -->
+          <img src="assets/it_leaders_hero_visual_1775114268184.png" alt="IT Hub Visual"
+            class="hero-visual-img w-full h-auto aspect-square object-cover"
+            onerror="this.src='assets/ISA-Logo-Large.png'; this.classList.add('px-20', 'py-20')">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 2. STATS SECTION (RE-DESIGNED) ══════════════ -->
+  <section class="max-w-7xl mx-auto px-4  mb-10" style="margin-top: -35px;">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div *ngFor="let stat of stats; let i = index" class="stat-card reveal-up"
+        [style.animation-delay]="i * 0.1 + 's'">
+
+        <div class="stat-icon-wrapper" [style.background-color]="stat.color + '15'" [style.color]="stat.color">
+          {{ stat.icon }}
+        </div>
+
+        <div class="stat-content">
+          <div class="stat-value" [style.color]="stat.color" style="font-size: 3rem;">
+            {{ stat.value }}
+          </div>
+          <p class="stat-label">{{ stat.label }}</p>
+        </div>
+
+        <div class="stat-accent" [style.background-color]="stat.color"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 3. CORE FEATURES ══════════════ -->
+  <section class="bg-slate-50 px-4" style="margin-top: 80px;">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20 reveal-up">
+        <span class="section-tag">What We Do</span>
+        <h2 class="text-4xl md:text-5xl section-title mb-6">Built for Indore's IT Future</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+          Through strategic partnership and policy advocacy, we bridge the gap between innovation and global industry
+          standard.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let f of features; let i = index" class="feature-card reveal-up"
+          [style.animation-delay]="i * 0.1 + 's'">
+          <div class="feature-icon-box">{{ f.icon }}</div>
+          <h3 class="text-xl font-bold text-slate-900 mb-3">{{ f.title }}</h3>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            {{ f.desc }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 4. PREMIUM GALLERY ══════════════ -->
+  <section class="py-32 px-4 bg-white relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-16 items-center">
+        <div class="lg:col-span-2 reveal-up">
+          <span class="section-tag">Community in Action</span>
+          <h2 class="text-4xl section-title mb-8 leading-tight">Shared Moments, <br> Lasting Impact</h2>
+          <p class="text-slate-600 mb-10 text-lg leading-relaxed">
+            Take a look into our regular meetups, policy sessions, and industry networking events. We believe progress
+            happens when we walk together.
+          </p>
+          <div class="flex gap-4">
+            <button (click)="prevGallery()" class="gallery-btn">←</button>
+            <button (click)="nextGallery()" class="gallery-btn">→</button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-3 gallery-viewport h-[450px] relative reveal-up delay-2">
+          <div *ngFor="let img of galleryImages; let i = index"
+            class="absolute inset-0 transition-all duration-700 ease-in-out transform"
+            [class.opacity-100]="i === currentGalleryIndex" [class.opacity-0]="i !== currentGalleryIndex"
+            [class.scale-100]="i === currentGalleryIndex" [class.scale-110]="i !== currentGalleryIndex">
+            <img [src]="img" class="w-full h-full object-cover">
+            <div class="absolute bottom-0 left-0 right-0 p-8 pt-16 bg-gradient-to-t from-slate-900/80 to-transparent">
+              <span class="text-white/60 text-xs font-bold uppercase tracking-widest">ISA Event Archive</span>
+            </div>
+          </div>
+
+          <!-- Indicators -->
+          <div class="absolute bottom-8 right-8 flex gap-2">
+            <div *ngFor="let dot of galleryImages; let i = index" (click)="goToGallery(i)"
+              class="h-3 rounded-full cursor-pointer transition-all border-2 border-white/50" [ngClass]="{
+                   'bg-white w-8': i === currentGalleryIndex,
+                   'bg-white/20 w-3': i !== currentGalleryIndex
+                 }">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 5. UPCOMING EVENTS ══════════════ -->
+  <section class="py-24 px-4 bg-slate-50" *ngIf="events && events.length > 0">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 reveal-up">
+        <div class="mb-4 md:mb-0">
+          <span class="section-tag">Don't Miss Out</span>
+          <h2 class="text-4xl section-title">Upcoming Meetups & Sessions</h2>
+        </div>
+        <button (click)="onNavigate('EVENTS')"
+          class="group flex items-center gap-2 text-blue-600 font-bold hover:text-blue-800 transition-colors">
+          View Full Calendar
+          <span class="group-hover:translate-x-1 transition-transform">→</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div *ngFor="let event of events.slice(0,3); let i = index"
+          class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-slate-200 reveal-up"
+          [style.animation-delay]="i * 0.1 + 's'">
+          <div class="h-48 bg-slate-100 relative overflow-hidden">
+            <img
+              [src]="event.image"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+            <div
+              class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-bold text-slate-800 shadow-sm border border-white/20">
+              {{ event.category }}
+            </div>
+          </div>
+          <div class="p-8">
+            <div class="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase mb-3">
+              <span>{{ (event.startDate || event.date) | date:'MMM dd, yyyy' }}</span>
+              <span class="text-slate-300">•</span>
+              <span>{{ event.startTime || '10:00 AM' }}</span>
+            </div>
+            <h3
+              class="text-xl font-extrabold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors cursor-pointer"
+              (click)="onViewEvent(event)">
+              {{ event.title }}
+            </h3>
+            <p class="text-slate-500 text-sm line-clamp-2 mb-6 leading-relaxed">
+              {{ event.description }}
+            </p>
+            <button (click)="onViewEvent(event)"
+              class="w-full py-4 text-sm font-bold text-blue-600 border border-blue-100 bg-blue-50/50 rounded-2xl group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all">
+              Register Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 5.5 MEMBERSHIP PLANS ══════════════ -->
+  <section class="py-32 px-4 bg-white relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20 reveal-up">
+        <span class="section-tag">Tiered Access</span>
+        <h2 class="text-4xl md:text-5xl section-title mb-6">ISA Membership Plans</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-lg">
+          Choose a path that aligns with your organization's scale and collaborative goals.
+        </p>
+      </div>
+
+      <div *ngIf="isLoadingPlans" class="py-20 text-center">
+        <div class="h-10 w-10 border-4 border-slate-100 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-xs font-black uppercase tracking-widest text-slate-400">Synchronizing Membership Tiers...</p>
+      </div>
+
+      <div *ngIf="!isLoadingPlans && membershipPlans.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div *ngFor="let plan of membershipPlans; let i = index" class="saas-pricing-card reveal-up"
+          [class.featured-card]="plan.highlight" [style.animation-delay]="i * 0.1 + 's'">
+
+          <!-- Decorative Top Glow Layer for Featured -->
+          <div class="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-transparent opacity-0 transition-opacity duration-500" [class.opacity-100]="plan.highlight"></div>
+
+          <div class="relative z-10 flex flex-col h-full">
+            <!-- Header section -->
+            <div class="mb-8">
+              <div class="flex justify-between items-center mb-4">
+                <span class="text-xs font-black uppercase tracking-widest" [ngClass]="plan.highlight ? 'text-blue-400' : 'text-slate-400'">
+                  {{ plan.name }}
+                </span>
+                <span *ngIf="plan.highlight" class="px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                  Most Popular
+                </span>
+              </div>
+              
+              <div class="mb-3">
+                <h3 class="text-4xl text-white font-black mb-1" *ngIf="plan.price > 50000 || plan.name.includes('Executive')">Custom</h3>
+                <h3 class="text-4xl text-white font-black mb-1" *ngIf="plan.price === 0">Free</h3>
+                <div *ngIf="plan.price > 0 && plan.price <= 50000" class="flex items-end gap-1">
+                  <span class="text-5xl font-black tracking-tighter text-white">₹{{ plan.price.toLocaleString('en-IN') }}</span>
+                  <span class="text-slate-500 font-bold text-sm mb-1">/ {{ plan.durationMonths === 12 ? 'yr' : (plan.durationMonths + 'm') }}</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-400 font-medium">
+                {{ plan.period || 'Access to base core features.' }}
+              </p>
+            </div>
+
+            <!-- Action Button placed at top for quick access -->
+            <div class="mb-8 border-b border-white/5 pb-8">
+              <button (click)="onPlanAction(plan)"
+                class="w-full py-4 rounded-xl font-bold transition-all duration-300"
+                [ngClass]="plan.highlight ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'bg-white/5 hover:bg-white/10 text-white border border-white/10'">
+                {{ plan.btnText || (plan.price > 0 ? 'Upgrade Now' : 'Start Free') }}
+              </button>
+            </div>
+
+            <!-- Features List -->
+            <div class="flex-grow flex flex-col">
+              <h4 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-6">What's included in {{ plan.name }}</h4>
+              
+              <div class="space-y-5">
+                <div *ngFor="let feature of getPlanFeatureObjects(plan)" class="flex items-start gap-4">
+                  <div class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" 
+                       [ngClass]="plan.highlight ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-slate-400'">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div>
+                    <h5 class="text-sm font-semibold text-slate-200 mb-1 leading-tight">{{ feature.name }}</h5>
+                    <p *ngIf="feature.description" class="text-xs text-slate-500 leading-relaxed">
+                      {{ feature.description }}
+                    </p>
+                  </div>
+                </div>
+
+                <div *ngIf="getPlanFeatureObjects(plan).length === 0" class="text-xs text-slate-600 italic">
+                  No explicit features mapped.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 6. MEMBERSHIP CTA ══════════════ -->
+  <section class="max-w-7xl mx-auto px-4 py-20 reveal-up">
+    <div class="premium-gradient-card grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+      <div class="relative z-10">
+        <span
+          class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black uppercase tracking-widest mb-6">ISA
+          Excellence</span>
+        <h2 class="text-4xl md:text-5xl font-black mb-8 leading-tight">Elevate Indore's <br> Global Standing.</h2>
+        <p class="text-blue-200 text-lg mb-12 max-w-lg leading-relaxed">
+          Be part of the only curated ecosystem for tech leadership in Central India. Get exclusive project access,
+          policy influence, and elite networking.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <button (click)="onOpenAuth('REGISTER')"
+            class="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black shadow-[0_20px_50px_rgba(255,255,255,0.15)] hover:bg-slate-50 transform hover:-translate-y-1 transition-all">
+            Apply for Membership
+          </button>
+          <button (click)="onNavigate('BENCH')"
+            class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-12 py-5 rounded-2xl font-bold hover:bg-white/20 transition-all">
+            Bench Exchange
+          </button>
+        </div>
+      </div>
+
+      <!-- NEW RIGHT SIDE VISUAL -->
+      <div class="cta-badge-wrapper hidden lg:flex">
+        <div class="absolute inset-0 bg-blue-500/10 blur-[100px] rounded-full"></div>
+        <img src="assets/isa_membership_vip_badge_1775114556110.png" alt="Membership Badge"
+          class="cta-badge-img relative z-10">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ 7. BOARD MEMBERS ══════════════ -->
+  <section class="py-32 px-4 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20 reveal-up">
+        <span class="section-tag">Governance</span>
+        <h2 class="text-4xl section-title mb-6">Led by Industry Visionaries</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-lg">
+          Meet the experienced leaders steering ISA towards industrial excellence and collaborative growth.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+        <div *ngFor="let member of boardMembers; let i = index" class="leader-card reveal-up"
+          [style.animation-delay]="i * 0.1 + 's'">
+          <div class="leader-image-wrap">
+            <img [src]="member.image || 'assets/default-avatar.png'" class="leader-img">
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 leading-tight mb-1">{{ member.name }}</h4>
+          <p class="text-blue-600 text-xs font-bold uppercase tracking-widest mb-3">{{ member.role }}</p>
+          <p class="text-slate-400 text-xs font-medium">{{ member.company }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 8. FAQ SECTION ══════════════ -->
+  <section class="py-32 px-4 bg-slate-50">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-16 reveal-up">
+        <span class="section-tag">Common Questions</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-4">You Ask, We Answer</h2>
+      </div>
+
+      <div class="reveal-up">
+        <div *ngFor="let faq of faqs" class="faq-item" [class.active]="faq.isOpen">
+          <button (click)="toggleFaq(faq)" class="faq-trigger">
+            <span>{{ faq.question }}</span>
+            <span class="text-blue-600 text-lg transition-transform" [class.rotate-180]="faq.isOpen">
+              {{ faq.isOpen ? '−' : '+' }}
+            </span>
+          </button>
+          <div class="faq-answer" *ngIf="faq.isOpen">
+            {{ faq.answer }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 9. QUICK CONTACT ══════════════ -->
+  <section class="py-32 px-4 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="reveal-up">
+        <span class="section-tag">Let's Connect</span>
+        <h2 class="text-4xl section-title mb-8">Ready to grow Indore's IT footprint?</h2>
+        <p class="text-lg text-slate-600 mb-10 leading-relaxed">
+          Questions about membership or partnership opportunities? Our office in Indore is always open for innovators.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl flex-shrink-0">🏢
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Our Base</p>
+              <p class="text-sm font-bold text-slate-800">Brilliant Convention Centre, <br> Indore, MP</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl flex-shrink-0">📬
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Contact Mail</p>
+              <p class="text-sm font-bold text-slate-800">contact&#64;isaindore.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-up delay-2">
+        <!-- Contact Form Box -->
+        <div class="bg-slate-50 p-10 rounded-[32px] border border-slate-200">
+          <div class="grid grid-cols-1 gap-6">
+            <div>
+              <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">FullName</label>
+              <input type="text" placeholder="Your name"
+                class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-sm focus:border-blue-600 outline-none transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Enterprise
+                Email</label>
+              <input type="email" placeholder="example@company.com"
+                class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-sm focus:border-blue-600 outline-none transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Message</label>
+              <textarea rows="3"
+                class="w-full bg-white border border-slate-200 p-4 rounded-2xl text-sm focus:border-blue-600 outline-none transition-all"></textarea>
+            </div>
+            <button
+              class="bg-blue-600 text-white font-bold py-5 rounded-2xl shadow-xl hover:bg-blue-700 hover:shadow-blue-200/50 transition-all transform hover:-translate-y-1">
+              Send Message
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

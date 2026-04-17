@@ -6,6 +6,7 @@ import com.portal.entity.EventRegistration;
 import com.portal.entity.Payment;
 import com.portal.entity.TicketType;
 import com.portal.entity.User;
+import com.portal.entity.MembershipPayment;
 import com.portal.repository.EventRegistrationRepository;
 import com.portal.repository.EventRepository;
 import com.portal.repository.TicketTypeRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -41,11 +43,18 @@ public class EventRegistrationService {
     @Autowired
     private com.portal.repository.PaymentRepository paymentRepository;
 
+    @Autowired
+    private com.portal.repository.MembershipPaymentRepository membershipPaymentRepository;
+
     @Autowired(required = false)
     private EmailService emailService;
 
     @Transactional
     public EventRegistrationDTO registerForEvent(Long eventId, Long userId, Long ticketTypeId, Integer quantity, Long paymentId) {
+        if (quantity == null || quantity < 1) {
+            throw new RuntimeException("Quantity must be at least 1");
+        }
+
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
@@ -56,14 +65,27 @@ public class EventRegistrationService {
         if (ticketTypeId != null) {
             ticketType = ticketTypeRepository.findById(ticketTypeId)
                     .orElseThrow(() -> new RuntimeException("Ticket type not found"));
+            if (ticketType.getEvent() == null || !eventId.equals(ticketType.getEvent().getId())) {
+                throw new RuntimeException("Selected ticket type does not belong to this event");
+            }
         } else {
             // Create a default ticket type if none exists
             ticketType = createDefaultTicketType(event, user);
         }
 
+        validateTicketEligibility(user, event, ticketType);
+
         // Check if user already registered
         if (registrationRepository.existsByEventIdAndUserId(eventId, userId)) {
             throw new RuntimeException("User already registered for this event");
+        }
+
+        Integer ticketRemaining = ticketType.getAvailableQuantity();
+        if (ticketRemaining != null && quantity > ticketRemaining) {
+            throw new RuntimeException(String.format(
+                    "Ticket is sold out or has limited stock. Only %d remaining.",
+                    Math.max(0, ticketRemaining)
+            ));
         }
 
         // Check capacity availability
@@ -114,6 +136,12 @@ public class EventRegistrationService {
         }
 
         EventRegistration savedRegistration = registrationRepository.save(registration);
+
+        // Decrement selected ticket inventory after successful registration
+        if (ticketType.getAvailableQuantity() != null) {
+            ticketType.setAvailableQuantity(Math.max(0, ticketType.getAvailableQuantity() - quantity));
+            ticketTypeRepository.save(ticketType);
+        }
         
         // Send registration confirmation email
         try {
@@ -149,6 +177,52 @@ public class EventRegistrationService {
         }
         
         return convertToDTO(savedRegistration);
+    }
+
+    private void validateTicketEligibility(User user, Event event, TicketType ticketType) {
+        TicketType.TicketTypeEnum ticketTypeEnum = ticketType.getType();
+        if (ticketTypeEnum == null) {
+            return;
+        }
+
+        boolean isAdmin = user.getRole() == User.Role.ADMIN;
+        boolean isPremiumMember = isPremiumMember(user.getId());
+
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.MEMBER && !isAdmin && !isPremiumMember) {
+            throw new RuntimeException("This is a member-only ticket");
+        }
+
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.NON_MEMBER && !isAdmin && isPremiumMember) {
+            throw new RuntimeException("This ticket is for non-members only");
+        }
+
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.VIP && !isAdmin) {
+            throw new RuntimeException("VIP ticket is restricted");
+        }
+
+        if (ticketTypeEnum == TicketType.TicketTypeEnum.EARLY_BIRD) {
+            LocalDate earlyBirdEndDate = event.getEarlyBirdEndDate();
+            if (earlyBirdEndDate != null && LocalDate.now().isAfter(earlyBirdEndDate)) {
+                throw new RuntimeException("Early bird ticket window is closed");
+            }
+        }
+    }
+
+    private boolean isActiveMember(Long userId) {
+        return memberRepository.findById(userId)
+                .map(m -> m.getMembershipStatus() == com.portal.entity.Member.MembershipStatus.ACTIVE)
+                .orElse(false);
+    }
+
+    private boolean isPremiumMember(Long userId) {
+        if (!isActiveMember(userId)) {
+            return false;
+        }
+        return membershipPaymentRepository
+                .findTopByMemberIdAndStatusOrderByCreatedAtDesc(userId, MembershipPayment.PaymentStatus.PAID)
+                .map(p -> p.getPlan() != null && p.getPlan().getPrice() != null
+                        && p.getPlan().getPrice().compareTo(BigDecimal.ZERO) > 0)
+                .orElse(false);
     }
 
     @Transactional
@@ -211,10 +285,7 @@ public class EventRegistrationService {
     
     private TicketType createDefaultTicketType(Event event, User user) {
         // Check if user is an active member (has MEMBER role AND active Member record)
-        boolean isActiveMember = user.getRole() == User.Role.MEMBER && 
-                                 memberRepository.findById(user.getId())
-                                     .map(m -> m.getMembershipStatus() == com.portal.entity.Member.MembershipStatus.ACTIVE)
-                                     .orElse(false);
+        boolean isActiveMember = user.getRole() == User.Role.MEMBER && isActiveMember(user.getId());
         
         TicketType ticketType = new TicketType();
         ticketType.setEvent(event);
