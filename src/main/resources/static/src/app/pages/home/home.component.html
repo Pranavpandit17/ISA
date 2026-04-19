@@ -142,7 +142,41 @@
     </div>
   </section>
 
-  <!-- ══════════════ 4. PREMIUM GALLERY ══════════════ -->
+  <!-- ══════════════ 4. TESTIMONIALS ══════════════ -->
+  <section class="py-28 px-4 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 reveal-up">
+        <span class="section-tag">Testimonials</span>
+        <h2 class="text-4xl md:text-5xl section-title mb-6">Trusted by Industry Leaders</h2>
+        <p class="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+          Hear from members who are actively shaping the future of Indore's technology ecosystem.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <article *ngFor="let testimonial of testimonials; let i = index" class="testimonial-card reveal-up"
+          [style.animation-delay]="i * 0.1 + 's'">
+          <div *ngIf="testimonial.videoUrl" class="testimonial-video-wrap">
+            <video class="testimonial-video" [attr.poster]="testimonial.videoPoster || defaultTestimonialVideoPoster" controls
+              preload="metadata">
+              <source [src]="testimonial.videoUrl" type="video/mp4">
+              Your browser does not support video playback.
+            </video>
+          </div>
+          <p class="testimonial-quote">
+            "{{ testimonial.quote }}"
+          </p>
+          <div class="mt-8">
+            <h3 class="text-base font-black text-slate-900">{{ testimonial.name }}</h3>
+            <p class="text-xs font-bold uppercase tracking-wider text-blue-600 mt-1">{{ testimonial.role }}</p>
+            <p class="text-sm text-slate-500 mt-1">{{ testimonial.company }}</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 5. PREMIUM GALLERY ══════════════ -->
   <section class="py-32 px-4 bg-white relative">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-16 items-center">

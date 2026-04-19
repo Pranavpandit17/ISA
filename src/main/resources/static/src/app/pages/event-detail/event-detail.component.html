@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto px-4 py-8 w-full">
-  <button (click)="onNavigate('EVENTS')" class="mb-4 text-blue-600">← Back to Events</button>
+  <button (click)="onNavigate('EVENTS')" class="mb-4 text-blue-600">← Back to {{ isArchiveContext ? 'Old Events' : 'Events' }}</button>
   
   <!-- Loading state -->
   <div *ngIf="isLoading" class="flex justify-center py-20">
@@ -24,13 +24,25 @@
 
     <div class="p-8">
       <div class="flex flex-wrap gap-4 mb-8 text-sm text-slate-500 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+        <div class="flex items-center gap-2" *ngIf="event.type">
+          <span class="text-indigo-600">🏷️</span>
+          <span class="font-bold text-slate-900">{{ formatEventKindLabel(event.type) }}</span>
+        </div>
         <div class="flex items-center gap-2">
           <span class="text-indigo-600">📅</span>
           <span class="font-bold text-slate-900">{{ formatEventDateTime(event) }}</span>
         </div>
+        <div class="flex items-center gap-2" *ngIf="formatEventDateTime(event, false) !== 'N/A'">
+          <span class="text-indigo-600">🏁</span>
+          <span class="font-bold text-slate-900">Ends {{ formatEventDateTime(event, false) }}</span>
+        </div>
         <div class="flex items-center gap-2">
           <span class="text-indigo-600">📍</span>
           <span class="font-bold text-slate-900">{{ event.location }}</span>
+        </div>
+        <div class="flex items-center gap-2" *ngIf="event.onlineLink">
+          <span class="text-indigo-600">🔗</span>
+          <a [href]="event.onlineLink" target="_blank" rel="noopener noreferrer" class="font-bold text-indigo-600 hover:underline">Join / recording link</a>
         </div>
         <div class="flex items-center gap-2">
           <span class="text-indigo-600">👥</span>
@@ -44,12 +56,56 @@
         <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Executive Summary</h3>
         <p class="text-slate-600 leading-relaxed text-lg whitespace-pre-line">{{ event.description }}</p>
       </div>
+
+      <div class="prose max-w-none mb-12" *ngIf="event.fullDescription">
+        <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Full description</h3>
+        <p class="text-slate-600 leading-relaxed text-lg whitespace-pre-line">{{ event.fullDescription }}</p>
+      </div>
+
+      <div *ngIf="event.tags?.length" class="flex flex-wrap gap-2 mb-12">
+        <span *ngFor="let tag of event.tags" class="px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100">{{ tag }}</span>
+      </div>
+
+      <div *ngIf="event.organizerName || event.organizerEmail || event.organizerPhone" class="mb-12 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+        <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Organizer</h3>
+        <p *ngIf="event.organizerName" class="font-bold text-slate-900">{{ event.organizerName }}</p>
+        <p *ngIf="event.organizerEmail" class="text-slate-600 mt-1">
+          <a [href]="'mailto:' + event.organizerEmail" class="text-indigo-600 font-semibold">{{ event.organizerEmail }}</a>
+        </p>
+        <p *ngIf="event.organizerPhone" class="text-slate-600 mt-1">{{ event.organizerPhone }}</p>
+      </div>
       
-      <!-- Financial Commitment Segment -->
+      <!-- Pricing: read-only tiers in Old Events archive; live registration otherwise -->
       <div class="content-group border-indigo-100 bg-indigo-50/30 mb-12">
-        <span class="group-title text-indigo-400">Financial Valuation</span>
+        <span class="group-title text-indigo-400">{{ isArchiveContext ? 'Pricing & tiers (archive)' : 'Financial Valuation' }}</span>
+
+        <div *ngIf="isArchiveContext && getTicketTypes().length" class="mb-6">
+          <label class="text-[10px] font-black text-indigo-300 uppercase mb-3 block">Ticket tiers</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div *ngFor="let ticket of getTicketTypes()" class="text-left px-4 py-3 rounded-2xl border-2 border-slate-100 bg-white shadow-sm">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-black text-slate-900">{{ ticket.name || ticket.type }}</span>
+                <span class="text-[10px] font-black uppercase text-slate-500">{{ getTicketArchiveLabel(ticket) }}</span>
+              </div>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-[10px] font-black uppercase text-slate-400">Price</span>
+                <span class="text-sm font-black text-indigo-600">{{ ticket.price === 0 ? 'Complementary' : ('₹' + (ticket.price | number:'1.0-0')) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isArchiveContext && !getTicketTypes().length" class="mb-6 rounded-2xl border border-indigo-100 bg-white p-5 text-sm text-slate-700">
+          <p class="text-[10px] font-black uppercase text-indigo-400 mb-2">Pricing</p>
+          <p class="font-bold text-slate-900">{{ event.pricingType || '—' }}</p>
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <span *ngIf="event.memberPrice != null"><span class="text-slate-500">Member:</span> ₹{{ event.memberPrice | number:'1.0-0' }}</span>
+            <span *ngIf="event.nonMemberPrice != null"><span class="text-slate-500">Non-member:</span> ₹{{ event.nonMemberPrice | number:'1.0-0' }}</span>
+          </div>
+        </div>
         
-        <!-- Ticket Types Grid -->
+        <!-- Ticket Types Grid (registration) -->
+        <ng-container *ngIf="!isArchiveContext">
         <div *ngIf="getTicketTypes().length" class="mb-6">
           <label class="text-[10px] font-black text-indigo-300 uppercase mb-3 block">Available Ticket Tiers</label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -75,8 +131,16 @@
                 </span>
               </div>
               <div class="flex items-center justify-between mt-2">
+                <span class="text-[10px] font-black uppercase text-slate-400">Price</span>
                 <span class="text-sm font-black text-indigo-600">{{ ticket.price === 0 ? 'Complementary' : ('₹' + (ticket.price | number:'1.0-0')) }}</span>
-                <span class="text-[10px] font-bold text-slate-400" *ngIf="ticket.availableQuantity != null">{{ ticket.availableQuantity }} Slots Remaining</span>
+              </div>
+              <div class="flex items-center justify-between mt-1" *ngIf="ticket.availableQuantity != null">
+                <span class="text-[10px] font-black uppercase text-slate-400">Quantity Left</span>
+                <span class="text-[10px] font-bold text-slate-400">{{ ticket.availableQuantity }}</span>
+              </div>
+              <div class="flex items-center justify-between mt-1" *ngIf="ticket.type === 'EARLY_BIRD' && event?.earlyBirdEndDate">
+                <span class="text-[10px] font-black uppercase text-slate-400">Ends On</span>
+                <span class="text-[10px] font-bold text-slate-400">{{ event.earlyBirdEndDate | date:'dd MMM yyyy' }}</span>
               </div>
             </button>
           </div>
@@ -115,6 +179,7 @@
               {{ getRegisterButtonText() }}
             </button>
         </div>
+        </ng-container>
       </div>
 
       <!-- Additional Details: Speakers & Schedules -->
@@ -170,7 +235,7 @@
   <!-- Error or No Event -->
   <div *ngIf="!isLoading && !event" class="text-center py-20 bg-white rounded-2xl border border-slate-100 shadow-sm">
     <p class="text-slate-500 font-bold mb-4">Event could not be found or has been removed.</p>
-    <button (click)="onNavigate('EVENTS')" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold">Back to Directory</button>
+    <button (click)="onNavigate('EVENTS')" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold">{{ isArchiveContext ? 'Back to Old Events' : 'Back to Directory' }}</button>
   </div>
 </div>
 

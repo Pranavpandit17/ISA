@@ -7,6 +7,15 @@ import { ApiService } from '../../services/api.service';
 import { AppNavigationService } from '../../services/app-navigation.service';
 import { AppModalService } from '../../services/app-modal.service';
 
+type HomeTestimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  company: string;
+  videoUrl?: string;
+  videoPoster?: string;
+};
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -16,6 +25,8 @@ import { AppModalService } from '../../services/app-modal.service';
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  readonly defaultTestimonialVideoPoster = 'assets/default-event.png';
+
   events: any[] = [];
   boardMembers: BoardMember[] = [];
   faqs: FaqItem[] = [];
@@ -40,6 +51,34 @@ export class HomeComponent implements OnInit, OnDestroy {
     { icon: '💼', title: 'Bench Exchange', desc: 'Share resources, talent, and projects across member organizations.' },
     { icon: '🌐', title: 'Global Visibility', desc: 'Establish Indore as a global IT hub with international collaborations.' },
     { icon: '🎖️', title: 'Prestigious Recognition', desc: 'Awards, certifications, and recognition programs for member excellence.' },
+  ];
+
+  // Frontend-only testimonials (static content from local assets)
+  testimonials: HomeTestimonial[] = [
+    {
+      quote: 'ISA created real collaboration between companies that usually operate in silos. The value from networking alone is outstanding.',
+      name: 'Rahul Sharma',
+      role: 'VP Engineering',
+      company: 'TechNova Systems',
+      videoUrl: 'assets/testimonials/rahul-sharma.mp4',
+      videoPoster: 'assets/testimonials/rahul-sharma.jpg'
+    },
+    {
+      quote: 'Through ISA sessions, we discovered practical policy insights and strong hiring connections that helped us scale faster.',
+      name: 'Neha Verma',
+      role: 'Director - Operations',
+      company: 'Infinitive Labs',
+      videoUrl: 'assets/testimonials/neha-verma.mp4',
+      videoPoster: 'assets/testimonials/neha-verma.jpg'
+    },
+    {
+      quote: 'The community is focused, credible, and action-driven. Every meetup translates into useful business and talent outcomes.',
+      name: 'Amit Jain',
+      role: 'Founder & CEO',
+      company: 'CortexSphere',
+      videoUrl: 'assets/testimonials/amit-jain.mp4',
+      videoPoster: 'assets/testimonials/amit-jain.jpg'
+    }
   ];
 
   membershipPlans: any[] = [];
@@ -173,16 +212,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadUpcomingEvents(): void {
     this.isLoadingEvents = true;
-    this.apiService.getEvents().subscribe({
+    this.apiService.getPublishedEvents().subscribe({
       next: (response: any) => {
         const events = Array.isArray(response) ? response : [];
-        const now = new Date();
+        const now = Date.now();
         const upcoming = events.filter((e: any) => {
-          if (e.status !== 'PUBLISHED') return false;
-          const checkDate = e.endDate || e.startDate || e.date;
-          if (!checkDate) return true;
-          const dt = new Date(checkDate);
-          return dt >= now;
+          const endMs = this.getEventSortEndMillis(e);
+          return endMs == null || endMs >= now;
         });
         this.events = upcoming.sort((a: any, b: any) => {
           const dA = new Date(a.startDate || a.date || 0);
@@ -210,6 +246,44 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: () => { this.events = []; this.isLoadingEvents = false; }
     });
+  }
+
+  /**
+   * Compare using local calendar date/time so YYYY-MM-DD from the API is not shifted by UTC parsing.
+   * Event counts as upcoming until end of local day on endDate (with endTime if present).
+   */
+  private parseLocalDay(raw: string | Date | null | undefined): Date | null {
+    if (raw == null || raw === '') return null;
+    if (raw instanceof Date && !isNaN(raw.getTime())) {
+      const d = new Date(raw.getFullYear(), raw.getMonth(), raw.getDate());
+      return d;
+    }
+    const s = String(raw).split('T')[0];
+    const parts = s.split('-').map(Number);
+    if (parts.length !== 3 || parts.some((n) => Number.isNaN(n))) return null;
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  private applyLocalTime(day: Date, timeStr: string | null | undefined, endOfDay: boolean): Date {
+    const out = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+    const t = timeStr ? String(timeStr).split(':').map((x) => Number(x)) : [];
+    const hh = t.length ? t[0] : endOfDay ? 23 : 0;
+    const mm = t.length > 1 ? t[1] : endOfDay ? 59 : 0;
+    const ss = t.length > 2 ? t[2] : endOfDay ? 59 : 0;
+    const ms = endOfDay && !timeStr ? 999 : 0;
+    out.setHours(hh, mm, ss, ms);
+    return out;
+  }
+
+  /** Latest instant when the event is still considered "running" — for hiding after it has ended */
+  private getEventSortEndMillis(e: any): number | null {
+    const endDay = this.parseLocalDay(e.endDate);
+    if (endDay) {
+      return this.applyLocalTime(endDay, e.endTime, !e.endTime).getTime();
+    }
+    const startDay = this.parseLocalDay(e.startDate ?? e.date);
+    if (!startDay) return null;
+    return this.applyLocalTime(startDay, e.startTime, true).getTime();
   }
 
   onNavigate(view: string): void { this.navService.go(view); }

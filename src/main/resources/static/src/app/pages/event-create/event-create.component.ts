@@ -68,7 +68,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (this.editEvent) {
       this.isEditMode = true;
-      this.loadEventData(this.editEvent);
+      this.loadEditEventData(this.editEvent);
     }
   }
 
@@ -76,7 +76,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
     if (changes['editEvent']) {
       if (changes['editEvent'].currentValue) {
         this.isEditMode = true;
-        this.loadEventData(changes['editEvent'].currentValue);
+        this.loadEditEventData(changes['editEvent'].currentValue);
         this.currentStep = 1;
       } else {
         this.isEditMode = false;
@@ -86,7 +86,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
     }
     if (changes['show'] && changes['show'].currentValue && this.editEvent) {
       this.isEditMode = true;
-      this.loadEventData(this.editEvent);
+      this.loadEditEventData(this.editEvent);
       this.currentStep = 1;
     }
     if (changes['show'] && !changes['show'].currentValue) {
@@ -227,6 +227,66 @@ export class EventCreateComponent implements OnInit, OnChanges {
     this.revokeCoverPreview();
     this.coverImageFile = null;
 
+    const mappedTicketTypes = (event.ticketTypes || []).map((t: any) => {
+      const rawType = (t.type || 'MEMBER').toString().toUpperCase();
+      const price = t.price != null ? Number(t.price) : 0;
+      const uiType = rawType === 'MEMBER' && price <= 0 ? 'FREE_MEMBER' : rawType;
+      return {
+        name: t.name || '',
+        type: uiType,
+        price,
+        availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : 0,
+        quantityLimit: t.quantityLimit,
+        description: t.description || '',
+        earlyBirdEndDate:
+          rawType === 'EARLY_BIRD' && event.earlyBirdEndDate
+            ? String(event.earlyBirdEndDate).split('T')[0]
+            : ''
+      };
+    });
+
+    // Backward compatibility: if old events do not have ticket types, synthesize from legacy prices
+    if (mappedTicketTypes.length === 0) {
+      const memberPrice = Number(event.memberPrice) || 0;
+      const freeMemberPrice = Number(event.earlyBirdPrice) || 0;
+      const nonMemberPrice = Number(event.nonMemberPrice) || 0;
+
+      if (memberPrice > 0) {
+        mappedTicketTypes.push({
+          name: 'Paid Member',
+          type: 'MEMBER',
+          price: memberPrice,
+          availableQuantity: Number(event.capacity) || 0,
+          quantityLimit: null,
+          description: ''
+        });
+      }
+      if (freeMemberPrice > 0) {
+        const treatAsEarlyBird = !!event.earlyBirdEndDate;
+        mappedTicketTypes.push({
+          name: treatAsEarlyBird ? 'Early Bird' : 'Free Member',
+          type: treatAsEarlyBird ? 'EARLY_BIRD' : 'FREE_MEMBER',
+          price: freeMemberPrice,
+          availableQuantity: Number(event.capacity) || 0,
+          quantityLimit: null,
+          description: '',
+          earlyBirdEndDate: treatAsEarlyBird && event.earlyBirdEndDate
+            ? String(event.earlyBirdEndDate).split('T')[0]
+            : ''
+        });
+      }
+      if (nonMemberPrice > 0) {
+        mappedTicketTypes.push({
+          name: 'Non Member',
+          type: 'NON_MEMBER',
+          price: nonMemberPrice,
+          availableQuantity: Number(event.capacity) || 0,
+          quantityLimit: null,
+          description: ''
+        });
+      }
+    }
+
     this.eventData = {
       name: event.name || event.title || '',
       type: event.type || 'CONFERENCE',
@@ -254,14 +314,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
           ? String(event.earlyBirdEndDate).split('T')[0]
           : ''
       },
-      ticketTypes: (event.ticketTypes || []).map((t: any) => ({
-        name: t.name || '',
-        type: (t.type || 'MEMBER').toString().toUpperCase(),
-        price: t.price != null ? Number(t.price) : 0,
-        availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : 0,
-        quantityLimit: t.quantityLimit,
-        description: t.description || ''
-      })),
+      ticketTypes: mappedTicketTypes,
       schedule: scheduleRows,
       speakers: speakersList.map((s: any) => ({
         name: s.name || '',
@@ -277,6 +330,24 @@ export class EventCreateComponent implements OnInit, OnChanges {
       })),
       imageUrl: event.imageUrl || ''
     };
+  }
+
+  private loadEditEventData(event: any): void {
+    const eventId = Number(event?.id);
+    if (!eventId) {
+      this.loadEventData(event);
+      return;
+    }
+
+    this.apiService.getEventById(eventId).subscribe({
+      next: (fullEvent: any) => {
+        this.loadEventData(fullEvent || event);
+      },
+      error: () => {
+        // Fallback to the provided event object if detail fetch fails.
+        this.loadEventData(event);
+      }
+    });
   }
 
   onClose(): void {
@@ -359,10 +430,12 @@ export class EventCreateComponent implements OnInit, OnChanges {
       }
       const pType = this.eventData.pricing?.type || 'FREE';
       if (pType === 'PAID' || pType === 'DISCOUNTED') {
-        const mp = Number(this.eventData.pricing?.memberPrice || 0);
-        const np = Number(this.eventData.pricing?.nonMemberPrice || 0);
-        if (mp <= 0 && np <= 0) {
-          this.errorMessage = 'For paid events, enter a member and/or non-member price.';
+        const activeTickets = (this.eventData.ticketTypes || []).filter(
+          (t: any) => String(t?.name || '').trim().length > 0
+        );
+        const hasPricedTicket = activeTickets.some((t: any) => Number(t?.price || 0) > 0);
+        if (!hasPricedTicket) {
+          this.errorMessage = 'For paid events, add at least one priced ticket type.';
           return false;
         }
       }
@@ -378,6 +451,18 @@ export class EventCreateComponent implements OnInit, OnChanges {
           return false;
         }
         seenTypes.add(type);
+
+        if (type === 'EARLY_BIRD') {
+          const earlyBirdEndDate = String(t?.earlyBirdEndDate || '').trim();
+          if (!earlyBirdEndDate) {
+            this.errorMessage = 'Early Bird ticket requires an end date.';
+            return false;
+          }
+          if (this.eventData.startDate && earlyBirdEndDate > this.eventData.startDate) {
+            this.errorMessage = 'Early Bird end date must be on or before event start date.';
+            return false;
+          }
+        }
       }
     } else if (this.currentStep === 5) {
       const speakers = this.eventData.speakers || [];
@@ -407,12 +492,16 @@ export class EventCreateComponent implements OnInit, OnChanges {
   }
 
   addTicketType(): void {
+    if ((this.eventData.pricing?.type || 'FREE') === 'FREE') {
+      this.errorMessage = 'Ticket types are disabled for free events.';
+      return;
+    }
     const usedTypes = new Set(
       (this.eventData.ticketTypes || [])
         .map((t: any) => String(t?.type || '').toUpperCase())
         .filter((t: string) => !!t)
     );
-    const allTypes = ['MEMBER', 'NON_MEMBER', 'EARLY_BIRD', 'VIP'];
+    const allTypes = ['MEMBER', 'FREE_MEMBER', 'NON_MEMBER', 'VIP', 'EARLY_BIRD'];
     const nextType = allTypes.find(t => !usedTypes.has(t));
     if (!nextType) {
       this.errorMessage = 'Each ticket type can be added only once.';
@@ -424,7 +513,8 @@ export class EventCreateComponent implements OnInit, OnChanges {
       price: 0,
       availableQuantity: 0,
       quantityLimit: null,
-      description: ''
+      description: '',
+      earlyBirdEndDate: ''
     });
   }
 
@@ -502,23 +592,16 @@ export class EventCreateComponent implements OnInit, OnChanges {
       websiteUrl: s.websiteUrl || ''
     }));
 
-    const uniqueTicketTypes = new Map<string, any>();
-    for (const t of (this.eventData.ticketTypes || [])) {
-      const ticketName = String(t?.name || '').trim();
-      if (!ticketName) {
-        continue;
-      }
-      const ticketType = String(t.type || 'MEMBER').toUpperCase();
-      if (!uniqueTicketTypes.has(ticketType)) {
-        uniqueTicketTypes.set(ticketType, t);
-      }
-    }
-
-    const ticketTypes = Array.from(uniqueTicketTypes.values())
+    const ticketTypes = (this.eventData.pricing?.type || 'FREE') === 'FREE'
+      ? []
+      : (this.eventData.ticketTypes || [])
       .filter((t: any) => t.name && String(t.name).trim())
       .map((t: any) => ({
         name: String(t.name).trim(),
-        type: String(t.type || 'MEMBER').toUpperCase(),
+        type: (() => {
+          const uiType = String(t.type || 'MEMBER').toUpperCase();
+          return uiType === 'FREE_MEMBER' ? 'MEMBER' : uiType;
+        })(),
         price: Number(t.price) || 0,
         quantityLimit: t.quantityLimit != null ? Number(t.quantityLimit) : null,
         availableQuantity:
@@ -527,6 +610,19 @@ export class EventCreateComponent implements OnInit, OnChanges {
             : Number(this.eventData.capacity) || 0,
         description: t.description || ''
       }));
+
+    const ticketByType = new Map<string, any>();
+    for (const t of ticketTypes) {
+      const tt = String(t.type || '').toUpperCase();
+      if (!ticketByType.has(tt)) {
+        ticketByType.set(tt, t);
+      }
+    }
+
+    const paidMemberTicket = ticketByType.get('MEMBER');
+    const freeMemberTicket = ticketByType.get('EARLY_BIRD');
+    const nonMemberTicket = ticketByType.get('NON_MEMBER');
+    const earlyBirdTicket = ticketByType.get('EARLY_BIRD');
 
     const schedules = (this.eventData.schedule || [])
       .filter((item: any) => item.title?.trim() && item.startTime && item.endTime)
@@ -562,11 +658,12 @@ export class EventCreateComponent implements OnInit, OnChanges {
       organizerEmail: String(this.eventData.organizerEmail).trim(),
       organizerPhone: this.eventData.organizerPhone || '',
       pricingType,
-      memberPrice: pricingType === 'FREE' ? 0 : Number(this.eventData.pricing?.memberPrice || 0),
-      nonMemberPrice: pricingType === 'FREE' ? 0 : Number(this.eventData.pricing?.nonMemberPrice || 0),
-      earlyBirdPrice: Number(this.eventData.pricing?.earlyBirdPrice || 0) || 0,
+      // Keep legacy pricing fields in sync with ticket types for backend compatibility
+      memberPrice: pricingType === 'FREE' ? 0 : Number(paidMemberTicket?.price || 0),
+      nonMemberPrice: pricingType === 'FREE' ? 0 : Number(nonMemberTicket?.price || 0),
+      earlyBirdPrice: Number(freeMemberTicket?.price || 0) || 0,
       earlyBirdEndDate: (() => {
-        const v = this.eventData.pricing?.earlyBirdEndDate;
+        const v = earlyBirdTicket?.earlyBirdEndDate || this.eventData.pricing?.earlyBirdEndDate;
         return v && String(v).trim() ? v : null;
       })(),
       imageUrl: this.eventData.imageUrl || '',
@@ -685,6 +782,10 @@ export class EventCreateComponent implements OnInit, OnChanges {
 
   getMinEndDate(): string {
     return this.eventData.startDate || this.getMinDate();
+  }
+
+  getEarlyBirdMaxDate(): string {
+    return this.eventData.startDate || '';
   }
 
   hasDateValidationError(): boolean {

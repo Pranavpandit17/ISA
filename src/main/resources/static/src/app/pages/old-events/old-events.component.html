@@ -1,0 +1,73 @@
+<div class="events-page-root old-events-page min-h-screen bg-slate-50 relative overflow-x-hidden">
+
+  <header class="events-header relative">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 reveal-up">
+        <div>
+          <p class="text-xs font-black uppercase tracking-widest text-indigo-500 mb-2">Archive</p>
+          <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tighter">
+            Old Events
+          </h1>
+          <p class="text-lg text-slate-500 font-medium max-w-2xl">
+            Browse past ISA meetups, conferences, and sessions. Use this archive for highlights, outcomes,
+            and reference material from completed events.
+          </p>
+        </div>
+        <div class="search-input-wrapper">
+          <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input type="text" [(ngModel)]="searchQuery" (input)="applyFilters()"
+            placeholder="Search past events..." class="search-input">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-6 py-6">
+    <div class="flex items-center justify-between text-sm font-bold text-slate-400">
+      <span>{{ filteredEvents.length }} past event<span *ngIf="filteredEvents.length !== 1">s</span></span>
+    </div>
+  </section>
+
+  <main class="max-w-7xl mx-auto px-6 pb-32">
+    <div *ngIf="isLoading" class="py-20 text-center">
+      <div class="h-10 w-10 border-4 border-slate-100 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+      <p class="text-xs font-black uppercase tracking-widest text-slate-400">Loading archive...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredEvents.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <article *ngFor="let event of filteredEvents; let i = index" class="event-card reveal-up cursor-pointer"
+        [style.animation-delay]="(i * 0.05) + 's'" (click)="openEvent(event)">
+        <div class="event-card-image-wrap">
+          <img [src]="event.image" [alt]="event.title" class="event-card-img">
+          <div class="event-date-badge">
+            <span class="day">{{ (event.startDate || event.date) | date:'dd' }}</span>
+            <span class="month">{{ (event.startDate || event.date) | date:'MMM' }}</span>
+          </div>
+          <span class="absolute top-3 left-3 px-2 py-1 rounded-lg text-[10px] font-black uppercase bg-slate-900/70 text-white">
+            Past
+          </span>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <span class="text-[10px] font-black uppercase text-indigo-500 mb-2">{{ event.category }}</span>
+          <h2 class="text-lg font-black text-slate-900 mb-2 leading-tight">{{ event.title }}</h2>
+          <p class="text-sm text-slate-500 line-clamp-3 mb-4 flex-grow">{{ event.description }}</p>
+          <div class="text-xs font-bold text-slate-400 flex items-center gap-2">
+            <span>{{ event.location }}</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div *ngIf="!isLoading && filteredEvents.length === 0" class="empty-state reveal-up text-center py-20">
+      <div class="text-5xl mb-4 grayscale opacity-30">📚</div>
+      <h3 class="text-2xl font-black text-slate-900 mb-2">No past events yet</h3>
+      <p class="text-slate-500 max-w-md mx-auto">
+        When published events end, they will appear here automatically.
+      </p>
+    </div>
+  </main>
+</div>

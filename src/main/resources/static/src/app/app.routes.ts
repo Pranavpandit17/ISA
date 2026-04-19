@@ -15,6 +15,12 @@ export const routes: Routes = [
   { path: 'events/:id', loadComponent: () => import('./pages/event-detail/event-detail.component').then(c => c.EventDetailComponent) },
   { path: 'bench', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/bench/bench.component').then(c => c.BenchComponent) },
   { path: 'blogs', loadComponent: () => import('./pages/blogs/blogs.component').then(c => c.BlogsComponent) },
+  {
+    path: 'old-events/:id',
+    loadComponent: () => import('./pages/event-detail/event-detail.component').then(c => c.EventDetailComponent),
+    data: { eventArchive: true }
+  },
+  { path: 'old-events', loadComponent: () => import('./pages/old-events/old-events.component').then(c => c.OldEventsComponent) },
   { path: 'profile-edit', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/profile-edit/profile-edit.component').then(c => c.ProfileEditComponent) },
   { path: 'resource-post', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/resource-post/resource-post.component').then(c => c.ResourcePostComponent) },
   { path: 'project-post', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/project-post/project-post.component').then(c => c.ProjectPostComponent) },

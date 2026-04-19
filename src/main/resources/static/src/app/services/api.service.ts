@@ -89,6 +89,11 @@ export class ApiService {
     });
   }
 
+  /** Public catalogue: published + PUBLIC visibility — use on landing page */
+  getPublishedEvents(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/events/published`);
+  }
+
   getHomeSliderConfig(): Observable<any> {
     return this.http.get(`${this.apiUrl}/home-slider`);
   }

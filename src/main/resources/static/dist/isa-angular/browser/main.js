@@ -1,21 +1,23 @@
 import {
   AppModalService
-} from "./chunk-33D7UXTH.js";
+} from "./chunk-CGDGWJBY.js";
 import {
   AppNavigationService
-} from "./chunk-UJ5H324Q.js";
+} from "./chunk-J6JLAZ5K.js";
 import {
   PaymentModalComponent
-} from "./chunk-VZNB23V5.js";
+} from "./chunk-PABM2YHL.js";
 import {
   ToastService
-} from "./chunk-NFZPHHS6.js";
+} from "./chunk-BMTGONH6.js";
 import {
   EventDetailModalComponent
-} from "./chunk-TU4ZYDAB.js";
-import "./chunk-VT4PRNUX.js";
+} from "./chunk-FNX347UM.js";
+import "./chunk-ZRHEMPKX.js";
 import {
-  AuthService,
+  AuthService
+} from "./chunk-HS4BPM7A.js";
+import {
   Router,
   RouterLink,
   RouterLinkActive,
@@ -24,7 +26,7 @@ import {
   provideRouter,
   withComponentInputBinding,
   withViewTransitions
-} from "./chunk-ULHL74DO.js";
+} from "./chunk-X7FTYMHV.js";
 import {
   DefaultValueAccessor,
   FormsModule,
@@ -33,10 +35,10 @@ import {
   NgSelectOption,
   SelectControlValueAccessor,
   ɵNgSelectMultipleOption
-} from "./chunk-PKI2UZZD.js";
+} from "./chunk-QNLLDZ5O.js";
 import {
   ConfirmService
-} from "./chunk-QHSI6HUX.js";
+} from "./chunk-HJ6C4NPU.js";
 import {
   AUTO_STYLE,
   AnimationGroupPlayer,
@@ -47,12 +49,12 @@ import {
   sequence,
   style,
   ɵPRE_STYLE
-} from "./chunk-BQ4A4C7G.js";
+} from "./chunk-KKJ3RDO7.js";
 import {
   BrowserModule,
   DomRendererFactory2,
   bootstrapApplication
-} from "./chunk-MEK4GBIB.js";
+} from "./chunk-BACPM34C.js";
 import {
   ANIMATION_MODULE_TYPE,
   ApiService,
@@ -120,7 +122,7 @@ import {
   ɵɵtwoWayListener,
   ɵɵtwoWayProperty,
   ɵɵviewQuery
-} from "./chunk-DNDVYN6P.js";
+} from "./chunk-CRF7CKPV.js";
 
 // node_modules/zone.js/fesm2015/zone.js
 var global = globalThis;
@@ -6725,6 +6727,7 @@ var NavigationComponent = class _NavigationComponent {
     this.navItems = [
       { label: "Home", path: "/home" },
       { label: "Events", path: "/events" },
+      { label: "Old Events", path: "/old-events" },
       { label: "Resources", path: "/bench" },
       { label: "Directory", path: "/directory" },
       { label: "Insights", path: "/blogs" }
@@ -6847,6 +6850,7 @@ var FooterComponent = class _FooterComponent {
     this.quickLinks = [
       { label: "About Us", path: "/home" },
       { label: "Events", path: "/events" },
+      { label: "Old Events", path: "/old-events" },
       { label: "Member Directory", path: "/directory" },
       { label: "Insights & Blogs", path: "/blogs" },
       { label: "Bench Exchange", path: "/bench" }
@@ -7098,10 +7102,10 @@ function AuthModalComponent_div_0_ng_container_14_Template(rf, ctx) {
     const _r3 = \u0275\u0275getCurrentView();
     \u0275\u0275elementContainerStart(0);
     \u0275\u0275elementStart(1, "div", 17)(2, "h3", 18);
-    \u0275\u0275text(3, "Select Your Membership Level");
+    \u0275\u0275text(3, "Final Step: Select Membership Plan");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(4, "p", 19);
-    \u0275\u0275text(5, "Choose a plan to continue your Indore Software Association application");
+    \u0275\u0275text(5, "Your application details are saved. Choose a plan and complete payment to submit to admin.");
     \u0275\u0275elementEnd()();
     \u0275\u0275template(6, AuthModalComponent_div_0_ng_container_14_div_6_Template, 3, 0, "div", 20)(7, AuthModalComponent_div_0_ng_container_14_div_7_Template, 2, 1, "div", 21);
     \u0275\u0275elementStart(8, "div", 22)(9, "p", 23);
@@ -7208,19 +7212,6 @@ function AuthModalComponent_div_0_ng_container_17_Template(rf, ctx) {
     \u0275\u0275twoWayProperty("ngModel", ctx_r1.loginPassword);
   }
 }
-function AuthModalComponent_div_0_ng_container_18_button_12_Template(rf, ctx) {
-  if (rf & 1) {
-    const _r9 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 119);
-    \u0275\u0275listener("click", function AuthModalComponent_div_0_ng_container_18_button_12_Template_button_click_0_listener() {
-      \u0275\u0275restoreView(_r9);
-      const ctx_r1 = \u0275\u0275nextContext(3);
-      return \u0275\u0275resetView(ctx_r1.step = "PLAN_SELECTION");
-    });
-    \u0275\u0275text(1, "Change Plan");
-    \u0275\u0275elementEnd();
-  }
-}
 function AuthModalComponent_div_0_ng_container_18_Template(rf, ctx) {
   if (rf & 1) {
     const _r8 = \u0275\u0275getCurrentView();
@@ -7231,231 +7222,223 @@ function AuthModalComponent_div_0_ng_container_18_Template(rf, ctx) {
     \u0275\u0275elementStart(4, "p", 62);
     \u0275\u0275text(5, "Complete your Indore Software Association application");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "div", 63)(7, "div")(8, "p", 64);
-    \u0275\u0275text(9, "Selected Path");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(10, "p", 65);
-    \u0275\u0275text(11);
+    \u0275\u0275elementStart(6, "div", 63)(7, "div", 50)(8, "label", 51);
+    \u0275\u0275text(9, "Company Name ");
+    \u0275\u0275elementStart(10, "span", 64);
+    \u0275\u0275text(11, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275template(12, AuthModalComponent_div_0_ng_container_18_button_12_Template, 2, 0, "button", 66);
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "div", 67)(14, "div", 50)(15, "label", 51);
-    \u0275\u0275text(16, "Company Name ");
-    \u0275\u0275elementStart(17, "span", 68);
-    \u0275\u0275text(18, "*");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(19, "div", 52);
+    \u0275\u0275elementStart(12, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(20, "svg", 53);
-    \u0275\u0275element(21, "rect", 69)(22, "path", 70);
+    \u0275\u0275elementStart(13, "svg", 53);
+    \u0275\u0275element(14, "rect", 65)(15, "path", 66);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(23, "input", 71);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_23_listener($event) {
+    \u0275\u0275elementStart(16, "input", 67);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_16_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.company, $event) || (ctx_r1.regData.company = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(24, "div", 50)(25, "label", 51);
-    \u0275\u0275text(26, "Website");
+    \u0275\u0275elementStart(17, "div", 50)(18, "label", 51);
+    \u0275\u0275text(19, "Website");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(27, "div", 52);
+    \u0275\u0275elementStart(20, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(28, "svg", 53);
-    \u0275\u0275element(29, "circle", 44)(30, "line", 72)(31, "path", 73);
+    \u0275\u0275elementStart(21, "svg", 53);
+    \u0275\u0275element(22, "circle", 44)(23, "line", 68)(24, "path", 69);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(32, "input", 74);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_32_listener($event) {
+    \u0275\u0275elementStart(25, "input", 70);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_25_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.website, $event) || (ctx_r1.regData.website = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275elementStart(33, "div", 50)(34, "label", 51);
-    \u0275\u0275text(35, "Director Name(s) ");
-    \u0275\u0275elementStart(36, "span", 68);
-    \u0275\u0275text(37, "*");
+    \u0275\u0275elementStart(26, "div", 50)(27, "label", 51);
+    \u0275\u0275text(28, "Director Name(s) ");
+    \u0275\u0275elementStart(29, "span", 64);
+    \u0275\u0275text(30, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(38, "div", 52);
+    \u0275\u0275elementStart(31, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(39, "svg", 53);
-    \u0275\u0275element(40, "path", 75)(41, "circle", 76);
+    \u0275\u0275elementStart(32, "svg", 53);
+    \u0275\u0275element(33, "path", 71)(34, "circle", 72);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(42, "input", 77);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_42_listener($event) {
+    \u0275\u0275elementStart(35, "input", 73);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_35_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.applicantName, $event) || (ctx_r1.regData.applicantName = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(43, "div", 67)(44, "div", 50)(45, "label", 51);
-    \u0275\u0275text(46, "Email (Official) ");
-    \u0275\u0275elementStart(47, "span", 68);
-    \u0275\u0275text(48, "*");
+    \u0275\u0275elementStart(36, "div", 63)(37, "div", 50)(38, "label", 51);
+    \u0275\u0275text(39, "Email (Official) ");
+    \u0275\u0275elementStart(40, "span", 64);
+    \u0275\u0275text(41, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(49, "div", 52);
+    \u0275\u0275elementStart(42, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(50, "svg", 53);
-    \u0275\u0275element(51, "path", 54)(52, "polyline", 55);
+    \u0275\u0275elementStart(43, "svg", 53);
+    \u0275\u0275element(44, "path", 54)(45, "polyline", 55);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(53, "input", 78);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_53_listener($event) {
+    \u0275\u0275elementStart(46, "input", 74);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_46_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.email, $event) || (ctx_r1.regData.email = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(54, "div", 50)(55, "label", 51);
-    \u0275\u0275text(56, "Phone Number ");
-    \u0275\u0275elementStart(57, "span", 68);
-    \u0275\u0275text(58, "*");
+    \u0275\u0275elementStart(47, "div", 50)(48, "label", 51);
+    \u0275\u0275text(49, "Phone Number ");
+    \u0275\u0275elementStart(50, "span", 64);
+    \u0275\u0275text(51, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(59, "div", 52);
+    \u0275\u0275elementStart(52, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(60, "svg", 53);
-    \u0275\u0275element(61, "path", 79);
+    \u0275\u0275elementStart(53, "svg", 53);
+    \u0275\u0275element(54, "path", 75);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(62, "input", 80);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_62_listener($event) {
+    \u0275\u0275elementStart(55, "input", 76);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_55_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.phone, $event) || (ctx_r1.regData.phone = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275elementStart(63, "div", 67)(64, "div", 50)(65, "label", 51);
-    \u0275\u0275text(66, "Team Size ");
-    \u0275\u0275elementStart(67, "span", 68);
-    \u0275\u0275text(68, "*");
+    \u0275\u0275elementStart(56, "div", 63)(57, "div", 50)(58, "label", 51);
+    \u0275\u0275text(59, "Team Size ");
+    \u0275\u0275elementStart(60, "span", 64);
+    \u0275\u0275text(61, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(69, "div", 52);
+    \u0275\u0275elementStart(62, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(70, "svg", 53);
-    \u0275\u0275element(71, "path", 81)(72, "circle", 82)(73, "path", 83)(74, "path", 84);
+    \u0275\u0275elementStart(63, "svg", 53);
+    \u0275\u0275element(64, "path", 77)(65, "circle", 78)(66, "path", 79)(67, "path", 80);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(75, "select", 85);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_select_ngModelChange_75_listener($event) {
+    \u0275\u0275elementStart(68, "select", 81);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_select_ngModelChange_68_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.teamSize, $event) || (ctx_r1.regData.teamSize = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275elementStart(76, "option", 86);
-    \u0275\u0275text(77, "Select Size");
+    \u0275\u0275elementStart(69, "option", 82);
+    \u0275\u0275text(70, "Select Size");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(78, "option", 87);
-    \u0275\u0275text(79, "1-10 Employees");
+    \u0275\u0275elementStart(71, "option", 83);
+    \u0275\u0275text(72, "1-10 Employees");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(80, "option", 88);
-    \u0275\u0275text(81, "11-50 Employees");
+    \u0275\u0275elementStart(73, "option", 84);
+    \u0275\u0275text(74, "11-50 Employees");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(82, "option", 89);
-    \u0275\u0275text(83, "51-200 Employees");
+    \u0275\u0275elementStart(75, "option", 85);
+    \u0275\u0275text(76, "51-200 Employees");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(84, "option", 90);
-    \u0275\u0275text(85, "200+ Employees");
+    \u0275\u0275elementStart(77, "option", 86);
+    \u0275\u0275text(78, "200+ Employees");
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275elementStart(86, "div", 50)(87, "label", 51);
-    \u0275\u0275text(88, "Domain/Industry ");
-    \u0275\u0275elementStart(89, "span", 68);
-    \u0275\u0275text(90, "*");
+    \u0275\u0275elementStart(79, "div", 50)(80, "label", 51);
+    \u0275\u0275text(81, "Domain/Industry ");
+    \u0275\u0275elementStart(82, "span", 64);
+    \u0275\u0275text(83, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(91, "div", 52);
+    \u0275\u0275elementStart(84, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(92, "svg", 53);
-    \u0275\u0275element(93, "path", 91)(94, "path", 92)(95, "path", 93)(96, "path", 94)(97, "path", 95)(98, "path", 96)(99, "path", 97)(100, "path", 98)(101, "path", 99)(102, "path", 100)(103, "path", 101);
+    \u0275\u0275elementStart(85, "svg", 53);
+    \u0275\u0275element(86, "path", 87)(87, "path", 88)(88, "path", 89)(89, "path", 90)(90, "path", 91)(91, "path", 92)(92, "path", 93)(93, "path", 94)(94, "path", 95)(95, "path", 96)(96, "path", 97);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(104, "select", 102);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_select_ngModelChange_104_listener($event) {
+    \u0275\u0275elementStart(97, "select", 98);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_select_ngModelChange_97_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.industry, $event) || (ctx_r1.regData.industry = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275elementStart(105, "option", 86);
-    \u0275\u0275text(106, "Select Industry");
+    \u0275\u0275elementStart(98, "option", 82);
+    \u0275\u0275text(99, "Select Industry");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(107, "option", 103);
-    \u0275\u0275text(108, "SaaS");
+    \u0275\u0275elementStart(100, "option", 99);
+    \u0275\u0275text(101, "SaaS");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(109, "option", 104);
-    \u0275\u0275text(110, "Fintech");
+    \u0275\u0275elementStart(102, "option", 100);
+    \u0275\u0275text(103, "Fintech");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(111, "option", 105);
-    \u0275\u0275text(112, "Services");
+    \u0275\u0275elementStart(104, "option", 101);
+    \u0275\u0275text(105, "Services");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(113, "option", 106);
-    \u0275\u0275text(114, "HealthTech");
+    \u0275\u0275elementStart(106, "option", 102);
+    \u0275\u0275text(107, "HealthTech");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(115, "option", 107);
-    \u0275\u0275text(116, "EdTech");
+    \u0275\u0275elementStart(108, "option", 103);
+    \u0275\u0275text(109, "EdTech");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(117, "option", 108);
-    \u0275\u0275text(118, "AI");
+    \u0275\u0275elementStart(110, "option", 104);
+    \u0275\u0275text(111, "AI");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(119, "option", 109);
-    \u0275\u0275text(120, "Other");
+    \u0275\u0275elementStart(112, "option", 105);
+    \u0275\u0275text(113, "Other");
     \u0275\u0275elementEnd()()()()();
-    \u0275\u0275elementStart(121, "div", 50)(122, "label", 51);
-    \u0275\u0275text(123, "Technology Stack");
+    \u0275\u0275elementStart(114, "div", 50)(115, "label", 51);
+    \u0275\u0275text(116, "Technology Stack");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(124, "div", 52);
+    \u0275\u0275elementStart(117, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(125, "svg", 53);
-    \u0275\u0275element(126, "polyline", 110)(127, "polyline", 111);
+    \u0275\u0275elementStart(118, "svg", 53);
+    \u0275\u0275element(119, "polyline", 106)(120, "polyline", 107);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(128, "input", 112);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_128_listener($event) {
+    \u0275\u0275elementStart(121, "input", 108);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_121_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.techStack, $event) || (ctx_r1.regData.techStack = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(129, "div", 50)(130, "label", 51);
-    \u0275\u0275text(131, "Office Address ");
-    \u0275\u0275elementStart(132, "span", 68);
-    \u0275\u0275text(133, "*");
+    \u0275\u0275elementStart(122, "div", 50)(123, "label", 51);
+    \u0275\u0275text(124, "Office Address ");
+    \u0275\u0275elementStart(125, "span", 64);
+    \u0275\u0275text(126, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(134, "div", 113);
+    \u0275\u0275elementStart(127, "div", 109);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(135, "svg", 114);
-    \u0275\u0275element(136, "path", 115)(137, "circle", 116);
+    \u0275\u0275elementStart(128, "svg", 110);
+    \u0275\u0275element(129, "path", 111)(130, "circle", 112);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(138, "textarea", 117);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_textarea_ngModelChange_138_listener($event) {
+    \u0275\u0275elementStart(131, "textarea", 113);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_textarea_ngModelChange_131_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.address, $event) || (ctx_r1.regData.address = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(139, "div", 50)(140, "label", 51);
-    \u0275\u0275text(141, "Create Password ");
-    \u0275\u0275elementStart(142, "span", 68);
-    \u0275\u0275text(143, "*");
+    \u0275\u0275elementStart(132, "div", 50)(133, "label", 51);
+    \u0275\u0275text(134, "Create Password ");
+    \u0275\u0275elementStart(135, "span", 64);
+    \u0275\u0275text(136, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(144, "div", 52);
+    \u0275\u0275elementStart(137, "div", 52);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(145, "svg", 53);
-    \u0275\u0275element(146, "rect", 57)(147, "path", 58);
+    \u0275\u0275elementStart(138, "svg", 53);
+    \u0275\u0275element(139, "rect", 57)(140, "path", 58);
     \u0275\u0275elementEnd();
     \u0275\u0275namespaceHTML();
-    \u0275\u0275elementStart(148, "input", 118);
-    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_148_listener($event) {
+    \u0275\u0275elementStart(141, "input", 114);
+    \u0275\u0275twoWayListener("ngModelChange", function AuthModalComponent_div_0_ng_container_18_Template_input_ngModelChange_141_listener($event) {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.regData.password, $event) || (ctx_r1.regData.password = $event);
@@ -7466,11 +7449,7 @@ function AuthModalComponent_div_0_ng_container_18_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275advance(11);
-    \u0275\u0275textInterpolate((ctx_r1.selectedPlan == null ? null : ctx_r1.selectedPlan.name) || "Standard Registration");
-    \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.plans.length > 0);
-    \u0275\u0275advance(11);
+    \u0275\u0275advance(16);
     \u0275\u0275twoWayProperty("ngModel", ctx_r1.regData.company);
     \u0275\u0275advance(9);
     \u0275\u0275twoWayProperty("ngModel", ctx_r1.regData.website);
@@ -7506,10 +7485,10 @@ function AuthModalComponent_div_0_div_19_span_2_Template(rf, ctx) {
 }
 function AuthModalComponent_div_0_div_19_span_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 124);
+    \u0275\u0275elementStart(0, "span", 119);
     \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(1, "svg", 125);
-    \u0275\u0275element(2, "line", 126)(3, "line", 127)(4, "line", 128)(5, "line", 129)(6, "line", 130)(7, "line", 131)(8, "line", 132)(9, "line", 133);
+    \u0275\u0275elementStart(1, "svg", 120);
+    \u0275\u0275element(2, "line", 121)(3, "line", 122)(4, "line", 123)(5, "line", 124)(6, "line", 125)(7, "line", 126)(8, "line", 127)(9, "line", 128);
     \u0275\u0275elementEnd();
     \u0275\u0275text(10);
     \u0275\u0275elementEnd();
@@ -7522,17 +7501,17 @@ function AuthModalComponent_div_0_div_19_span_3_Template(rf, ctx) {
 }
 function AuthModalComponent_div_0_div_19_div_4_Template(rf, ctx) {
   if (rf & 1) {
-    const _r11 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 134)(1, "div", 135);
-    \u0275\u0275element(2, "div", 136);
-    \u0275\u0275elementStart(3, "span", 137);
+    const _r10 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 129)(1, "div", 130);
+    \u0275\u0275element(2, "div", 131);
+    \u0275\u0275elementStart(3, "span", 132);
     \u0275\u0275text(4, "New to ISA?");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(5, "div", 136);
+    \u0275\u0275element(5, "div", 131);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "button", 138);
+    \u0275\u0275elementStart(6, "button", 133);
     \u0275\u0275listener("click", function AuthModalComponent_div_0_div_19_div_4_Template_button_click_6_listener() {
-      \u0275\u0275restoreView(_r11);
+      \u0275\u0275restoreView(_r10);
       const ctx_r1 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r1.switchToJoinIsa());
     });
@@ -7542,12 +7521,12 @@ function AuthModalComponent_div_0_div_19_div_4_Template(rf, ctx) {
 }
 function AuthModalComponent_div_0_div_19_div_5_Template(rf, ctx) {
   if (rf & 1) {
-    const _r12 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 134)(1, "p", 139);
+    const _r11 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 129)(1, "p", 134);
     \u0275\u0275text(2, " Already a member? ");
-    \u0275\u0275elementStart(3, "button", 140);
+    \u0275\u0275elementStart(3, "button", 135);
     \u0275\u0275listener("click", function AuthModalComponent_div_0_div_19_div_5_Template_button_click_3_listener() {
-      \u0275\u0275restoreView(_r12);
+      \u0275\u0275restoreView(_r11);
       const ctx_r1 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r1.mode = "LOGIN");
     });
@@ -7557,16 +7536,16 @@ function AuthModalComponent_div_0_div_19_div_5_Template(rf, ctx) {
 }
 function AuthModalComponent_div_0_div_19_Template(rf, ctx) {
   if (rf & 1) {
-    const _r10 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 120)(1, "button", 121);
+    const _r9 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 115)(1, "button", 116);
     \u0275\u0275listener("click", function AuthModalComponent_div_0_div_19_Template_button_click_1_listener() {
-      \u0275\u0275restoreView(_r10);
+      \u0275\u0275restoreView(_r9);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.handleAuth());
     });
-    \u0275\u0275template(2, AuthModalComponent_div_0_div_19_span_2_Template, 2, 1, "span", 13)(3, AuthModalComponent_div_0_div_19_span_3_Template, 11, 1, "span", 122);
+    \u0275\u0275template(2, AuthModalComponent_div_0_div_19_span_2_Template, 2, 1, "span", 13)(3, AuthModalComponent_div_0_div_19_span_3_Template, 11, 1, "span", 117);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(4, AuthModalComponent_div_0_div_19_div_4_Template, 8, 0, "div", 123)(5, AuthModalComponent_div_0_div_19_div_5_Template, 5, 0, "div", 123);
+    \u0275\u0275template(4, AuthModalComponent_div_0_div_19_div_4_Template, 8, 0, "div", 118)(5, AuthModalComponent_div_0_div_19_div_5_Template, 5, 0, "div", 118);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -7615,7 +7594,7 @@ function AuthModalComponent_div_0_Template(rf, ctx) {
     \u0275\u0275text(12);
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(13, "div", 12);
-    \u0275\u0275template(14, AuthModalComponent_div_0_ng_container_14_Template, 13, 2, "ng-container", 13)(15, AuthModalComponent_div_0_div_15_Template, 7, 1, "div", 14)(16, AuthModalComponent_div_0_div_16_Template, 6, 1, "div", 15)(17, AuthModalComponent_div_0_ng_container_17_Template, 17, 2, "ng-container", 13)(18, AuthModalComponent_div_0_ng_container_18_Template, 149, 12, "ng-container", 13)(19, AuthModalComponent_div_0_div_19_Template, 6, 5, "div", 16);
+    \u0275\u0275template(14, AuthModalComponent_div_0_ng_container_14_Template, 13, 2, "ng-container", 13)(15, AuthModalComponent_div_0_div_15_Template, 7, 1, "div", 14)(16, AuthModalComponent_div_0_div_16_Template, 6, 1, "div", 15)(17, AuthModalComponent_div_0_ng_container_17_Template, 17, 2, "ng-container", 13)(18, AuthModalComponent_div_0_ng_container_18_Template, 142, 10, "ng-container", 13)(19, AuthModalComponent_div_0_div_19_Template, 6, 5, "div", 16);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -7627,9 +7606,9 @@ function AuthModalComponent_div_0_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275property("ngIf", ctx_r1.mode === "REGISTER" && ctx_r1.step === "PLAN_SELECTION");
     \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.errorMessage);
+    \u0275\u0275property("ngIf", ctx_r1.errorMessage && (ctx_r1.mode === "LOGIN" || ctx_r1.mode === "REGISTER"));
     \u0275\u0275advance();
-    \u0275\u0275property("ngIf", ctx_r1.successMessage && (ctx_r1.mode === "LOGIN" || ctx_r1.step === "AUTH_FORM"));
+    \u0275\u0275property("ngIf", ctx_r1.successMessage && (ctx_r1.mode === "LOGIN" || ctx_r1.mode === "REGISTER"));
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.mode === "LOGIN");
     \u0275\u0275advance();
@@ -7646,8 +7625,10 @@ var AuthModalComponent = class _AuthModalComponent {
       this.showJoinIsa = false;
       this.isLoading = false;
       if (this.mode === "REGISTER") {
-        this.step = "PLAN_SELECTION";
-        this.loadPlans();
+        this.step = "AUTH_FORM";
+        this.selectedPlan = null;
+        this.hasCompletedPlanPayment = false;
+        this.pendingApplicationData = null;
       } else {
         this.step = "AUTH_FORM";
       }
@@ -7672,10 +7653,12 @@ var AuthModalComponent = class _AuthModalComponent {
   }
   selectPlan(plan) {
     this.selectedPlan = plan;
+    this.hasCompletedPlanPayment = false;
     if (plan.price > 0) {
       this.openPayment.emit(plan);
     } else {
-      this.step = "AUTH_FORM";
+      this.hasCompletedPlanPayment = true;
+      this.submitApplication();
     }
   }
   getFeatureLabel(feature) {
@@ -7686,7 +7669,8 @@ var AuthModalComponent = class _AuthModalComponent {
   }
   // Called from parent after payment success
   onPaymentSuccess() {
-    this.step = "AUTH_FORM";
+    this.hasCompletedPlanPayment = true;
+    this.submitApplication();
   }
   constructor(authService, apiService) {
     this.authService = authService;
@@ -7699,6 +7683,7 @@ var AuthModalComponent = class _AuthModalComponent {
     this.step = "AUTH_FORM";
     this.plans = [];
     this.selectedPlan = null;
+    this.hasCompletedPlanPayment = false;
     this.loginEmail = "";
     this.loginPassword = "";
     this.regData = {
@@ -7718,6 +7703,7 @@ var AuthModalComponent = class _AuthModalComponent {
     this.errorMessage = "";
     this.successMessage = "";
     this.showJoinIsa = false;
+    this.pendingApplicationData = null;
   }
   onClose() {
     this.close.emit();
@@ -7726,7 +7712,7 @@ var AuthModalComponent = class _AuthModalComponent {
   }
   handleAuth() {
     if (this.mode === "REGISTER") {
-      this.submitApplication();
+      this.proceedToPlanSelection();
     } else {
       this.handleLogin();
     }
@@ -7770,30 +7756,58 @@ var AuthModalComponent = class _AuthModalComponent {
     this.mode = "REGISTER";
     this.errorMessage = "";
     this.showJoinIsa = false;
+    this.step = "AUTH_FORM";
+    this.selectedPlan = null;
+    this.hasCompletedPlanPayment = false;
+    this.pendingApplicationData = null;
     if (this.loginEmail) {
       this.regData.email = this.loginEmail;
     }
   }
-  submitApplication() {
-    if (!this.selectedPlan?.id) {
-      this.errorMessage = "Please select a membership plan before registration.";
-      this.step = "PLAN_SELECTION";
-      return;
-    }
+  validateRegistrationForm() {
     if (!this.regData.applicantName || !this.regData.email || !this.regData.phone || !this.regData.company || !this.regData.address || !this.regData.password) {
       this.errorMessage = "Please fill in all required fields";
-      return;
+      return false;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.regData.email)) {
       this.errorMessage = "Please enter a valid email address";
+      return false;
+    }
+    return true;
+  }
+  proceedToPlanSelection() {
+    this.errorMessage = "";
+    this.successMessage = "";
+    if (!this.validateRegistrationForm()) {
+      return;
+    }
+    this.pendingApplicationData = __spreadValues({}, this.regData);
+    this.step = "PLAN_SELECTION";
+    if (this.plans.length === 0) {
+      this.loadPlans();
+    }
+  }
+  submitApplication() {
+    if (!this.selectedPlan?.id) {
+      this.errorMessage = "Please select a membership plan to continue.";
+      this.step = "PLAN_SELECTION";
+      return;
+    }
+    if (this.selectedPlan.price > 0 && !this.hasCompletedPlanPayment) {
+      this.errorMessage = "Please complete payment for the selected membership plan before submitting your application.";
+      return;
+    }
+    const applicationPayload = this.pendingApplicationData || this.regData;
+    if (!applicationPayload) {
+      this.errorMessage = "Please fill application details first.";
       return;
     }
     this.isLoading = true;
     this.errorMessage = "";
     this.successMessage = "";
-    this.apiService.createMembershipApplication(__spreadProps(__spreadValues({}, this.regData), {
-      planId: this.selectedPlan.id
+    this.apiService.createMembershipApplication(__spreadProps(__spreadValues({}, applicationPayload), {
+      planId: this.selectedPlan?.id
     })).subscribe({
       next: () => {
         this.isLoading = false;
@@ -7814,7 +7828,7 @@ var AuthModalComponent = class _AuthModalComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthModalComponent, selectors: [["app-auth-modal"]], inputs: { show: "show", mode: "mode" }, outputs: { close: "close", success: "success", openPayment: "openPayment" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay", 3, "click", 4, "ngIf"], [1, "fixed", "inset-0", "z-50", "flex", "items-center", "justify-center", "p-4", "modal-overlay", 3, "click"], [1, "modal-container", "max-w-lg", "w-full", "rounded-2xl", "relative", 3, "click"], [1, "modal-header"], [1, "absolute", "top-4", "right-4"], ["type", "button", 1, "close-btn", 3, "click"], ["xmlns", "http://www.w3.org/2000/svg", "width", "20", "height", "20", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["x1", "18", "y1", "6", "x2", "6", "y2", "18"], ["x1", "6", "y1", "6", "x2", "18", "y2", "18"], [1, "relative", "z-10"], [1, "mode-title"], [1, "mode-subtitle"], [1, "p-8", "custom-scrollbar", "max-h-[70vh]", "overflow-y-auto"], [4, "ngIf"], ["class", "error-message flex items-center gap-3", 4, "ngIf"], ["class", "success-message flex items-center gap-3", 4, "ngIf"], ["class", "mt-8 space-y-4", 4, "ngIf"], [1, "mb-8", "p-4", "bg-blue-50", "border", "border-blue-100", "rounded-xl", "text-center"], [1, "text-lg", "font-black", "text-blue-900", "mb-2"], [1, "text-xs", "font-bold", "text-blue-700"], ["class", "py-12 text-center text-slate-400 font-bold uppercase tracking-widest text-[10px]", 4, "ngIf"], ["class", "space-y-4", 4, "ngIf"], [1, "mt-8", "text-center", "pt-6", "border-t", "border-slate-50"], [1, "text-xs", "text-slate-400", "font-bold"], [1, "text-indigo-600", "border-b-2", "border-indigo-100", "ml-1", 3, "click"], [1, "py-12", "text-center", "text-slate-400", "font-bold", "uppercase", "tracking-widest", "text-[10px]"], [1, "h-8", "w-8", "border-4", "border-slate-100", "border-t-indigo-600", "rounded-full", "animate-spin", "mx-auto", "mb-4"], [1, "space-y-4"], ["class", "p-5 border-2 rounded-[24px] cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "p-5", "border-2", "rounded-[24px]", "cursor-pointer", "transition-all", "hover:scale-[1.02]", "active:scale-[0.98]", 3, "click", "ngClass"], [1, "flex", "justify-between", "items-start", "mb-4"], [1, "text-base", "font-black", "tracking-tight"], [1, "text-[9px]", "font-black", "uppercase", "tracking-widest", "px-2", "py-1", "rounded-full", 3, "ngClass"], [1, "text-right"], [1, "text-xl", "font-black", "tracking-tighter"], [1, "text-[9px]", "font-bold", "uppercase", 3, "ngClass"], [1, "space-y-2", "mb-4"], ["class", "flex items-center gap-2 text-[11px] font-bold", 3, "ngClass", 4, "ngFor", "ngForOf"], [1, "flex", "justify-center", "pt-2"], [1, "text-[10px]", "font-black", "uppercase", "tracking-widest"], [1, "flex", "items-center", "gap-2", "text-[11px]", "font-bold", 3, "ngClass"], [1, "text-indigo-500"], [1, "error-message", "flex", "items-center", "gap-3"], ["xmlns", "http://www.w3.org/2000/svg", "width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["cx", "12", "cy", "12", "r", "10"], ["x1", "12", "y1", "8", "x2", "12", "y2", "12"], ["x1", "12", "y1", "16", "x2", "12.01", "y2", "16"], [1, "success-message", "flex", "items-center", "gap-3"], ["d", "M22 11.08V12a10 10 0 1 1-5.93-9.14"], ["points", "22 4 12 14.01 9 11.01"], [1, "form-group"], [1, "form-label"], [1, "input-container"], ["xmlns", "http://www.w3.org/2000/svg", "width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round", 1, "input-icon"], ["d", "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"], ["points", "22,6 12,13 2,6"], ["type", "email", "placeholder", "name@company.com", 1, "form-input", 3, "ngModelChange", "ngModel"], ["x", "3", "y", "11", "width", "18", "height", "11", "rx", "2", "ry", "2"], ["d", "M7 11V7a5 5 0 0 1 10 0v4"], ["type", "password", "placeholder", "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022", 1, "form-input", 3, "ngModelChange", "ngModel"], [1, "mb-6"], [1, "text-xl", "font-black", "text-slate-900", "mb-1"], [1, "text-xs", "font-bold", "text-slate-400", "uppercase", "tracking-widest"], [1, "mb-8", "flex", "items-center", "justify-between", "p-4", "bg-slate-50", "rounded-2xl", "border", "border-slate-100"], [1, "text-[10px]", "font-black", "uppercase", "tracking-widest", "text-slate-400"], [1, "text-sm", "font-black", "text-slate-900"], ["class", "text-[10px] font-black uppercase text-indigo-600 border-b-2 border-indigo-100", 3, "click", 4, "ngIf"], [1, "register-grid"], [1, "text-red-500"], ["x", "2", "y", "10", "width", "20", "height", "12", "rx", "2"], ["d", "M7 10V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"], ["type", "text", "placeholder", "Tech Solutions Ltd", 1, "form-input", 3, "ngModelChange", "ngModel"], ["x1", "2", "y1", "12", "x2", "22", "y2", "12"], ["d", "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"], ["type", "text", "placeholder", "www.example.com", 1, "form-input", 3, "ngModelChange", "ngModel"], ["d", "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"], ["cx", "12", "cy", "7", "r", "4"], ["type", "text", "placeholder", "Full name of directors", 1, "form-input", 3, "ngModelChange", "ngModel"], ["type", "email", "placeholder", "admin@company.com", 1, "form-input", 3, "ngModelChange", "ngModel"], ["d", "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"], ["type", "text", "placeholder", "+91 00000 00000", 1, "form-input", 3, "ngModelChange", "ngModel"], ["d", "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"], ["cx", "9", "cy", "7", "r", "4"], ["d", "M23 21v-2a4 4 0 0 0-3-3.87"], ["d", "M16 3.13a4 4 0 0 1 0 7.75"], [1, "form-input", "pl-[2.75rem]", "appearance-none", "bg-no-repeat", "bg-[right_1rem_center]", "bg-[length:1em_1em]", 3, "ngModelChange", "ngModel"], ["value", "", "disabled", "", "selected", ""], ["value", "1-10"], ["value", "11-50"], ["value", "51-200"], ["value", "200+"], ["d", "M3 21h18"], ["d", "M3 7v14"], ["d", "M13 21V3H3"], ["d", "M7 14h2"], ["d", "M7 18h2"], ["d", "M7 6h2"], ["d", "M7 10h2"], ["d", "M13 6h2"], ["d", "M13 10h2"], ["d", "M13 14h2"], ["d", "M13 18h2"], [1, "form-input", "pl-[2.75rem]", "appearance-none", 3, "ngModelChange", "ngModel"], ["value", "SaaS"], ["value", "Fintech"], ["value", "Services"], ["value", "HealthTech"], ["value", "EdTech"], ["value", "AI"], ["value", "Other"], ["points", "16 18 22 12 16 6"], ["points", "8 6 2 12 8 18"], ["type", "text", "placeholder", "e.g. Java, Angular, AWS", 1, "form-input", 3, "ngModelChange", "ngModel"], [1, "input-container", "items-start"], ["xmlns", "http://www.w3.org/2000/svg", "width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round", 1, "input-icon", "mt-3"], ["d", "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"], ["cx", "12", "cy", "10", "r", "3"], ["rows", "2", "placeholder", "Complete registered office address", 1, "form-input", "min-h-[80px]", 3, "ngModelChange", "ngModel"], ["type", "password", "placeholder", "Create a strong password", 1, "form-input", 3, "ngModelChange", "ngModel"], [1, "text-[10px]", "font-black", "uppercase", "text-indigo-600", "border-b-2", "border-indigo-100", 3, "click"], [1, "mt-8", "space-y-4"], [1, "btn-primary", 3, "click", "disabled"], ["class", "flex items-center gap-2", 4, "ngIf"], ["class", "text-center", 4, "ngIf"], [1, "flex", "items-center", "gap-2"], ["width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "3", "stroke-linecap", "round", "stroke-linejoin", "round", 1, "animate-spin"], ["x1", "12", "y1", "2", "x2", "12", "y2", "6"], ["x1", "12", "y1", "18", "x2", "12", "y2", "22"], ["x1", "4.93", "y1", "4.93", "x2", "7.76", "y2", "7.76"], ["x1", "16.24", "y1", "16.24", "x2", "19.07", "y2", "19.07"], ["x1", "2", "y1", "12", "x2", "6", "y2", "12"], ["x1", "18", "y1", "12", "x2", "22", "y2", "12"], ["x1", "4.93", "y1", "19.07", "x2", "7.76", "y2", "16.24"], ["x1", "16.24", "y1", "7.76", "x2", "19.07", "y2", "4.93"], [1, "text-center"], [1, "flex", "items-center", "gap-4", "my-4"], [1, "h-px", "flex-1", "bg-gray-200"], [1, "text-xs", "text-gray-400", "font-bold", "uppercase", "tracking-wider"], ["type", "button", 1, "btn-outline", 3, "click"], [1, "text-sm", "text-gray-500"], [1, "text-blue-600", "font-bold", "hover:underline", 3, "click"]], template: function AuthModalComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AuthModalComponent, selectors: [["app-auth-modal"]], inputs: { show: "show", mode: "mode" }, outputs: { close: "close", success: "success", openPayment: "openPayment" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay", 3, "click", 4, "ngIf"], [1, "fixed", "inset-0", "z-50", "flex", "items-center", "justify-center", "p-4", "modal-overlay", 3, "click"], [1, "modal-container", "max-w-lg", "w-full", "rounded-2xl", "relative", 3, "click"], [1, "modal-header"], [1, "absolute", "top-4", "right-4"], ["type", "button", 1, "close-btn", 3, "click"], ["xmlns", "http://www.w3.org/2000/svg", "width", "20", "height", "20", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["x1", "18", "y1", "6", "x2", "6", "y2", "18"], ["x1", "6", "y1", "6", "x2", "18", "y2", "18"], [1, "relative", "z-10"], [1, "mode-title"], [1, "mode-subtitle"], [1, "p-8", "custom-scrollbar", "max-h-[70vh]", "overflow-y-auto"], [4, "ngIf"], ["class", "error-message flex items-center gap-3", 4, "ngIf"], ["class", "success-message flex items-center gap-3", 4, "ngIf"], ["class", "mt-8 space-y-4", 4, "ngIf"], [1, "mb-8", "p-4", "bg-blue-50", "border", "border-blue-100", "rounded-xl", "text-center"], [1, "text-lg", "font-black", "text-blue-900", "mb-2"], [1, "text-xs", "font-bold", "text-blue-700"], ["class", "py-12 text-center text-slate-400 font-bold uppercase tracking-widest text-[10px]", 4, "ngIf"], ["class", "space-y-4", 4, "ngIf"], [1, "mt-8", "text-center", "pt-6", "border-t", "border-slate-50"], [1, "text-xs", "text-slate-400", "font-bold"], [1, "text-indigo-600", "border-b-2", "border-indigo-100", "ml-1", 3, "click"], [1, "py-12", "text-center", "text-slate-400", "font-bold", "uppercase", "tracking-widest", "text-[10px]"], [1, "h-8", "w-8", "border-4", "border-slate-100", "border-t-indigo-600", "rounded-full", "animate-spin", "mx-auto", "mb-4"], [1, "space-y-4"], ["class", "p-5 border-2 rounded-[24px] cursor-pointer transition-all hover:scale-[1.02] active:scale-[0.98]", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "p-5", "border-2", "rounded-[24px]", "cursor-pointer", "transition-all", "hover:scale-[1.02]", "active:scale-[0.98]", 3, "click", "ngClass"], [1, "flex", "justify-between", "items-start", "mb-4"], [1, "text-base", "font-black", "tracking-tight"], [1, "text-[9px]", "font-black", "uppercase", "tracking-widest", "px-2", "py-1", "rounded-full", 3, "ngClass"], [1, "text-right"], [1, "text-xl", "font-black", "tracking-tighter"], [1, "text-[9px]", "font-bold", "uppercase", 3, "ngClass"], [1, "space-y-2", "mb-4"], ["class", "flex items-center gap-2 text-[11px] font-bold", 3, "ngClass", 4, "ngFor", "ngForOf"], [1, "flex", "justify-center", "pt-2"], [1, "text-[10px]", "font-black", "uppercase", "tracking-widest"], [1, "flex", "items-center", "gap-2", "text-[11px]", "font-bold", 3, "ngClass"], [1, "text-indigo-500"], [1, "error-message", "flex", "items-center", "gap-3"], ["xmlns", "http://www.w3.org/2000/svg", "width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round"], ["cx", "12", "cy", "12", "r", "10"], ["x1", "12", "y1", "8", "x2", "12", "y2", "12"], ["x1", "12", "y1", "16", "x2", "12.01", "y2", "16"], [1, "success-message", "flex", "items-center", "gap-3"], ["d", "M22 11.08V12a10 10 0 1 1-5.93-9.14"], ["points", "22 4 12 14.01 9 11.01"], [1, "form-group"], [1, "form-label"], [1, "input-container"], ["xmlns", "http://www.w3.org/2000/svg", "width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round", 1, "input-icon"], ["d", "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"], ["points", "22,6 12,13 2,6"], ["type", "email", "placeholder", "name@company.com", 1, "form-input", 3, "ngModelChange", "ngModel"], ["x", "3", "y", "11", "width", "18", "height", "11", "rx", "2", "ry", "2"], ["d", "M7 11V7a5 5 0 0 1 10 0v4"], ["type", "password", "placeholder", "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022", 1, "form-input", 3, "ngModelChange", "ngModel"], [1, "mb-6"], [1, "text-xl", "font-black", "text-slate-900", "mb-1"], [1, "text-xs", "font-bold", "text-slate-400", "uppercase", "tracking-widest"], [1, "register-grid"], [1, "text-red-500"], ["x", "2", "y", "10", "width", "20", "height", "12", "rx", "2"], ["d", "M7 10V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"], ["type", "text", "placeholder", "Tech Solutions Ltd", 1, "form-input", 3, "ngModelChange", "ngModel"], ["x1", "2", "y1", "12", "x2", "22", "y2", "12"], ["d", "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"], ["type", "text", "placeholder", "www.example.com", 1, "form-input", 3, "ngModelChange", "ngModel"], ["d", "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"], ["cx", "12", "cy", "7", "r", "4"], ["type", "text", "placeholder", "Full name of directors", 1, "form-input", 3, "ngModelChange", "ngModel"], ["type", "email", "placeholder", "admin@company.com", 1, "form-input", 3, "ngModelChange", "ngModel"], ["d", "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"], ["type", "text", "placeholder", "+91 00000 00000", 1, "form-input", 3, "ngModelChange", "ngModel"], ["d", "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"], ["cx", "9", "cy", "7", "r", "4"], ["d", "M23 21v-2a4 4 0 0 0-3-3.87"], ["d", "M16 3.13a4 4 0 0 1 0 7.75"], [1, "form-input", "pl-[2.75rem]", "appearance-none", "bg-no-repeat", "bg-[right_1rem_center]", "bg-[length:1em_1em]", 3, "ngModelChange", "ngModel"], ["value", "", "disabled", "", "selected", ""], ["value", "1-10"], ["value", "11-50"], ["value", "51-200"], ["value", "200+"], ["d", "M3 21h18"], ["d", "M3 7v14"], ["d", "M13 21V3H3"], ["d", "M7 14h2"], ["d", "M7 18h2"], ["d", "M7 6h2"], ["d", "M7 10h2"], ["d", "M13 6h2"], ["d", "M13 10h2"], ["d", "M13 14h2"], ["d", "M13 18h2"], [1, "form-input", "pl-[2.75rem]", "appearance-none", 3, "ngModelChange", "ngModel"], ["value", "SaaS"], ["value", "Fintech"], ["value", "Services"], ["value", "HealthTech"], ["value", "EdTech"], ["value", "AI"], ["value", "Other"], ["points", "16 18 22 12 16 6"], ["points", "8 6 2 12 8 18"], ["type", "text", "placeholder", "e.g. Java, Angular, AWS", 1, "form-input", 3, "ngModelChange", "ngModel"], [1, "input-container", "items-start"], ["xmlns", "http://www.w3.org/2000/svg", "width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "stroke-linecap", "round", "stroke-linejoin", "round", 1, "input-icon", "mt-3"], ["d", "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"], ["cx", "12", "cy", "10", "r", "3"], ["rows", "2", "placeholder", "Complete registered office address", 1, "form-input", "min-h-[80px]", 3, "ngModelChange", "ngModel"], ["type", "password", "placeholder", "Create a strong password", 1, "form-input", 3, "ngModelChange", "ngModel"], [1, "mt-8", "space-y-4"], [1, "btn-primary", 3, "click", "disabled"], ["class", "flex items-center gap-2", 4, "ngIf"], ["class", "text-center", 4, "ngIf"], [1, "flex", "items-center", "gap-2"], ["width", "18", "height", "18", "viewBox", "0 0 24 24", "fill", "none", "stroke", "currentColor", "stroke-width", "3", "stroke-linecap", "round", "stroke-linejoin", "round", 1, "animate-spin"], ["x1", "12", "y1", "2", "x2", "12", "y2", "6"], ["x1", "12", "y1", "18", "x2", "12", "y2", "22"], ["x1", "4.93", "y1", "4.93", "x2", "7.76", "y2", "7.76"], ["x1", "16.24", "y1", "16.24", "x2", "19.07", "y2", "19.07"], ["x1", "2", "y1", "12", "x2", "6", "y2", "12"], ["x1", "18", "y1", "12", "x2", "22", "y2", "12"], ["x1", "4.93", "y1", "19.07", "x2", "7.76", "y2", "16.24"], ["x1", "16.24", "y1", "7.76", "x2", "19.07", "y2", "4.93"], [1, "text-center"], [1, "flex", "items-center", "gap-4", "my-4"], [1, "h-px", "flex-1", "bg-gray-200"], [1, "text-xs", "text-gray-400", "font-bold", "uppercase", "tracking-wider"], ["type", "button", 1, "btn-outline", 3, "click"], [1, "text-sm", "text-gray-500"], [1, "text-blue-600", "font-bold", "hover:underline", 3, "click"]], template: function AuthModalComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275template(0, AuthModalComponent_div_0_Template, 20, 8, "div", 0);
       }
@@ -8125,7 +8139,11 @@ var AppComponent = class _AppComponent {
   }
   openPaymentModal(data) {
     if (data && data.event) {
-      this.selectedEvent = __spreadProps(__spreadValues({}, data.event), { quantity: data.quantity || 1 });
+      this.selectedEvent = __spreadProps(__spreadValues({}, data.event), {
+        quantity: data.quantity || 1,
+        selectedTicketTypeId: data.ticketTypeId || data.selectedTicketTypeId || null,
+        selectedTicketType: data.selectedTicketType || null
+      });
       this.paymentPlanData = null;
     } else {
       this.paymentPlanData = data;
@@ -8169,11 +8187,7 @@ var AppComponent = class _AppComponent {
       const pricingType = ev.pricingType || ev.pricing?.type;
       const isPaid = pricingType === "PAID" || pricingType === "DISCOUNTED" || (ev.memberPrice > 0 || ev.nonMemberPrice > 0 || ev.price > 0);
       this.selectedEvent = __spreadProps(__spreadValues({}, ev), { registeredCount: ev.registrationCount || ev.registeredCount || 0 });
-      if (isPaid) {
-        this.showPaymentModal = true;
-      } else {
-        this.showEventDetailModal = true;
-      }
+      this.showEventDetailModal = true;
     };
     if (event.id) {
       this.apiService.getEventById(event.id).subscribe({
@@ -8288,14 +8302,34 @@ var AppComponent = class _AppComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AppComponent, { className: "AppComponent", filePath: "src\\app\\app.component.ts", lineNumber: 37 });
 })();
 
-// src/app/guards/auth.guard.ts
-var authGuard = () => {
+// src/app/guards/admin.guard.ts
+var adminGuard = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  if (authService.isAuthenticated()) {
+  if (authService.isAuthenticated() && authService.isAdmin()) {
     return true;
   }
-  sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+  if (!authService.isAuthenticated()) {
+    sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+    return router.createUrlTree(["/home"]);
+  }
+  return router.createUrlTree(["/dashboard"]);
+};
+
+// src/app/guards/member.guard.ts
+var memberGuard = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  if (authService.isAuthenticated() && authService.isMember()) {
+    return true;
+  }
+  if (!authService.isAuthenticated()) {
+    sessionStorage.setItem("redirectAfterLogin", window.location.pathname);
+    return router.createUrlTree(["/home"]);
+  }
+  if (authService.isAdmin()) {
+    return router.createUrlTree(["/admin-dashboard"]);
+  }
   return router.createUrlTree(["/home"]);
 };
 
@@ -8319,22 +8353,28 @@ var planSelectedGuard = () => {
 // src/app/app.routes.ts
 var routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
-  { path: "home", loadComponent: () => import("./chunk-QCCE5LFC.js").then((c) => c.HomeComponent) },
-  { path: "dashboard", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-WMGYHIE6.js").then((c) => c.DashboardComponent) },
-  { path: "admin-dashboard", canActivate: [authGuard], loadComponent: () => import("./chunk-BJ3JVHOE.js").then((c) => c.AdminDashboardComponent) },
-  { path: "directory", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-2PZDOKDB.js").then((c) => c.DirectoryComponent) },
-  { path: "events", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-WHMEEREO.js").then((c) => c.EventsComponent) },
-  { path: "events/:id", loadComponent: () => import("./chunk-56G7BHBB.js").then((c) => c.EventDetailComponent) },
-  { path: "bench", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-35RZV7ZK.js").then((c) => c.BenchComponent) },
-  { path: "blogs", loadComponent: () => import("./chunk-NN5D6YAW.js").then((c) => c.BlogsComponent) },
-  { path: "profile-edit", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-HHM7S5W6.js").then((c) => c.ProfileEditComponent) },
-  { path: "resource-post", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-C2DQE2AO.js").then((c) => c.ResourcePostComponent) },
-  { path: "project-post", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-X72UYIAS.js").then((c) => c.ProjectPostComponent) },
-  { path: "blog-create", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-HM5SRLV3.js").then((c) => c.BlogCreateComponent) },
-  { path: "member-management", canActivate: [authGuard], loadComponent: () => import("./chunk-2O72P3WE.js").then((c) => c.MemberManagementComponent) },
-  { path: "event-create", canActivate: [authGuard, planSelectedGuard], loadComponent: () => import("./chunk-F4FHFI2U.js").then((c) => c.EventCreateComponent) },
-  { path: "event-management", canActivate: [authGuard], loadComponent: () => import("./chunk-ITCTWQPT.js").then((c) => c.EventManagementComponent) },
-  { path: "select-plan", canActivate: [authGuard], loadComponent: () => import("./chunk-V6MDF54Y.js").then((c) => c.MembershipPlansComponent) },
+  { path: "home", loadComponent: () => import("./chunk-JDMDZUH7.js").then((c) => c.HomeComponent) },
+  { path: "dashboard", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-XZMUQMIV.js").then((c) => c.DashboardComponent) },
+  { path: "admin-dashboard", canActivate: [adminGuard], loadComponent: () => import("./chunk-HB7OY434.js").then((c) => c.AdminDashboardComponent) },
+  { path: "directory", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-AUNLWQYM.js").then((c) => c.DirectoryComponent) },
+  { path: "events", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-US57M6QG.js").then((c) => c.EventsComponent) },
+  { path: "events/:id", loadComponent: () => import("./chunk-HXCYNPCX.js").then((c) => c.EventDetailComponent) },
+  { path: "bench", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-NTFFWU2G.js").then((c) => c.BenchComponent) },
+  { path: "blogs", loadComponent: () => import("./chunk-QGX2Z5C4.js").then((c) => c.BlogsComponent) },
+  {
+    path: "old-events/:id",
+    loadComponent: () => import("./chunk-HXCYNPCX.js").then((c) => c.EventDetailComponent),
+    data: { eventArchive: true }
+  },
+  { path: "old-events", loadComponent: () => import("./chunk-IB7WX6EI.js").then((c) => c.OldEventsComponent) },
+  { path: "profile-edit", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-OJVQSJ2M.js").then((c) => c.ProfileEditComponent) },
+  { path: "resource-post", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-TRYLH2YL.js").then((c) => c.ResourcePostComponent) },
+  { path: "project-post", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-AZKVJDE4.js").then((c) => c.ProjectPostComponent) },
+  { path: "blog-create", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-FV573UEU.js").then((c) => c.BlogCreateComponent) },
+  { path: "member-management", canActivate: [adminGuard], loadComponent: () => import("./chunk-YMKVBDW2.js").then((c) => c.MemberManagementComponent) },
+  { path: "event-create", canActivate: [adminGuard, planSelectedGuard], loadComponent: () => import("./chunk-QK3YFSKV.js").then((c) => c.EventCreateComponent) },
+  { path: "event-management", canActivate: [adminGuard], loadComponent: () => import("./chunk-ISZSRCDC.js").then((c) => c.EventManagementComponent) },
+  { path: "select-plan", canActivate: [memberGuard], loadComponent: () => import("./chunk-NUFSX52W.js").then((c) => c.MembershipPlansComponent) },
   { path: "**", redirectTo: "home" }
   // Fallback
 ];

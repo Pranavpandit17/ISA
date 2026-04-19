@@ -94,8 +94,16 @@
                 </span>
               </div>
               <div class="flex items-center justify-between mt-1">
+                <span class="text-[10px] font-black uppercase text-slate-400">Price</span>
                 <span class="text-[11px] font-bold text-indigo-600">{{ ticket.price === 0 ? 'Free' : ('₹' + (ticket.price | number:'1.0-0')) }}</span>
-                <span class="text-[10px] text-slate-500" *ngIf="ticket.availableQuantity != null">{{ ticket.availableQuantity }} left</span>
+              </div>
+              <div class="flex items-center justify-between mt-1" *ngIf="ticket.availableQuantity != null">
+                <span class="text-[10px] font-black uppercase text-slate-400">Quantity Left</span>
+                <span class="text-[10px] text-slate-500">{{ ticket.availableQuantity }}</span>
+              </div>
+              <div class="flex items-center justify-between mt-1" *ngIf="ticket.type === 'EARLY_BIRD' && event?.earlyBirdEndDate">
+                <span class="text-[10px] font-black uppercase text-slate-400">Ends On</span>
+                <span class="text-[10px] text-slate-500">{{ event.earlyBirdEndDate | date:'dd MMM yyyy' }}</span>
               </div>
             </button>
           </div>

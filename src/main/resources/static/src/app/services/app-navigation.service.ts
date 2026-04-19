@@ -17,6 +17,7 @@ export class AppNavigationService {
         'ADMIN_DASHBOARD': 'admin-dashboard',
         'DIRECTORY': 'directory',
         'EVENTS': 'events',
+        'OLD_EVENTS': 'old-events',
         'EVENT_DETAIL': 'events',
         'BENCH': 'bench',
         'BLOGS': 'blogs',
@@ -45,7 +46,8 @@ export class AppNavigationService {
      * Handles auth guards and role-based routing automatically.
      */
     go(viewOrPath: string): void {
-        const path = this.viewStateToRoute[viewOrPath] ?? viewOrPath.toLowerCase().replace(/_/g, '-');
+        const raw = this.viewStateToRoute[viewOrPath] ?? viewOrPath.toLowerCase().replace(/_/g, '-');
+        const path = raw.replace(/^\/+/, '');
         const user = this.authService.getCurrentUser();
 
         if (this.protectedRoutes.includes(path) && !user) {

@@ -71,6 +71,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public EventDTO getEventById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
@@ -222,6 +223,17 @@ public class EventService {
             } catch (Exception e) {
                 // Handle JSON serialization error
             }
+        }
+
+        // Replace ticket types for this event when provided by edit payload
+        if (eventDTO.getTicketTypes() != null) {
+            ticketTypeRepository.deleteByEventId(event.getId());
+            List<TicketType> updatedTicketTypes = new ArrayList<>();
+            for (TicketTypeDTO ticketDTO : normalizeTicketTypeDTOs(eventDTO.getTicketTypes())) {
+                TicketType ticketType = convertTicketTypeToEntity(ticketDTO, event);
+                updatedTicketTypes.add(ticketType);
+            }
+            event.setTicketTypes(updatedTicketTypes);
         }
         
         Event updatedEvent = eventRepository.save(event);

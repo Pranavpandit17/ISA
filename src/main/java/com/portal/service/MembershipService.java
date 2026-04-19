@@ -590,9 +590,21 @@ public class MembershipService {
         MemberDTO dto = new MemberDTO();
         dto.setId(member.getId());
         
-        // Check if user is null to prevent NullPointerException
+        // Fail-safe: don't break the whole members API if one row has missing user relation
         if (member.getUser() == null) {
-            throw new RuntimeException("Member with ID " + member.getId() + " has no associated User");
+            dto.setName("Unknown Member");
+            dto.setApplicantName("Unknown Member");
+            dto.setEmail(null);
+            dto.setPhone(null);
+            dto.setCompany(null);
+            dto.setMembershipType(member.getMembershipType() != null ? member.getMembershipType().name() : null);
+            dto.setMembershipStatus(member.getMembershipStatus() != null ? member.getMembershipStatus().name() : null);
+            dto.setMembershipNumber(member.getMembershipNumber());
+            dto.setSubscriptionStartDate(member.getSubscriptionStartDate());
+            dto.setSubscriptionEndDate(member.getSubscriptionEndDate());
+            dto.setActivePlanName("No Plan");
+            dto.setCreatedAt(member.getCreatedAt());
+            return dto;
         }
         
         dto.setName(member.getUser().getName());

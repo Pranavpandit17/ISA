@@ -155,34 +155,36 @@
           </div>
         </div>
 
-        <div *ngIf="eventData.pricing.type !== 'FREE'" class="price-box">
-          <div class="input-group">
-            <label class="input-label">Member price</label>
-            <input type="number" [(ngModel)]="eventData.pricing.memberPrice" min="0" step="0.01" class="premium-input" />
-          </div>
-          <div class="input-group">
-            <label class="input-label">Non-member price</label>
-            <input type="number" [(ngModel)]="eventData.pricing.nonMemberPrice" min="0" step="0.01" class="premium-input" />
-          </div>
-        </div>
-
-        <div class="subsection-head">
+        <div class="subsection-head" *ngIf="eventData.pricing.type !== 'FREE'">
           <h4 class="subsection-title">Ticket types</h4>
           <button type="button" (click)="addTicketType()" class="btn-pill btn-primary btn-small">+ Add ticket type</button>
         </div>
-        <div class="stack">
+        <div *ngIf="eventData.pricing.type === 'FREE'" class="field-hint">
+          Ticket types are disabled because pricing type is set to Free.
+        </div>
+        <div class="stack" *ngIf="eventData.pricing.type !== 'FREE'">
           <div *ngFor="let t of eventData.ticketTypes; let i = index" class="ticket-card">
             <button type="button" (click)="removeTicketType(i)" class="remove-link">Remove</button>
             <div class="ticket-row">
               <input type="text" [(ngModel)]="t.name" class="premium-input grow" placeholder="Ticket name" />
               <select [(ngModel)]="t.type" class="premium-input ticket-type-select">
-                <option value="MEMBER">Member</option>
-                <option value="NON_MEMBER">Non-member</option>
-                <option value="EARLY_BIRD">Early bird</option>
+                <option value="MEMBER">Paid Member</option>
+                <option value="FREE_MEMBER">Free Member</option>
+                <option value="NON_MEMBER">Non Member</option>
                 <option value="VIP">VIP</option>
+                <option value="EARLY_BIRD">Early Bird</option>
               </select>
-              <input type="number" [(ngModel)]="t.price" class="premium-input num" min="0" step="0.01" placeholder="Price" />
-              <input type="number" [(ngModel)]="t.availableQuantity" class="premium-input num" min="0" placeholder="Qty" />
+              <div class="inline-input-group">
+                <span class="inline-input-label">Price</span>
+                <input type="number" [(ngModel)]="t.price" class="premium-input num" min="0" step="0.01" placeholder="0" />
+              </div>
+              <div class="inline-input-group">
+                <span class="inline-input-label">Quantity</span>
+                <input type="number" [(ngModel)]="t.availableQuantity" class="premium-input num" min="0" placeholder="0" />
+              </div>
+              <input *ngIf="t.type === 'EARLY_BIRD'" type="date" [(ngModel)]="t.earlyBirdEndDate"
+                [min]="getMinDate()" [max]="getEarlyBirdMaxDate()" class="premium-input early-bird-date"
+                placeholder="Early bird end date" />
             </div>
           </div>
         </div>

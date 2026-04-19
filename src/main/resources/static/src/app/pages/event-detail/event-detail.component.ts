@@ -3,6 +3,7 @@ import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Event } from '../../models/interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { AuthService, User } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
@@ -29,6 +30,8 @@ export class EventDetailComponent implements OnInit {
   selectedTicketTypeId: number | null = null;
   ticketTypes: any[] = [];
   isLoadingTickets: boolean = false;
+  /** Routed under `/old-events/:id` — keep navigation inside Old Events archive */
+  isArchiveContext = false;
 
   constructor(
     private authService: AuthService,
@@ -42,12 +45,23 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    combineLatest([this.route.params, this.route.data]).subscribe(([params, data]) => {
+      this.isArchiveContext = !!data['eventArchive'];
       const id = params['id'];
-      if (id && !this.event) {
-        this.loadEventDetails(id);
-      }
+      if (!id) return;
+      this.loadEventDetails(String(id));
     });
+  }
+
+  formatEventKindLabel(raw: string | null | undefined): string {
+    if (!raw) return '';
+    return String(raw).replace(/_/g, ' ');
+  }
+
+  /** Archive views only show informational ticket status */
+  getTicketArchiveLabel(ticket: any): string {
+    if (!ticket) return '';
+    return this.isTicketAvailable(ticket) ? 'Recorded tier' : 'Sold out (at time of event)';
   }
 
   private resolveEventImageUrl(rawImage: string | null | undefined): string | null {
@@ -88,8 +102,14 @@ export class EventDetailComponent implements OnInit {
           location: data.location || data.venue,
           image: image
         };
+        const archive = this.route.snapshot.data['eventArchive'] === true;
+        this.ticketTypes = Array.isArray(data.ticketTypes) ? data.ticketTypes : [];
         this.isLoading = false;
-        this.loadTicketTypes();
+        if (!archive) {
+          this.loadTicketTypes();
+        } else {
+          this.isLoadingTickets = false;
+        }
       },
       error: (err) => {
         console.error('Error fetching event:', err);
@@ -134,7 +154,7 @@ export class EventDetailComponent implements OnInit {
   getTicketTypes(): any[] {
     if (!this.event) return [];
     const list = Array.isArray(this.ticketTypes) ? this.ticketTypes : [];
-    const normalized = list
+    return list
       .filter((t: any) => t && t.id != null)
       .map((t: any) => ({
         ...t,
@@ -142,18 +162,10 @@ export class EventDetailComponent implements OnInit {
         price: Number(t.price || 0),
         availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : null
       }));
-    const unique = new Map<string, any>();
-    for (const ticket of normalized) {
-      const key = ticket.type || String(ticket.name || '').trim().toUpperCase();
-      if (!unique.has(key)) {
-        unique.set(key, ticket);
-      }
-    }
-    return Array.from(unique.values());
   }
 
   selectTicket(ticket: any): void {
-    if (!ticket) return;
+    if (this.isArchiveContext || !ticket) return;
     this.selectedTicketTypeId = ticket.id;
     this.quantity = 1;
     this.validateQuantity();
@@ -421,7 +433,8 @@ export class EventDetailComponent implements OnInit {
 
   onNavigate(view: string): void {
     if (view === 'EVENTS') {
-      this.router.navigate(['/events']);
+      const archive = this.route.snapshot.data['eventArchive'] === true;
+      this.router.navigate([archive ? '/old-events' : '/events']);
     } else {
       this.navigate.emit(view);
     }

@@ -519,7 +519,7 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
   getTicketTypes(): any[] {
     if (!this.event) return [];
     const list = Array.isArray(this.event.ticketTypes) ? this.event.ticketTypes : [];
-    const normalized = list
+    return list
       .filter((t: any) => t && t.id != null)
       .map((t: any) => ({
         ...t,
@@ -527,14 +527,6 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
         price: Number(t.price || 0),
         availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : null
       }));
-    const unique = new Map<string, any>();
-    for (const ticket of normalized) {
-      const key = ticket.type || String(ticket.name || '').trim().toUpperCase();
-      if (!unique.has(key)) {
-        unique.set(key, ticket);
-      }
-    }
-    return Array.from(unique.values());
   }
 
   getSelectedTicketType(): any | null {
