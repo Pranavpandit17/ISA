@@ -791,20 +791,54 @@ var MembershipPlansComponent = class _MembershipPlansComponent {
     this.confirmingPlan = null;
     this.isProcessing = false;
   }
+  resolvePlanId(plan) {
+    const raw = plan?.id ?? plan?.planId;
+    if (raw == null || raw === "")
+      return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  }
   showFeatures(plan) {
-    if (!plan.id)
+    const planId = this.resolvePlanId(plan);
+    if (planId == null) {
+      this.toastr.warning("This plan has no detail record yet. Try again after plans reload.", "Unavailable");
       return;
+    }
     this.showingFeaturesForPlan = plan;
     this.isLoadingFeatures = true;
     this.planFeatures = [];
-    this.apiService.getPlanFeaturesByPlan(plan.id).subscribe({
+    this.apiService.getPlanFeaturesByPlan(planId).subscribe({
       next: (response) => {
-        this.planFeatures = Array.isArray(response) ? response : [];
+        let list = Array.isArray(response) ? response : [];
+        if (list.length === 0 && plan.features?.length) {
+          list = (plan.features || []).map((f, idx) => ({
+            id: idx,
+            code: "",
+            name: typeof f === "string" ? f : f?.name || f?.description || "Feature",
+            description: typeof f === "object" ? f?.description || "" : "",
+            category: typeof f === "object" && f?.category ? f.category : "PREMIUM",
+            isActive: true
+          }));
+        }
+        this.planFeatures = list;
         this.isLoadingFeatures = false;
       },
       error: (error) => {
         console.error("Error loading plan features:", error);
-        this.planFeatures = [];
+        const msg = error?.status === 403 || error?.status === 401 ? "Please sign in again to load full plan details." : "Could not load full plan details. Showing summary from the card where available.";
+        this.toastr.error(msg, "Plan details");
+        let list = [];
+        if (plan.features?.length) {
+          list = (plan.features || []).map((f, idx) => ({
+            id: idx,
+            code: "",
+            name: typeof f === "string" ? f : f?.name || f?.description || "Feature",
+            description: typeof f === "object" ? f?.description || "" : "",
+            category: typeof f === "object" && f?.category ? f.category : "PREMIUM",
+            isActive: true
+          }));
+        }
+        this.planFeatures = list;
         this.isLoadingFeatures = false;
       }
     });
@@ -964,4 +998,4 @@ var MembershipPlansComponent = class _MembershipPlansComponent {
 export {
   MembershipPlansComponent
 };
-//# sourceMappingURL=chunk-Z45QXPBN.js.map
+//# sourceMappingURL=chunk-3NPFWXJV.js.map

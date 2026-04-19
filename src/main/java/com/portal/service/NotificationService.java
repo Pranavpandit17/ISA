@@ -9,6 +9,7 @@ import com.portal.repository.NotificationRepository;
 import com.portal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -119,8 +120,10 @@ public class NotificationService {
 
     /**
      * Broadcast a notification to all ACTIVE members (one notification per member).
+     * Runs in a separate transaction so failures (or rollback-only markers) cannot break
+     * the caller's transaction — e.g. publishing an event must commit even if broadcast fails.
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void broadcastToActiveMembers(
             String title,
             String message,

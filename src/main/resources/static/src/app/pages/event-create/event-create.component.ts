@@ -232,7 +232,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
       const price = t.price != null ? Number(t.price) : 0;
       const uiType = rawType === 'MEMBER' && price <= 0 ? 'FREE_MEMBER' : rawType;
       return {
-        name: t.name || '',
+        name: this.defaultTicketName(uiType),
         type: uiType,
         price,
         availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : 0,
@@ -253,7 +253,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
 
       if (memberPrice > 0) {
         mappedTicketTypes.push({
-          name: 'Paid Member',
+          name: this.defaultTicketName('MEMBER'),
           type: 'MEMBER',
           price: memberPrice,
           availableQuantity: Number(event.capacity) || 0,
@@ -263,9 +263,10 @@ export class EventCreateComponent implements OnInit, OnChanges {
       }
       if (freeMemberPrice > 0) {
         const treatAsEarlyBird = !!event.earlyBirdEndDate;
+        const synType = treatAsEarlyBird ? 'EARLY_BIRD' : 'FREE_MEMBER';
         mappedTicketTypes.push({
-          name: treatAsEarlyBird ? 'Early Bird' : 'Free Member',
-          type: treatAsEarlyBird ? 'EARLY_BIRD' : 'FREE_MEMBER',
+          name: this.defaultTicketName(synType),
+          type: synType,
           price: freeMemberPrice,
           availableQuantity: Number(event.capacity) || 0,
           quantityLimit: null,
@@ -277,7 +278,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
       }
       if (nonMemberPrice > 0) {
         mappedTicketTypes.push({
-          name: 'Non Member',
+          name: this.defaultTicketName('NON_MEMBER'),
           type: 'NON_MEMBER',
           price: nonMemberPrice,
           availableQuantity: Number(event.capacity) || 0,
@@ -464,6 +465,9 @@ export class EventCreateComponent implements OnInit, OnChanges {
           }
         }
       }
+      if (!this.validateTicketQuantitiesAgainstCapacity()) {
+        return false;
+      }
     } else if (this.currentStep === 5) {
       const speakers = this.eventData.speakers || [];
       for (let i = 0; i < speakers.length; i++) {
@@ -491,6 +495,27 @@ export class EventCreateComponent implements OnInit, OnChanges {
     return true;
   }
 
+  /**
+   * Ticket display name sent to API: "{Paid Member|Free Member|…} Ticket" from selected tier.
+   */
+  defaultTicketName(uiType: string | null | undefined): string {
+    const key = String(uiType || 'MEMBER').toUpperCase();
+    const labels: Record<string, string> = {
+      MEMBER: 'Paid Member',
+      FREE_MEMBER: 'Free Member',
+      NON_MEMBER: 'Non Member',
+      VIP: 'VIP',
+      EARLY_BIRD: 'Early Bird'
+    };
+    const label = labels[key] || 'Ticket';
+    return `${label} Ticket`;
+  }
+
+  onTicketTypeChange(t: any): void {
+    if (!t) return;
+    t.name = this.defaultTicketName(t.type);
+  }
+
   addTicketType(): void {
     if ((this.eventData.pricing?.type || 'FREE') === 'FREE') {
       this.errorMessage = 'Ticket types are disabled for free events.';
@@ -508,7 +533,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
       return;
     }
     this.eventData.ticketTypes.push({
-      name: '',
+      name: this.defaultTicketName(nextType),
       type: nextType,
       price: 0,
       availableQuantity: 0,
@@ -560,6 +585,47 @@ export class EventCreateComponent implements OnInit, OnChanges {
     this.eventData.speakers.splice(index, 1);
   }
 
+  /**
+   * Same quantity rules as buildEventJson(): named ticket rows only;
+   * blank quantity defaults to full event capacity per tier.
+   */
+  private validateTicketQuantitiesAgainstCapacity(): boolean {
+    const pType = this.eventData.pricing?.type || 'FREE';
+    if (pType === 'FREE') {
+      return true;
+    }
+    const cap = Number(this.eventData.capacity);
+    if (!Number.isFinite(cap) || cap < 1) {
+      return true;
+    }
+    const namedTickets = (this.eventData.ticketTypes || []).filter((t: any) =>
+      String(t?.name || '').trim().length > 0
+    );
+    if (namedTickets.length === 0) {
+      return true;
+    }
+    let sum = 0;
+    for (const t of namedTickets) {
+      const raw = t.availableQuantity;
+      const q =
+        raw != null && raw !== ''
+          ? Number(raw)
+          : cap;
+      if (!Number.isFinite(q) || q < 0 || !Number.isInteger(q)) {
+        this.errorMessage =
+          'Each ticket quantity must be a non-negative whole number.';
+        return false;
+      }
+      sum += q;
+    }
+    if (sum > cap) {
+      this.errorMessage =
+        `Total ticket quantities (${sum}) cannot exceed event capacity (${cap}). Reduce quantities or raise capacity in Location & capacity (step 3).`;
+      return false;
+    }
+    return true;
+  }
+
   validateDateTimes(): boolean {
     this.errorMessage = '';
     if (!this.eventData.startDate || !this.eventData.endDate || !this.eventData.startTime || !this.eventData.endTime) {
@@ -595,13 +661,10 @@ export class EventCreateComponent implements OnInit, OnChanges {
     const ticketTypes = (this.eventData.pricing?.type || 'FREE') === 'FREE'
       ? []
       : (this.eventData.ticketTypes || [])
-      .filter((t: any) => t.name && String(t.name).trim())
+      .filter((t: any) => String(t?.type || '').trim())
       .map((t: any) => ({
-        name: String(t.name).trim(),
-        type: (() => {
-          const uiType = String(t.type || 'MEMBER').toUpperCase();
-          return uiType === 'FREE_MEMBER' ? 'MEMBER' : uiType;
-        })(),
+        name: this.defaultTicketName(t.type),
+        type: String(t.type || 'MEMBER').toUpperCase(),
         price: Number(t.price) || 0,
         quantityLimit: t.quantityLimit != null ? Number(t.quantityLimit) : null,
         availableQuantity:
@@ -611,18 +674,13 @@ export class EventCreateComponent implements OnInit, OnChanges {
         description: t.description || ''
       }));
 
-    const ticketByType = new Map<string, any>();
-    for (const t of ticketTypes) {
-      const tt = String(t.type || '').toUpperCase();
-      if (!ticketByType.has(tt)) {
-        ticketByType.set(tt, t);
-      }
-    }
+    const findTicket = (codes: string[]) =>
+      ticketTypes.find((x: any) =>
+        codes.includes(String(x?.type || '').toUpperCase()));
 
-    const paidMemberTicket = ticketByType.get('MEMBER');
-    const freeMemberTicket = ticketByType.get('EARLY_BIRD');
-    const nonMemberTicket = ticketByType.get('NON_MEMBER');
-    const earlyBirdTicket = ticketByType.get('EARLY_BIRD');
+    const paidMemberTicket = findTicket(['MEMBER']);
+    const nonMemberTicket = findTicket(['NON_MEMBER']);
+    const earlyBirdTicket = findTicket(['EARLY_BIRD']);
 
     const schedules = (this.eventData.schedule || [])
       .filter((item: any) => item.title?.trim() && item.startTime && item.endTime)
@@ -661,7 +719,7 @@ export class EventCreateComponent implements OnInit, OnChanges {
       // Keep legacy pricing fields in sync with ticket types for backend compatibility
       memberPrice: pricingType === 'FREE' ? 0 : Number(paidMemberTicket?.price || 0),
       nonMemberPrice: pricingType === 'FREE' ? 0 : Number(nonMemberTicket?.price || 0),
-      earlyBirdPrice: Number(freeMemberTicket?.price || 0) || 0,
+      earlyBirdPrice: Number(earlyBirdTicket?.price || 0) || 0,
       earlyBirdEndDate: (() => {
         const v = earlyBirdTicket?.earlyBirdEndDate || this.eventData.pricing?.earlyBirdEndDate;
         return v && String(v).trim() ? v : null;
@@ -698,6 +756,10 @@ export class EventCreateComponent implements OnInit, OnChanges {
       if (this.currentStep !== 2) {
         this.currentStep = 2;
       }
+      return;
+    }
+    if (!this.validateTicketQuantitiesAgainstCapacity()) {
+      this.currentStep = 4;
       return;
     }
 

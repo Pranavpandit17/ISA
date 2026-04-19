@@ -74,13 +74,14 @@
             <td>
               <span class="status-pill status-draft">In Development</span>
             </td>
-            <td>
-              <div class="flex items-center justify-end gap-2">
-                <button (click)="openDetailModal(event)" [disabled]="isLoading"
+            <td class="event-actions-cell">
+              <div class="event-actions-row">
+                <button type="button" (click)="openDetailModal(event)" [disabled]="isLoading"
                   class="btn-pill btn-details">Review</button>
-                <button (click)="onEditEvent(event)" [disabled]="isLoading" class="btn-pill btn-edit">Modify</button>
-                <button (click)="onPublishEvent(event)" [disabled]="isLoading" class="btn-pill btn-publish">Go
-                  Live</button>
+                <button type="button" (click)="onEditEvent(event)" [disabled]="isLoading"
+                  class="btn-pill btn-edit">Modify</button>
+                <button type="button" (click)="onPublishEvent(event)" [disabled]="isLoading"
+                  class="btn-pill btn-publish">Go Live</button>
               </div>
             </td>
           </tr>
@@ -131,11 +132,13 @@
             <td>
               <span class="status-pill status-published">Published</span>
             </td>
-            <td class="text-right space-x-2">
-              <button (click)="openDetailModal(event)" [disabled]="isLoading"
-                class="btn-pill btn-details">Overview</button>
-              <button (click)="onEditEvent(event)" [disabled]="isLoading" class="btn-pill btn-edit">Refine
-                Details</button>
+            <td class="event-actions-cell">
+              <div class="event-actions-row">
+                <button type="button" (click)="openDetailModal(event)" [disabled]="isLoading"
+                  class="btn-pill btn-details">Overview</button>
+                <button type="button" (click)="onEditEvent(event)" [disabled]="isLoading"
+                  class="btn-pill btn-edit">Refine Details</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -184,9 +187,11 @@
                 [ngClass]="event.status === 'CANCELLED' ? 'status-cancelled' : 'status-completed'">{{ event.status ||
                 'COMPLETED' }}</span>
             </td>
-            <td class="text-right">
-              <button (click)="openDetailModal(event)" [disabled]="isLoading" class="btn-pill btn-details">Review
-                Outcome</button>
+            <td class="event-actions-cell">
+              <div class="event-actions-row">
+                <button type="button" (click)="openDetailModal(event)" [disabled]="isLoading"
+                  class="btn-pill btn-details">Review Outcome</button>
+              </div>
             </td>
           </tr>
         </tbody>

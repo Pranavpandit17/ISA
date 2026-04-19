@@ -5,6 +5,7 @@ import com.portal.dto.PlanFeatureDTO;
 import com.portal.entity.MembershipFeePlan;
 import com.portal.entity.PlanFeature;
 import com.portal.entity.Notification;
+import com.portal.config.MembershipPaymentsPlanIdSchemaSupport;
 import com.portal.repository.MembershipFeePlanRepository;
 import com.portal.repository.MembershipPaymentRepository;
 import com.portal.repository.PlanFeatureRepository;
@@ -36,6 +37,9 @@ public class PaymentPlanService {
 
     @Autowired
     private com.portal.repository.UserRepository userRepository;
+
+    @Autowired
+    private MembershipPaymentsPlanIdSchemaSupport membershipPaymentsPlanIdSchemaSupport;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -105,6 +109,13 @@ public class PaymentPlanService {
 
     @Transactional
     public void deletePlan(Long id) {
+        if (!feePlanRepository.existsById(id)) {
+            throw new RuntimeException("Plan not found");
+        }
+        feePlanRepository.deletePlanFeatureAssignments(id);
+        userRepository.clearSelectedPlanForPlan(id);
+        membershipPaymentsPlanIdSchemaSupport.ensurePlanIdNullable();
+        paymentRepository.clearPlanForPlan(id);
         feePlanRepository.deleteById(id);
     }
 

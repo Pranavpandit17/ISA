@@ -11,7 +11,7 @@ import {
 } from "./chunk-RLDPKJFY.js";
 import {
   MembershipPlansComponent
-} from "./chunk-Z45QXPBN.js";
+} from "./chunk-3NPFWXJV.js";
 import {
   JobListingsComponent
 } from "./chunk-IAQ5WSDV.js";
@@ -46,6 +46,7 @@ import {
 import "./chunk-BACPM34C.js";
 import {
   ApiService,
+  ChangeDetectorRef,
   CommonModule,
   DatePipe,
   EventEmitter,
@@ -1484,12 +1485,13 @@ function DashboardComponent_div_103_Template(rf, ctx) {
   }
 }
 var DashboardComponent = class _DashboardComponent {
-  constructor(authService, dataService, apiService, membershipService, route) {
+  constructor(authService, dataService, apiService, membershipService, route, cdr) {
     this.authService = authService;
     this.dataService = dataService;
     this.apiService = apiService;
     this.membershipService = membershipService;
     this.route = route;
+    this.cdr = cdr;
     this.navigate = new EventEmitter();
     this.viewEvent = new EventEmitter();
     this.currentView = null;
@@ -1536,10 +1538,8 @@ var DashboardComponent = class _DashboardComponent {
       const view = params["view"];
       if (view === "MEMBERSHIP_PLANS") {
         this.currentView = null;
-        setTimeout(() => {
-          const el = document.getElementById("membership-plans-section");
-          el?.scrollIntoView({ behavior: "auto", block: "start" });
-        }, 300);
+        this.cdr.detectChanges();
+        setTimeout(() => this.scrollPlansSectionIntoView(), 300);
       } else if (view) {
         this.onSelectView(view);
       }
@@ -1562,10 +1562,16 @@ var DashboardComponent = class _DashboardComponent {
     const normalizedPath = image.startsWith("/") ? image : `/${image}`;
     return `${this.apiService.getBackendBaseUrl()}${normalizedPath}`;
   }
+  /** Membership tiers block is only in the DOM when Overview is active (*ngIf="!currentView"). */
   scrollToPlans() {
+    this.currentView = null;
+    this.cdr.detectChanges();
+    setTimeout(() => this.scrollPlansSectionIntoView(), 0);
+  }
+  scrollPlansSectionIntoView() {
     const el = document.getElementById("membership-plans-section");
     if (el) {
-      el.scrollIntoView({ behavior: "auto", block: "start" });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
   refreshUnreadNotificationsCount() {
@@ -1653,10 +1659,8 @@ var DashboardComponent = class _DashboardComponent {
     if (viewParam === "MEMBERSHIP_PLANS") {
       this.currentView = null;
       this.closeNotifications();
-      setTimeout(() => {
-        const el = document.getElementById("membership-plans-section");
-        el?.scrollIntoView({ behavior: "auto", block: "start" });
-      }, 0);
+      this.cdr.detectChanges();
+      setTimeout(() => this.scrollPlansSectionIntoView(), 0);
       return;
     }
     if (viewParam) {
@@ -1696,10 +1700,8 @@ var DashboardComponent = class _DashboardComponent {
     if (cat === "PAYMENT" || cat === "MEMBERSHIP") {
       this.currentView = null;
       this.closeNotifications();
-      setTimeout(() => {
-        const el = document.getElementById("membership-plans-section");
-        el?.scrollIntoView({ behavior: "auto", block: "start" });
-      }, 0);
+      this.cdr.detectChanges();
+      setTimeout(() => this.scrollPlansSectionIntoView(), 0);
       return;
     }
     this.currentView = null;
@@ -2153,7 +2155,7 @@ var DashboardComponent = class _DashboardComponent {
   }
   static {
     this.\u0275fac = function DashboardComponent_Factory(t) {
-      return new (t || _DashboardComponent)(\u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(DataService), \u0275\u0275directiveInject(ApiService), \u0275\u0275directiveInject(MembershipService), \u0275\u0275directiveInject(ActivatedRoute));
+      return new (t || _DashboardComponent)(\u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(DataService), \u0275\u0275directiveInject(ApiService), \u0275\u0275directiveInject(MembershipService), \u0275\u0275directiveInject(ActivatedRoute), \u0275\u0275directiveInject(ChangeDetectorRef));
     };
   }
   static {
@@ -2381,4 +2383,4 @@ var DashboardComponent = class _DashboardComponent {
 export {
   DashboardComponent
 };
-//# sourceMappingURL=chunk-XZMUQMIV.js.map
+//# sourceMappingURL=chunk-ORGSQW5R.js.map

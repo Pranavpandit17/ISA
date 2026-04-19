@@ -881,22 +881,25 @@ var EventDetailComponent = class _EventDetailComponent {
   isTicketEligible(ticket) {
     if (!ticket)
       return false;
-    if (ticket.price === 0 || ticket.price === "0" || Number(ticket.price) === 0)
+    const typeStr = String(ticket.type || "").toUpperCase();
+    const priceNum = Number(ticket.price ?? 0);
+    if (!typeStr && priceNum === 0)
       return true;
     if (!this.currentUser)
       return false;
     const isAdmin = this.currentUser.role === "admin" || this.currentUser.type === "ADMIN";
-    switch (ticket.type) {
+    switch (typeStr) {
       case "VIP":
         return isAdmin || this.getActivePlanLevel() >= 3;
       case "MEMBER":
+      case "FREE_MEMBER":
         return isAdmin || this.getActivePlanLevel() >= 2;
       case "NON_MEMBER":
         return isAdmin || this.getActivePlanLevel() < 2;
       case "EARLY_BIRD":
         return this.isEarlyBirdOpen();
       default:
-        return true;
+        return priceNum === 0 || true;
     }
   }
   getTicketStatus(ticket) {
@@ -944,7 +947,7 @@ var EventDetailComponent = class _EventDetailComponent {
     if (ticket.type === "EARLY_BIRD" && !this.isEarlyBirdOpen())
       return "Early bird window is closed.";
     if (!this.isTicketEligible(ticket)) {
-      if (ticket.type === "MEMBER")
+      if (ticket.type === "MEMBER" || ticket.type === "FREE_MEMBER")
         return "This is a member-only ticket.";
       if (ticket.type === "NON_MEMBER")
         return "This ticket is for non-members only.";
@@ -1219,4 +1222,4 @@ var EventDetailComponent = class _EventDetailComponent {
 export {
   EventDetailComponent
 };
-//# sourceMappingURL=chunk-HXCYNPCX.js.map
+//# sourceMappingURL=chunk-VPDMSCR6.js.map

@@ -189,21 +189,59 @@ export class MembershipPlansComponent implements OnInit {
     this.isProcessing = false;
   }
 
+  private resolvePlanId(plan: MembershipPlan): number | null {
+    const raw = plan?.id ?? (plan as any)?.planId;
+    if (raw == null || raw === '') return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  }
+
   showFeatures(plan: MembershipPlan): void {
-    if (!plan.id) return;
-    
+    const planId = this.resolvePlanId(plan);
+    if (planId == null) {
+      this.toastr.warning('This plan has no detail record yet. Try again after plans reload.', 'Unavailable');
+      return;
+    }
+
     this.showingFeaturesForPlan = plan;
     this.isLoadingFeatures = true;
     this.planFeatures = [];
-    
-    this.apiService.getPlanFeaturesByPlan(plan.id).subscribe({
+
+    this.apiService.getPlanFeaturesByPlan(planId).subscribe({
       next: (response: any) => {
-        this.planFeatures = Array.isArray(response) ? response : [];
+        let list = Array.isArray(response) ? response : [];
+        if (list.length === 0 && plan.features?.length) {
+          list = (plan.features || []).map((f: any, idx: number) => ({
+            id: idx,
+            code: '',
+            name: typeof f === 'string' ? f : (f?.name || f?.description || 'Feature'),
+            description: typeof f === 'object' ? (f?.description || '') : '',
+            category: typeof f === 'object' && f?.category ? f.category : 'PREMIUM',
+            isActive: true
+          }));
+        }
+        this.planFeatures = list;
         this.isLoadingFeatures = false;
       },
       error: (error) => {
         console.error('Error loading plan features:', error);
-        this.planFeatures = [];
+        const msg =
+          error?.status === 403 || error?.status === 401
+            ? 'Please sign in again to load full plan details.'
+            : 'Could not load full plan details. Showing summary from the card where available.';
+        this.toastr.error(msg, 'Plan details');
+        let list: PlanFeature[] = [];
+        if (plan.features?.length) {
+          list = (plan.features || []).map((f: any, idx: number) => ({
+            id: idx,
+            code: '',
+            name: typeof f === 'string' ? f : (f?.name || f?.description || 'Feature'),
+            description: typeof f === 'object' ? (f?.description || '') : '',
+            category: typeof f === 'object' && f?.category ? f.category : 'PREMIUM',
+            isActive: true
+          }));
+        }
+        this.planFeatures = list;
         this.isLoadingFeatures = false;
       }
     });

@@ -189,7 +189,9 @@ public class EventRegistrationService {
         boolean isAdmin = user.getRole() == User.Role.ADMIN;
         int activePlanLevel = getActivePlanLevel(user);
 
-        if (ticketTypeEnum == TicketType.TicketTypeEnum.MEMBER && !isAdmin && activePlanLevel < 2) {
+        if ((ticketTypeEnum == TicketType.TicketTypeEnum.MEMBER
+                || ticketTypeEnum == TicketType.TicketTypeEnum.FREE_MEMBER)
+                && !isAdmin && activePlanLevel < 2) {
             throw new RuntimeException("This is a member-only ticket");
         }
 

@@ -206,6 +206,20 @@ table tbody tr:hover {
 .status-completed { background: #e2e8f0; color: #475569; }
 .status-cancelled { background: #fee2e2; color: #991b1b; }
 
+/* Actions column: align Overview + Refine Details (Tailwind space-x on <td> is unreliable in tables) */
+.event-actions-cell {
+  text-align: right;
+  vertical-align: middle;
+}
+
+.event-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* Action Buttons */
 .btn-pill {
   padding: 8px 16px;
@@ -215,6 +229,8 @@ table tbody tr:hover {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .btn-details { background: #f1f5f9; color: #475569; }

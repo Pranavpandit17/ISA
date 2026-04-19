@@ -2,6 +2,7 @@ package com.portal.repository;
 
 import com.portal.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,5 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
     List<User> findByRole(User.Role role);
     long countBySelectedPlanId(Long planId);
+
+    @Modifying
+    @Query("UPDATE User u SET u.selectedPlan = null WHERE u.selectedPlan.id = :planId")
+    void clearSelectedPlanForPlan(@Param("planId") Long planId);
 }
 

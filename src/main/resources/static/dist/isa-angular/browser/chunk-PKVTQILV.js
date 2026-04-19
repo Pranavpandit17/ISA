@@ -478,18 +478,38 @@ function EventCreateComponent_div_0_div_15_div_32_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
 }
-function EventCreateComponent_div_0_div_15_div_33_Template(rf, ctx) {
+function EventCreateComponent_div_0_div_15_p_33_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 73);
+    \u0275\u0275text(1, " Combined ");
+    \u0275\u0275elementStart(2, "strong");
+    \u0275\u0275text(3, "Quantity");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(4, " for all ticket types must not exceed ");
+    \u0275\u0275elementStart(5, "strong");
+    \u0275\u0275text(6, "event capacity");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(7);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance(7);
+    \u0275\u0275textInterpolate1(" (", ctx_r1.eventData.capacity, "). ");
+  }
+}
+function EventCreateComponent_div_0_div_15_div_34_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 73);
     \u0275\u0275text(1, " Ticket types are disabled because pricing type is set to Free. ");
     \u0275\u0275elementEnd();
   }
 }
-function EventCreateComponent_div_0_div_15_div_34_div_1_input_24_Template(rf, ctx) {
+function EventCreateComponent_div_0_div_15_div_35_div_1_input_25_Template(rf, ctx) {
   if (rf & 1) {
     const _r15 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "input", 91);
-    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_34_div_1_input_24_Template_input_ngModelChange_0_listener($event) {
+    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_input_25_Template_input_ngModelChange_0_listener($event) {
       \u0275\u0275restoreView(_r15);
       const t_r14 = \u0275\u0275nextContext().$implicit;
       \u0275\u0275twoWayBindingSet(t_r14.earlyBirdEndDate, $event) || (t_r14.earlyBirdEndDate = $event);
@@ -504,72 +524,76 @@ function EventCreateComponent_div_0_div_15_div_34_div_1_input_24_Template(rf, ct
     \u0275\u0275property("min", ctx_r1.getMinDate())("max", ctx_r1.getEarlyBirdMaxDate());
   }
 }
-function EventCreateComponent_div_0_div_15_div_34_div_1_Template(rf, ctx) {
+function EventCreateComponent_div_0_div_15_div_35_div_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r12 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 76)(1, "button", 77);
-    \u0275\u0275listener("click", function EventCreateComponent_div_0_div_15_div_34_div_1_Template_button_click_1_listener() {
+    \u0275\u0275listener("click", function EventCreateComponent_div_0_div_15_div_35_div_1_Template_button_click_1_listener() {
       const i_r13 = \u0275\u0275restoreView(_r12).index;
       const ctx_r1 = \u0275\u0275nextContext(4);
       return \u0275\u0275resetView(ctx_r1.removeTicketType(i_r13));
     });
     \u0275\u0275text(2, "Remove");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 78)(4, "input", 79);
-    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_34_div_1_Template_input_ngModelChange_4_listener($event) {
-      const t_r14 = \u0275\u0275restoreView(_r12).$implicit;
-      \u0275\u0275twoWayBindingSet(t_r14.name, $event) || (t_r14.name = $event);
-      return \u0275\u0275resetView($event);
-    });
+    \u0275\u0275elementStart(3, "div", 78)(4, "div", 79);
+    \u0275\u0275text(5);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "select", 80);
-    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_34_div_1_Template_select_ngModelChange_5_listener($event) {
+    \u0275\u0275elementStart(6, "select", 80);
+    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_Template_select_ngModelChange_6_listener($event) {
       const t_r14 = \u0275\u0275restoreView(_r12).$implicit;
       \u0275\u0275twoWayBindingSet(t_r14.type, $event) || (t_r14.type = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275elementStart(6, "option", 81);
-    \u0275\u0275text(7, "Paid Member");
+    \u0275\u0275listener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_Template_select_ngModelChange_6_listener() {
+      const t_r14 = \u0275\u0275restoreView(_r12).$implicit;
+      const ctx_r1 = \u0275\u0275nextContext(4);
+      return \u0275\u0275resetView(ctx_r1.onTicketTypeChange(t_r14));
+    });
+    \u0275\u0275elementStart(7, "option", 81);
+    \u0275\u0275text(8, "Paid Member");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(8, "option", 82);
-    \u0275\u0275text(9, "Free Member");
+    \u0275\u0275elementStart(9, "option", 82);
+    \u0275\u0275text(10, "Free Member");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(10, "option", 83);
-    \u0275\u0275text(11, "Non Member");
+    \u0275\u0275elementStart(11, "option", 83);
+    \u0275\u0275text(12, "Non Member");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "option", 84);
-    \u0275\u0275text(13, "VIP");
+    \u0275\u0275elementStart(13, "option", 84);
+    \u0275\u0275text(14, "VIP");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(14, "option", 85);
-    \u0275\u0275text(15, "Early Bird");
+    \u0275\u0275elementStart(15, "option", 85);
+    \u0275\u0275text(16, "Early Bird");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(16, "div", 86)(17, "span", 87);
-    \u0275\u0275text(18, "Price");
+    \u0275\u0275elementStart(17, "div", 86)(18, "span", 87);
+    \u0275\u0275text(19, "Price");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(19, "input", 88);
-    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_34_div_1_Template_input_ngModelChange_19_listener($event) {
+    \u0275\u0275elementStart(20, "input", 88);
+    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_Template_input_ngModelChange_20_listener($event) {
       const t_r14 = \u0275\u0275restoreView(_r12).$implicit;
       \u0275\u0275twoWayBindingSet(t_r14.price, $event) || (t_r14.price = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(20, "div", 86)(21, "span", 87);
-    \u0275\u0275text(22, "Quantity");
+    \u0275\u0275elementStart(21, "div", 86)(22, "span", 87);
+    \u0275\u0275text(23, "Quantity");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(23, "input", 89);
-    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_34_div_1_Template_input_ngModelChange_23_listener($event) {
+    \u0275\u0275elementStart(24, "input", 89);
+    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_Template_input_ngModelChange_24_listener($event) {
       const t_r14 = \u0275\u0275restoreView(_r12).$implicit;
       \u0275\u0275twoWayBindingSet(t_r14.availableQuantity, $event) || (t_r14.availableQuantity = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd()();
-    \u0275\u0275template(24, EventCreateComponent_div_0_div_15_div_34_div_1_input_24_Template, 1, 3, "input", 90);
+    \u0275\u0275template(25, EventCreateComponent_div_0_div_15_div_35_div_1_input_25_Template, 1, 3, "input", 90);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
     const t_r14 = ctx.$implicit;
+    const ctx_r1 = \u0275\u0275nextContext(4);
     \u0275\u0275advance(4);
-    \u0275\u0275twoWayProperty("ngModel", t_r14.name);
+    \u0275\u0275property("title", ctx_r1.defaultTicketName(t_r14.type));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate1(" ", ctx_r1.defaultTicketName(t_r14.type), " ");
     \u0275\u0275advance();
     \u0275\u0275twoWayProperty("ngModel", t_r14.type);
     \u0275\u0275advance(14);
@@ -580,10 +604,10 @@ function EventCreateComponent_div_0_div_15_div_34_div_1_Template(rf, ctx) {
     \u0275\u0275property("ngIf", t_r14.type === "EARLY_BIRD");
   }
 }
-function EventCreateComponent_div_0_div_15_div_34_Template(rf, ctx) {
+function EventCreateComponent_div_0_div_15_div_35_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 74);
-    \u0275\u0275template(1, EventCreateComponent_div_0_div_15_div_34_div_1_Template, 25, 5, "div", 75);
+    \u0275\u0275template(1, EventCreateComponent_div_0_div_15_div_35_div_1_Template, 26, 6, "div", 75);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -656,7 +680,7 @@ function EventCreateComponent_div_0_div_15_Template(rf, ctx) {
     \u0275\u0275elementStart(30, "option", 66);
     \u0275\u0275text(31, "Discounted");
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275template(32, EventCreateComponent_div_0_div_15_div_32_Template, 5, 0, "div", 67)(33, EventCreateComponent_div_0_div_15_div_33_Template, 2, 0, "div", 68)(34, EventCreateComponent_div_0_div_15_div_34_Template, 2, 1, "div", 69);
+    \u0275\u0275template(32, EventCreateComponent_div_0_div_15_div_32_Template, 5, 0, "div", 67)(33, EventCreateComponent_div_0_div_15_p_33_Template, 8, 1, "p", 68)(34, EventCreateComponent_div_0_div_15_div_34_Template, 2, 0, "div", 68)(35, EventCreateComponent_div_0_div_15_div_35_Template, 2, 1, "div", 69);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -670,6 +694,8 @@ function EventCreateComponent_div_0_div_15_Template(rf, ctx) {
     \u0275\u0275advance(6);
     \u0275\u0275twoWayProperty("ngModel", ctx_r1.eventData.pricing.type);
     \u0275\u0275advance(7);
+    \u0275\u0275property("ngIf", ctx_r1.eventData.pricing.type !== "FREE");
+    \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.eventData.pricing.type !== "FREE");
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.eventData.pricing.type === "FREE");
@@ -1057,7 +1083,7 @@ function EventCreateComponent_div_0_Template(rf, ctx) {
     \u0275\u0275elementEnd();
     \u0275\u0275template(9, EventCreateComponent_div_0_div_9_Template, 2, 1, "div", 8)(10, EventCreateComponent_div_0_div_10_Template, 2, 1, "div", 9);
     \u0275\u0275elementStart(11, "div", 10);
-    \u0275\u0275template(12, EventCreateComponent_div_0_div_12_Template, 47, 5, "div", 11)(13, EventCreateComponent_div_0_div_13_Template, 30, 8, "div", 11)(14, EventCreateComponent_div_0_div_14_Template, 51, 6, "div", 11)(15, EventCreateComponent_div_0_div_15_Template, 35, 7, "div", 11)(16, EventCreateComponent_div_0_div_16_Template, 17, 2, "div", 11);
+    \u0275\u0275template(12, EventCreateComponent_div_0_div_12_Template, 47, 5, "div", 11)(13, EventCreateComponent_div_0_div_13_Template, 30, 8, "div", 11)(14, EventCreateComponent_div_0_div_14_Template, 51, 6, "div", 11)(15, EventCreateComponent_div_0_div_15_Template, 36, 8, "div", 11)(16, EventCreateComponent_div_0_div_16_Template, 17, 2, "div", 11);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(17, "div", 12);
     \u0275\u0275template(18, EventCreateComponent_div_0_button_18_Template, 2, 0, "button", 13)(19, EventCreateComponent_div_0_div_19_Template, 3, 1, "div", 14)(20, EventCreateComponent_div_0_div_20_Template, 3, 2, "div", 14);
@@ -1295,7 +1321,7 @@ var EventCreateComponent = class _EventCreateComponent {
       const price = t.price != null ? Number(t.price) : 0;
       const uiType = rawType === "MEMBER" && price <= 0 ? "FREE_MEMBER" : rawType;
       return {
-        name: t.name || "",
+        name: this.defaultTicketName(uiType),
         type: uiType,
         price,
         availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : 0,
@@ -1310,7 +1336,7 @@ var EventCreateComponent = class _EventCreateComponent {
       const nonMemberPrice = Number(event.nonMemberPrice) || 0;
       if (memberPrice > 0) {
         mappedTicketTypes.push({
-          name: "Paid Member",
+          name: this.defaultTicketName("MEMBER"),
           type: "MEMBER",
           price: memberPrice,
           availableQuantity: Number(event.capacity) || 0,
@@ -1320,9 +1346,10 @@ var EventCreateComponent = class _EventCreateComponent {
       }
       if (freeMemberPrice > 0) {
         const treatAsEarlyBird = !!event.earlyBirdEndDate;
+        const synType = treatAsEarlyBird ? "EARLY_BIRD" : "FREE_MEMBER";
         mappedTicketTypes.push({
-          name: treatAsEarlyBird ? "Early Bird" : "Free Member",
-          type: treatAsEarlyBird ? "EARLY_BIRD" : "FREE_MEMBER",
+          name: this.defaultTicketName(synType),
+          type: synType,
           price: freeMemberPrice,
           availableQuantity: Number(event.capacity) || 0,
           quantityLimit: null,
@@ -1332,7 +1359,7 @@ var EventCreateComponent = class _EventCreateComponent {
       }
       if (nonMemberPrice > 0) {
         mappedTicketTypes.push({
-          name: "Non Member",
+          name: this.defaultTicketName("NON_MEMBER"),
           type: "NON_MEMBER",
           price: nonMemberPrice,
           availableQuantity: Number(event.capacity) || 0,
@@ -1505,6 +1532,9 @@ var EventCreateComponent = class _EventCreateComponent {
           }
         }
       }
+      if (!this.validateTicketQuantitiesAgainstCapacity()) {
+        return false;
+      }
     } else if (this.currentStep === 5) {
       const speakers = this.eventData.speakers || [];
       for (let i = 0; i < speakers.length; i++) {
@@ -1530,6 +1560,26 @@ var EventCreateComponent = class _EventCreateComponent {
     }
     return true;
   }
+  /**
+   * Ticket display name sent to API: "{Paid Member|Free Member|…} Ticket" from selected tier.
+   */
+  defaultTicketName(uiType) {
+    const key = String(uiType || "MEMBER").toUpperCase();
+    const labels = {
+      MEMBER: "Paid Member",
+      FREE_MEMBER: "Free Member",
+      NON_MEMBER: "Non Member",
+      VIP: "VIP",
+      EARLY_BIRD: "Early Bird"
+    };
+    const label = labels[key] || "Ticket";
+    return `${label} Ticket`;
+  }
+  onTicketTypeChange(t) {
+    if (!t)
+      return;
+    t.name = this.defaultTicketName(t.type);
+  }
   addTicketType() {
     if ((this.eventData.pricing?.type || "FREE") === "FREE") {
       this.errorMessage = "Ticket types are disabled for free events.";
@@ -1543,7 +1593,7 @@ var EventCreateComponent = class _EventCreateComponent {
       return;
     }
     this.eventData.ticketTypes.push({
-      name: "",
+      name: this.defaultTicketName(nextType),
       type: nextType,
       price: 0,
       availableQuantity: 0,
@@ -1589,6 +1639,39 @@ var EventCreateComponent = class _EventCreateComponent {
     }
     this.eventData.speakers.splice(index, 1);
   }
+  /**
+   * Same quantity rules as buildEventJson(): named ticket rows only;
+   * blank quantity defaults to full event capacity per tier.
+   */
+  validateTicketQuantitiesAgainstCapacity() {
+    const pType = this.eventData.pricing?.type || "FREE";
+    if (pType === "FREE") {
+      return true;
+    }
+    const cap = Number(this.eventData.capacity);
+    if (!Number.isFinite(cap) || cap < 1) {
+      return true;
+    }
+    const namedTickets = (this.eventData.ticketTypes || []).filter((t) => String(t?.name || "").trim().length > 0);
+    if (namedTickets.length === 0) {
+      return true;
+    }
+    let sum = 0;
+    for (const t of namedTickets) {
+      const raw = t.availableQuantity;
+      const q = raw != null && raw !== "" ? Number(raw) : cap;
+      if (!Number.isFinite(q) || q < 0 || !Number.isInteger(q)) {
+        this.errorMessage = "Each ticket quantity must be a non-negative whole number.";
+        return false;
+      }
+      sum += q;
+    }
+    if (sum > cap) {
+      this.errorMessage = `Total ticket quantities (${sum}) cannot exceed event capacity (${cap}). Reduce quantities or raise capacity in Location & capacity (step 3).`;
+      return false;
+    }
+    return true;
+  }
   validateDateTimes() {
     this.errorMessage = "";
     if (!this.eventData.startDate || !this.eventData.endDate || !this.eventData.startTime || !this.eventData.endTime) {
@@ -1619,28 +1702,18 @@ var EventCreateComponent = class _EventCreateComponent {
       twitterUrl: s.twitterUrl || "",
       websiteUrl: s.websiteUrl || ""
     }));
-    const ticketTypes = (this.eventData.pricing?.type || "FREE") === "FREE" ? [] : (this.eventData.ticketTypes || []).filter((t) => t.name && String(t.name).trim()).map((t) => ({
-      name: String(t.name).trim(),
-      type: (() => {
-        const uiType = String(t.type || "MEMBER").toUpperCase();
-        return uiType === "FREE_MEMBER" ? "MEMBER" : uiType;
-      })(),
+    const ticketTypes = (this.eventData.pricing?.type || "FREE") === "FREE" ? [] : (this.eventData.ticketTypes || []).filter((t) => String(t?.type || "").trim()).map((t) => ({
+      name: this.defaultTicketName(t.type),
+      type: String(t.type || "MEMBER").toUpperCase(),
       price: Number(t.price) || 0,
       quantityLimit: t.quantityLimit != null ? Number(t.quantityLimit) : null,
       availableQuantity: t.availableQuantity != null && t.availableQuantity !== "" ? Number(t.availableQuantity) : Number(this.eventData.capacity) || 0,
       description: t.description || ""
     }));
-    const ticketByType = /* @__PURE__ */ new Map();
-    for (const t of ticketTypes) {
-      const tt = String(t.type || "").toUpperCase();
-      if (!ticketByType.has(tt)) {
-        ticketByType.set(tt, t);
-      }
-    }
-    const paidMemberTicket = ticketByType.get("MEMBER");
-    const freeMemberTicket = ticketByType.get("EARLY_BIRD");
-    const nonMemberTicket = ticketByType.get("NON_MEMBER");
-    const earlyBirdTicket = ticketByType.get("EARLY_BIRD");
+    const findTicket = (codes) => ticketTypes.find((x) => codes.includes(String(x?.type || "").toUpperCase()));
+    const paidMemberTicket = findTicket(["MEMBER"]);
+    const nonMemberTicket = findTicket(["NON_MEMBER"]);
+    const earlyBirdTicket = findTicket(["EARLY_BIRD"]);
     const schedules = (this.eventData.schedule || []).filter((item) => item.title?.trim() && item.startTime && item.endTime).map((item, orderIndex) => ({
       startTime: item.startTime,
       endTime: item.endTime,
@@ -1672,7 +1745,7 @@ var EventCreateComponent = class _EventCreateComponent {
       // Keep legacy pricing fields in sync with ticket types for backend compatibility
       memberPrice: pricingType === "FREE" ? 0 : Number(paidMemberTicket?.price || 0),
       nonMemberPrice: pricingType === "FREE" ? 0 : Number(nonMemberTicket?.price || 0),
-      earlyBirdPrice: Number(freeMemberTicket?.price || 0) || 0,
+      earlyBirdPrice: Number(earlyBirdTicket?.price || 0) || 0,
       earlyBirdEndDate: (() => {
         const v = earlyBirdTicket?.earlyBirdEndDate || this.eventData.pricing?.earlyBirdEndDate;
         return v && String(v).trim() ? v : null;
@@ -1707,6 +1780,10 @@ var EventCreateComponent = class _EventCreateComponent {
       if (this.currentStep !== 2) {
         this.currentStep = 2;
       }
+      return;
+    }
+    if (!this.validateTicketQuantitiesAgainstCapacity()) {
+      this.currentStep = 4;
       return;
     }
     this.isLoading = true;
@@ -1808,7 +1885,7 @@ var EventCreateComponent = class _EventCreateComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventCreateComponent, selectors: [["app-event-create"]], inputs: { isModal: "isModal", editEvent: "editEvent", show: "show", saveEvent: "saveEvent" }, outputs: { navigate: "navigate", close: "close", saved: "saved" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "modal-overlay", 3, "click"], [1, "modal-container", 3, "click"], [1, "modal-header"], [1, "modal-title"], ["type", "button", "aria-label", "Close", 1, "btn-close", 3, "click"], [1, "step-track"], ["class", "step-node", 3, "active", "completed", 4, "ngFor", "ngForOf"], ["class", "alert alert-error", 4, "ngIf"], ["class", "alert alert-success", 4, "ngIf"], [1, "modal-body"], ["class", "step-section", 4, "ngIf"], [1, "modal-footer"], ["type", "button", "class", "btn-pill btn-secondary", 3, "click", 4, "ngIf"], ["class", "footer-next", 4, "ngIf"], [1, "step-node"], [1, "step-circle"], [1, "step-label"], ["class", "step-line", 3, "filled", 4, "ngIf"], [1, "step-line"], [1, "alert", "alert-error"], [1, "alert", "alert-success"], [1, "step-section"], [1, "form-title"], [1, "form-grid"], [1, "input-group"], [1, "input-label"], [1, "req"], ["type", "text", "placeholder", "Event name", 1, "premium-input", 3, "ngModelChange", "ngModel"], [1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "CONFERENCE"], ["value", "WORKSHOP"], ["value", "NETWORKING"], ["value", "SEMINAR"], ["value", "WEBINAR"], ["value", "TRAINING"], ["value", "OTHER"], [1, "input-group", "full-width"], ["type", "text", "placeholder", "One line summary", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "file", "accept", "image/jpeg,image/png,image/gif,image/webp", 1, "premium-input", "file-input", 3, "change"], [1, "hint"], ["class", "image-preview-row", 4, "ngIf"], ["rows", "4", "placeholder", "Full details (optional)", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], [1, "image-preview-row"], ["alt", "Event preview", 1, "thumb-preview", 3, "src"], ["type", "button", "class", "link-button", 3, "click", 4, "ngIf"], ["type", "button", 1, "link-button", 3, "click"], [1, "form-grid", "form-grid-2"], ["type", "date", 1, "premium-input", 3, "ngModelChange", "ngModel", "min"], ["type", "time", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "field-hint warn", 4, "ngIf"], [1, "field-hint", "warn"], ["value", "IN_PERSON"], ["value", "ONLINE"], ["value", "HYBRID"], ["type", "text", "placeholder", "Address or venue name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "input-group full-width", 4, "ngIf"], ["type", "number", "min", "1", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "PUBLIC"], ["value", "MEMBERS_ONLY"], ["type", "url", "placeholder", "https://example.com/meeting", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Organizer name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "email", "placeholder", "name@example.com", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "+1 \u2026 (optional)", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "FREE"], ["value", "PAID"], ["value", "DISCOUNTED"], ["class", "subsection-head", 4, "ngIf"], ["class", "field-hint", 4, "ngIf"], ["class", "stack", 4, "ngIf"], [1, "subsection-head"], [1, "subsection-title"], ["type", "button", 1, "btn-pill", "btn-primary", "btn-small", 3, "click"], [1, "field-hint"], [1, "stack"], ["class", "ticket-card", 4, "ngFor", "ngForOf"], [1, "ticket-card"], ["type", "button", 1, "remove-link", 3, "click"], [1, "ticket-row"], ["type", "text", "placeholder", "Ticket name", 1, "premium-input", "grow", 3, "ngModelChange", "ngModel"], [1, "premium-input", "ticket-type-select", 3, "ngModelChange", "ngModel"], ["value", "MEMBER"], ["value", "FREE_MEMBER"], ["value", "NON_MEMBER"], ["value", "VIP"], ["value", "EARLY_BIRD"], [1, "inline-input-group"], [1, "inline-input-label"], ["type", "number", "min", "0", "step", "0.01", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "number", "min", "0", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "date", "class", "premium-input early-bird-date", "placeholder", "Early bird end date", 3, "ngModel", "min", "max", "ngModelChange", 4, "ngIf"], ["type", "date", "placeholder", "Early bird end date", 1, "premium-input", "early-bird-date", 3, "ngModelChange", "ngModel", "min", "max"], ["class", "item-card", 4, "ngFor", "ngForOf"], [1, "item-card"], ["type", "button", 1, "remove-link", "card-remove", 3, "click"], [1, "card-kicker"], ["type", "text", "placeholder", "Speaker name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Job title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Company name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "3", "placeholder", "Speaker biography", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "LinkedIn URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Twitter URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Website URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["alt", "", 1, "thumb-preview", "sm", 3, "src"], ["type", "text", "placeholder", "Session title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "2", "placeholder", "Session description", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Room or venue", 1, "premium-input", 3, "ngModelChange", "ngModel"], [3, "ngValue"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["type", "button", 1, "btn-pill", "btn-secondary", 3, "click"], [1, "footer-next"], ["type", "button", 1, "btn-pill", "btn-primary", 3, "click", "disabled"], ["type", "button", 1, "btn-pill", "btn-success", 3, "click", "disabled"]], template: function EventCreateComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventCreateComponent, selectors: [["app-event-create"]], inputs: { isModal: "isModal", editEvent: "editEvent", show: "show", saveEvent: "saveEvent" }, outputs: { navigate: "navigate", close: "close", saved: "saved" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "modal-overlay", 3, "click"], [1, "modal-container", 3, "click"], [1, "modal-header"], [1, "modal-title"], ["type", "button", "aria-label", "Close", 1, "btn-close", 3, "click"], [1, "step-track"], ["class", "step-node", 3, "active", "completed", 4, "ngFor", "ngForOf"], ["class", "alert alert-error", 4, "ngIf"], ["class", "alert alert-success", 4, "ngIf"], [1, "modal-body"], ["class", "step-section", 4, "ngIf"], [1, "modal-footer"], ["type", "button", "class", "btn-pill btn-secondary", 3, "click", 4, "ngIf"], ["class", "footer-next", 4, "ngIf"], [1, "step-node"], [1, "step-circle"], [1, "step-label"], ["class", "step-line", 3, "filled", 4, "ngIf"], [1, "step-line"], [1, "alert", "alert-error"], [1, "alert", "alert-success"], [1, "step-section"], [1, "form-title"], [1, "form-grid"], [1, "input-group"], [1, "input-label"], [1, "req"], ["type", "text", "placeholder", "Event name", 1, "premium-input", 3, "ngModelChange", "ngModel"], [1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "CONFERENCE"], ["value", "WORKSHOP"], ["value", "NETWORKING"], ["value", "SEMINAR"], ["value", "WEBINAR"], ["value", "TRAINING"], ["value", "OTHER"], [1, "input-group", "full-width"], ["type", "text", "placeholder", "One line summary", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "file", "accept", "image/jpeg,image/png,image/gif,image/webp", 1, "premium-input", "file-input", 3, "change"], [1, "hint"], ["class", "image-preview-row", 4, "ngIf"], ["rows", "4", "placeholder", "Full details (optional)", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], [1, "image-preview-row"], ["alt", "Event preview", 1, "thumb-preview", 3, "src"], ["type", "button", "class", "link-button", 3, "click", 4, "ngIf"], ["type", "button", 1, "link-button", 3, "click"], [1, "form-grid", "form-grid-2"], ["type", "date", 1, "premium-input", 3, "ngModelChange", "ngModel", "min"], ["type", "time", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "field-hint warn", 4, "ngIf"], [1, "field-hint", "warn"], ["value", "IN_PERSON"], ["value", "ONLINE"], ["value", "HYBRID"], ["type", "text", "placeholder", "Address or venue name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "input-group full-width", 4, "ngIf"], ["type", "number", "min", "1", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "PUBLIC"], ["value", "MEMBERS_ONLY"], ["type", "url", "placeholder", "https://example.com/meeting", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Organizer name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "email", "placeholder", "name@example.com", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "+1 \u2026 (optional)", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "FREE"], ["value", "PAID"], ["value", "DISCOUNTED"], ["class", "subsection-head", 4, "ngIf"], ["class", "field-hint", 4, "ngIf"], ["class", "stack", 4, "ngIf"], [1, "subsection-head"], [1, "subsection-title"], ["type", "button", 1, "btn-pill", "btn-primary", "btn-small", 3, "click"], [1, "field-hint"], [1, "stack"], ["class", "ticket-card", 4, "ngFor", "ngForOf"], [1, "ticket-card"], ["type", "button", 1, "remove-link", 3, "click"], [1, "ticket-row"], [1, "premium-input", "grow", "flex", "items-center", "min-h-[42px]", "text-slate-800", "font-semibold", "bg-slate-50", "border", "border-slate-200", "rounded-xl", "px-3", 3, "title"], [1, "premium-input", "ticket-type-select", 3, "ngModelChange", "ngModel"], ["value", "MEMBER"], ["value", "FREE_MEMBER"], ["value", "NON_MEMBER"], ["value", "VIP"], ["value", "EARLY_BIRD"], [1, "inline-input-group"], [1, "inline-input-label"], ["type", "number", "min", "0", "step", "0.01", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "number", "min", "0", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "date", "class", "premium-input early-bird-date", "placeholder", "Early bird end date", 3, "ngModel", "min", "max", "ngModelChange", 4, "ngIf"], ["type", "date", "placeholder", "Early bird end date", 1, "premium-input", "early-bird-date", 3, "ngModelChange", "ngModel", "min", "max"], ["class", "item-card", 4, "ngFor", "ngForOf"], [1, "item-card"], ["type", "button", 1, "remove-link", "card-remove", 3, "click"], [1, "card-kicker"], ["type", "text", "placeholder", "Speaker name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Job title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Company name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "3", "placeholder", "Speaker biography", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "LinkedIn URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Twitter URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Website URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["alt", "", 1, "thumb-preview", "sm", 3, "src"], ["type", "text", "placeholder", "Session title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "2", "placeholder", "Session description", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Room or venue", 1, "premium-input", 3, "ngModelChange", "ngModel"], [3, "ngValue"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["type", "button", 1, "btn-pill", "btn-secondary", 3, "click"], [1, "footer-next"], ["type", "button", 1, "btn-pill", "btn-primary", 3, "click", "disabled"], ["type", "button", 1, "btn-pill", "btn-success", 3, "click", "disabled"]], template: function EventCreateComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275template(0, EventCreateComponent_div_0_Template, 21, 13, "div", 0);
       }
@@ -1825,4 +1902,4 @@ var EventCreateComponent = class _EventCreateComponent {
 export {
   EventCreateComponent
 };
-//# sourceMappingURL=chunk-IRW6WFS7.js.map
+//# sourceMappingURL=chunk-PKVTQILV.js.map

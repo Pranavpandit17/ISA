@@ -8354,16 +8354,16 @@ var planSelectedGuard = () => {
 var routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
   { path: "home", loadComponent: () => import("./chunk-JDMDZUH7.js").then((c) => c.HomeComponent) },
-  { path: "dashboard", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-XZMUQMIV.js").then((c) => c.DashboardComponent) },
-  { path: "admin-dashboard", canActivate: [adminGuard], loadComponent: () => import("./chunk-HB7OY434.js").then((c) => c.AdminDashboardComponent) },
+  { path: "dashboard", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-ORGSQW5R.js").then((c) => c.DashboardComponent) },
+  { path: "admin-dashboard", canActivate: [adminGuard], loadComponent: () => import("./chunk-VZQ5HP63.js").then((c) => c.AdminDashboardComponent) },
   { path: "directory", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-AUNLWQYM.js").then((c) => c.DirectoryComponent) },
   { path: "events", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-US57M6QG.js").then((c) => c.EventsComponent) },
-  { path: "events/:id", loadComponent: () => import("./chunk-HXCYNPCX.js").then((c) => c.EventDetailComponent) },
+  { path: "events/:id", loadComponent: () => import("./chunk-VPDMSCR6.js").then((c) => c.EventDetailComponent) },
   { path: "bench", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-NTFFWU2G.js").then((c) => c.BenchComponent) },
   { path: "blogs", loadComponent: () => import("./chunk-QGX2Z5C4.js").then((c) => c.BlogsComponent) },
   {
     path: "old-events/:id",
-    loadComponent: () => import("./chunk-HXCYNPCX.js").then((c) => c.EventDetailComponent),
+    loadComponent: () => import("./chunk-VPDMSCR6.js").then((c) => c.EventDetailComponent),
     data: { eventArchive: true }
   },
   { path: "old-events", loadComponent: () => import("./chunk-IB7WX6EI.js").then((c) => c.OldEventsComponent) },
@@ -8372,9 +8372,9 @@ var routes = [
   { path: "project-post", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-AZKVJDE4.js").then((c) => c.ProjectPostComponent) },
   { path: "blog-create", canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import("./chunk-FV573UEU.js").then((c) => c.BlogCreateComponent) },
   { path: "member-management", canActivate: [adminGuard], loadComponent: () => import("./chunk-YMKVBDW2.js").then((c) => c.MemberManagementComponent) },
-  { path: "event-create", canActivate: [adminGuard, planSelectedGuard], loadComponent: () => import("./chunk-QK3YFSKV.js").then((c) => c.EventCreateComponent) },
+  { path: "event-create", canActivate: [adminGuard, planSelectedGuard], loadComponent: () => import("./chunk-L7IUTBJA.js").then((c) => c.EventCreateComponent) },
   { path: "event-management", canActivate: [adminGuard], loadComponent: () => import("./chunk-ISZSRCDC.js").then((c) => c.EventManagementComponent) },
-  { path: "select-plan", canActivate: [memberGuard], loadComponent: () => import("./chunk-NUFSX52W.js").then((c) => c.MembershipPlansComponent) },
+  { path: "select-plan", canActivate: [memberGuard], loadComponent: () => import("./chunk-LFZ3BSWQ.js").then((c) => c.MembershipPlansComponent) },
   { path: "**", redirectTo: "home" }
   // Fallback
 ];

@@ -32,8 +32,9 @@ public class TicketType {
     @Column(nullable = false, length = 100)
     private String name;
 
+    /** Stored as VARCHAR — do not use a MySQL ENUM column or new values (e.g. FREE_MEMBER) will truncate at insert. */
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private TicketTypeEnum type;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -57,7 +58,12 @@ public class TicketType {
     private LocalDateTime updatedAt;
 
     public enum TicketTypeEnum {
-        MEMBER, NON_MEMBER, EARLY_BIRD, VIP
+        MEMBER,
+        /** Member tier at ₹0 — distinct from paid {@link #MEMBER} so both can exist on one event */
+        FREE_MEMBER,
+        NON_MEMBER,
+        EARLY_BIRD,
+        VIP
     }
 
     // Getters and Setters

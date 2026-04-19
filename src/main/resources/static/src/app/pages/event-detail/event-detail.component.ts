@@ -187,23 +187,27 @@ export class EventDetailComponent implements OnInit {
   isTicketEligible(ticket: any): boolean {
     if (!ticket) return false;
 
-    // If ticket is free, it should be available for everyone
-    if (ticket.price === 0 || ticket.price === '0' || Number(ticket.price) === 0) return true;
+    const typeStr = String(ticket.type || '').toUpperCase();
+    const priceNum = Number(ticket.price ?? 0);
+
+    // ₹0 ticket with no tier type — treat as open (legacy / simple free passes)
+    if (!typeStr && priceNum === 0) return true;
 
     if (!this.currentUser) return false;
 
     const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
-    switch (ticket.type) {
+    switch (typeStr) {
       case 'VIP':
         return isAdmin || this.getActivePlanLevel() >= 3;
       case 'MEMBER':
+      case 'FREE_MEMBER':
         return isAdmin || this.getActivePlanLevel() >= 2;
       case 'NON_MEMBER':
         return isAdmin || this.getActivePlanLevel() < 2;
       case 'EARLY_BIRD':
         return this.isEarlyBirdOpen();
       default:
-        return true;
+        return priceNum === 0 || true;
     }
   }
 
@@ -248,7 +252,7 @@ export class EventDetailComponent implements OnInit {
     if (!this.isTicketAvailable(ticket)) return 'Selected ticket is sold out.';
     if (ticket.type === 'EARLY_BIRD' && !this.isEarlyBirdOpen()) return 'Early bird window is closed.';
     if (!this.isTicketEligible(ticket)) {
-      if (ticket.type === 'MEMBER') return 'This is a member-only ticket.';
+      if (ticket.type === 'MEMBER' || ticket.type === 'FREE_MEMBER') return 'This is a member-only ticket.';
       if (ticket.type === 'NON_MEMBER') return 'This ticket is for non-members only.';
       if (ticket.type === 'VIP') return 'VIP ticket is restricted.';
       return 'You are not eligible for this ticket.';

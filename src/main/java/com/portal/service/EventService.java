@@ -80,6 +80,9 @@ public class EventService {
 
     @Transactional
     public EventDTO createEvent(EventDTO eventDTO, String email) { // Parameter is now email, not username
+        if (eventDTO.getPricingType() == null || !eventDTO.getPricingType().equals("FREE")) {
+            validateTicketQuotaSum(eventDTO, eventDTO.getCapacity());
+        }
         Event event = convertToEntity(eventDTO);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -191,7 +194,17 @@ public class EventService {
     public EventDTO updateEvent(Long id, EventDTO eventDTO) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
-        
+
+        if (eventDTO.getTicketTypes() != null && !eventDTO.getTicketTypes().isEmpty()) {
+            int effectiveCap = eventDTO.getCapacity() != null ? eventDTO.getCapacity() : event.getCapacity();
+            String pt = eventDTO.getPricingType() != null
+                    ? eventDTO.getPricingType()
+                    : (event.getPricingType() != null ? event.getPricingType().name() : null);
+            if (pt == null || !pt.equals("FREE")) {
+                validateTicketQuotaSum(eventDTO, effectiveCap);
+            }
+        }
+
         // Update all fields from DTO
         if (eventDTO.getName() != null) event.setName(eventDTO.getName());
         if (eventDTO.getType() != null) event.setType(Event.EventType.valueOf(eventDTO.getType()));
@@ -345,7 +358,7 @@ public class EventService {
         
         // Calculate total registered seats (sum of all quantities)
         int totalRegisteredSeats = registrations.stream()
-                .mapToInt(com.portal.entity.EventRegistration::getQuantity)
+                .mapToInt(r -> r.getQuantity() != null ? r.getQuantity() : 0)
                 .sum();
         dto.setTotalRegisteredSeats(totalRegisteredSeats);
         
@@ -508,6 +521,37 @@ public class EventService {
         return schedule;
     }
     
+    /**
+     * Ensures the sum of ticket {@code availableQuantity} values (defaulting each unset tier to capacity)
+     * does not exceed the event venue capacity.
+     */
+    private void validateTicketQuotaSum(EventDTO dto, Integer capacity) {
+        if (capacity == null || capacity < 1) {
+            return;
+        }
+        if (dto.getTicketTypes() == null || dto.getTicketTypes().isEmpty()) {
+            return;
+        }
+        List<TicketTypeDTO> normalized = normalizeTicketTypeDTOs(dto.getTicketTypes());
+        if (normalized.isEmpty()) {
+            return;
+        }
+        int sum = 0;
+        for (TicketTypeDTO tt : normalized) {
+            Integer aq = tt.getAvailableQuantity();
+            int q = aq != null ? aq : capacity;
+            if (q < 0) {
+                throw new RuntimeException("Ticket quantity cannot be negative.");
+            }
+            sum += q;
+        }
+        if (sum > capacity) {
+            throw new RuntimeException(String.format(
+                    "Total ticket quantities (%d) cannot exceed event capacity (%d).",
+                    sum, capacity));
+        }
+    }
+
     private TicketType convertTicketTypeToEntity(TicketTypeDTO dto, Event event) {
         TicketType ticketType = new TicketType();
         ticketType.setEvent(event);
@@ -571,22 +615,31 @@ public class EventService {
     private EventRegistrationDTO convertRegistrationToDTO(com.portal.entity.EventRegistration registration) {
         EventRegistrationDTO dto = new EventRegistrationDTO();
         dto.setId(registration.getId());
-        dto.setEventId(registration.getEvent().getId());
-        dto.setEventName(registration.getEvent().getName());
-        dto.setUserId(registration.getUser().getId());
-        dto.setUserName(registration.getUser().getName());
-        dto.setUserEmail(registration.getUser().getEmail());
-        dto.setName(registration.getUser().getName()); // Alias for frontend
-        dto.setEmail(registration.getUser().getEmail()); // Alias for frontend
+        if (registration.getEvent() != null) {
+            dto.setEventId(registration.getEvent().getId());
+            dto.setEventName(registration.getEvent().getName());
+        }
+        if (registration.getUser() != null) {
+            dto.setUserId(registration.getUser().getId());
+            dto.setUserName(registration.getUser().getName());
+            dto.setUserEmail(registration.getUser().getEmail());
+            dto.setName(registration.getUser().getName()); // Alias for frontend
+            dto.setEmail(registration.getUser().getEmail()); // Alias for frontend
+        } else {
+            dto.setUserName("Unknown user");
+            dto.setUserEmail("");
+            dto.setName("Unknown user");
+            dto.setEmail("");
+        }
         if (registration.getTicketType() != null) {
             dto.setTicketTypeId(registration.getTicketType().getId());
             dto.setTicketTypeName(registration.getTicketType().getName());
         }
-        dto.setQuantity(registration.getQuantity());
+        dto.setQuantity(registration.getQuantity() != null ? registration.getQuantity() : 0);
         dto.setTotalAmount(registration.getTotalAmount());
-        dto.setStatus(registration.getStatus().name());
+        dto.setStatus(registration.getStatus() != null ? registration.getStatus().name() : "");
         dto.setRegistrationId(registration.getRegistrationId());
-        dto.setPaymentStatus(registration.getPaymentStatus().name());
+        dto.setPaymentStatus(registration.getPaymentStatus() != null ? registration.getPaymentStatus().name() : "");
         dto.setCheckedIn(registration.getCheckedIn());
         dto.setCheckedInAt(registration.getCheckedInAt());
         dto.setRegisteredAt(registration.getRegisteredAt());

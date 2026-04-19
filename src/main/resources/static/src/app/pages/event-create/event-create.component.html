@@ -159,6 +159,9 @@
           <h4 class="subsection-title">Ticket types</h4>
           <button type="button" (click)="addTicketType()" class="btn-pill btn-primary btn-small">+ Add ticket type</button>
         </div>
+        <p *ngIf="eventData.pricing.type !== 'FREE'" class="field-hint">
+          Combined <strong>Quantity</strong> for all ticket types must not exceed <strong>event capacity</strong> ({{ eventData.capacity }}).
+        </p>
         <div *ngIf="eventData.pricing.type === 'FREE'" class="field-hint">
           Ticket types are disabled because pricing type is set to Free.
         </div>
@@ -166,8 +169,11 @@
           <div *ngFor="let t of eventData.ticketTypes; let i = index" class="ticket-card">
             <button type="button" (click)="removeTicketType(i)" class="remove-link">Remove</button>
             <div class="ticket-row">
-              <input type="text" [(ngModel)]="t.name" class="premium-input grow" placeholder="Ticket name" />
-              <select [(ngModel)]="t.type" class="premium-input ticket-type-select">
+              <div class="premium-input grow flex items-center min-h-[42px] text-slate-800 font-semibold bg-slate-50 border border-slate-200 rounded-xl px-3"
+                   [title]="defaultTicketName(t.type)">
+                {{ defaultTicketName(t.type) }}
+              </div>
+              <select [(ngModel)]="t.type" (ngModelChange)="onTicketTypeChange(t)" class="premium-input ticket-type-select">
                 <option value="MEMBER">Paid Member</option>
                 <option value="FREE_MEMBER">Free Member</option>
                 <option value="NON_MEMBER">Non Member</option>

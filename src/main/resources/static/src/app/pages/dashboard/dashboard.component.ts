@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -73,7 +73,8 @@ export class DashboardComponent implements OnInit {
     private dataService: DataService,
     private apiService: ApiService,
     private membershipService: MembershipService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -101,12 +102,10 @@ export class DashboardComponent implements OnInit {
     // Check for query parameters (e.g. ?view=MEMBERSHIP_PLANS)
     this.route.queryParams.subscribe(params => {
       const view = params['view'];
-      if (view === 'MEMBERSHIP_PLANS'!) {
-        this.currentView = null; // Default dashboard view holds the plans
-        setTimeout(() => {
-          const el = document.getElementById('membership-plans-section');
-          el?.scrollIntoView({ behavior: 'auto', block: 'start' });
-        }, 300);
+      if (view === 'MEMBERSHIP_PLANS') {
+        this.currentView = null; // Plan section only exists on Overview (? !currentView)
+        this.cdr.detectChanges();
+        setTimeout(() => this.scrollPlansSectionIntoView(), 300);
       } else if (view) {
         this.onSelectView(view as DashboardView);
       }
@@ -131,10 +130,17 @@ export class DashboardComponent implements OnInit {
     return `${this.apiService.getBackendBaseUrl()}${normalizedPath}`;
   }
 
+  /** Membership tiers block is only in the DOM when Overview is active (*ngIf="!currentView"). */
   scrollToPlans(): void {
+    this.currentView = null;
+    this.cdr.detectChanges();
+    setTimeout(() => this.scrollPlansSectionIntoView(), 0);
+  }
+
+  private scrollPlansSectionIntoView(): void {
     const el = document.getElementById('membership-plans-section');
     if (el) {
-      el.scrollIntoView({ behavior: 'auto', block: 'start' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -244,10 +250,8 @@ export class DashboardComponent implements OnInit {
     if (viewParam === 'MEMBERSHIP_PLANS') {
       this.currentView = null;
       this.closeNotifications();
-      setTimeout(() => {
-        const el = document.getElementById('membership-plans-section');
-        el?.scrollIntoView({ behavior: 'auto', block: 'start' });
-      }, 0);
+      this.cdr.detectChanges();
+      setTimeout(() => this.scrollPlansSectionIntoView(), 0);
       return;
     }
 
@@ -298,10 +302,8 @@ export class DashboardComponent implements OnInit {
     if (cat === 'PAYMENT' || cat === 'MEMBERSHIP') {
       this.currentView = null;
       this.closeNotifications();
-      setTimeout(() => {
-        const el = document.getElementById('membership-plans-section');
-        el?.scrollIntoView({ behavior: 'auto', block: 'start' });
-      }, 0);
+      this.cdr.detectChanges();
+      setTimeout(() => this.scrollPlansSectionIntoView(), 0);
       return;
     }
 

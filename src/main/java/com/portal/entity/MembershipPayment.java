@@ -29,7 +29,7 @@ public class MembershipPayment {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "plan_id", nullable = false)
+    @JoinColumn(name = "plan_id")
     private MembershipFeePlan plan;
 
     @Column(nullable = false, precision = 10, scale = 2)

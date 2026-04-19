@@ -2,6 +2,7 @@ package com.portal.repository;
 
 import com.portal.entity.MembershipPayment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,10 @@ import java.util.Optional;
 @Repository
 public interface MembershipPaymentRepository extends JpaRepository<MembershipPayment, Long> {
     List<MembershipPayment> findByMemberId(Long memberId);
+
+    @Modifying
+    @Query("UPDATE MembershipPayment mp SET mp.plan = null WHERE mp.plan.id = :planId")
+    void clearPlanForPlan(@Param("planId") Long planId);
 
     Optional<MembershipPayment> findTopByMemberIdAndStatusOrderByCreatedAtDesc(
             Long memberId,
