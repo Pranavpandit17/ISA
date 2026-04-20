@@ -70,11 +70,14 @@
       <!-- Financial Commitment Segment -->
       <div class="content-group border-indigo-100 bg-indigo-50/30">
         <span class="group-title text-indigo-400">Financial Valuation</span>
-        <div *ngIf="getTicketTypes().length" class="mb-4">
-          <label class="text-[10px] font-black text-indigo-300 uppercase mb-2 block">Ticket Type</label>
+        <div *ngIf="getTicketTypes().length && !getVisibleTicketTypes().length" class="mb-4 rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2 text-[11px] font-bold text-amber-800">
+          No ticket options are available for your current membership. You can still review event details above.
+        </div>
+        <div *ngIf="getVisibleTicketTypes().length" class="mb-4">
+          <label class="text-[10px] font-black text-indigo-300 uppercase mb-2 block">Your ticket options</label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <button type="button"
-                    *ngFor="let ticket of getTicketTypes()"
+                    *ngFor="let ticket of getVisibleTicketTypes()"
                     (click)="selectTicket(ticket)"
                     class="text-left px-3 py-2 rounded-xl border transition"
                     [ngClass]="{

@@ -1,4 +1,7 @@
 import {
+  formatMemberFacingCost
+} from "./chunk-WTPJNKEG.js";
+import {
   MembershipService
 } from "./chunk-ZRHEMPKX.js";
 import {
@@ -62,12 +65,19 @@ var _c0 = () => ["CONFERENCE", "NETWORKING", "WORKSHOP", "WEBINAR"];
 var _c1 = (a0, a1, a2, a3, a4) => ({ "bg-indigo-600": a0, "bg-emerald-600": a1, "bg-fuchsia-600": a2, "bg-amber-600": a3, "bg-slate-500": a4 });
 var _c2 = (a0, a1) => ({ "border-indigo-500 bg-white": a0, "border-slate-200 bg-slate-50": a1 });
 var _c3 = (a0, a1, a2, a3) => ({ "text-emerald-600": a0, "text-amber-600": a1, "text-rose-600": a2, "text-slate-400": a3 });
-function EventDetailModalComponent_div_0_div_7_div_44_button_4_div_12_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_44_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 52)(1, "span", 53);
+    \u0275\u0275elementStart(0, "div", 44);
+    \u0275\u0275text(1, " No ticket options are available for your current membership. You can still review event details above. ");
+    \u0275\u0275elementEnd();
+  }
+}
+function EventDetailModalComponent_div_0_div_7_div_45_button_4_div_12_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 54)(1, "span", 55);
     \u0275\u0275text(2, "Quantity Left");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span", 56);
+    \u0275\u0275elementStart(3, "span", 58);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd()();
   }
@@ -77,12 +87,12 @@ function EventDetailModalComponent_div_0_div_7_div_44_button_4_div_12_Template(r
     \u0275\u0275textInterpolate(ticket_r5.availableQuantity);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_44_button_4_div_13_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_45_button_4_div_13_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 52)(1, "span", 53);
+    \u0275\u0275elementStart(0, "div", 54)(1, "span", 55);
     \u0275\u0275text(2, "Ends On");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span", 56);
+    \u0275\u0275elementStart(3, "span", 58);
     \u0275\u0275text(4);
     \u0275\u0275pipe(5, "date");
     \u0275\u0275elementEnd()();
@@ -93,29 +103,29 @@ function EventDetailModalComponent_div_0_div_7_div_44_button_4_div_13_Template(r
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(5, 1, ctx_r1.event.earlyBirdEndDate, "dd MMM yyyy"));
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_44_button_4_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_45_button_4_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 48);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_div_44_button_4_Template_button_click_0_listener() {
+    \u0275\u0275elementStart(0, "button", 50);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_div_45_button_4_Template_button_click_0_listener() {
       const ticket_r5 = \u0275\u0275restoreView(_r4).$implicit;
       const ctx_r1 = \u0275\u0275nextContext(4);
       return \u0275\u0275resetView(ctx_r1.selectTicket(ticket_r5));
     });
-    \u0275\u0275elementStart(1, "div", 49)(2, "span", 50);
+    \u0275\u0275elementStart(1, "div", 51)(2, "span", 52);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "span", 51);
+    \u0275\u0275elementStart(4, "span", 53);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "div", 52)(7, "span", 53);
+    \u0275\u0275elementStart(6, "div", 54)(7, "span", 55);
     \u0275\u0275text(8, "Price");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(9, "span", 54);
+    \u0275\u0275elementStart(9, "span", 56);
     \u0275\u0275text(10);
     \u0275\u0275pipe(11, "number");
     \u0275\u0275elementEnd()();
-    \u0275\u0275template(12, EventDetailModalComponent_div_0_div_7_div_44_button_4_div_12_Template, 5, 1, "div", 55)(13, EventDetailModalComponent_div_0_div_7_div_44_button_4_div_13_Template, 6, 4, "div", 55);
+    \u0275\u0275template(12, EventDetailModalComponent_div_0_div_7_div_45_button_4_div_12_Template, 5, 1, "div", 57)(13, EventDetailModalComponent_div_0_div_7_div_45_button_4_div_13_Template, 6, 4, "div", 57);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -136,9 +146,9 @@ function EventDetailModalComponent_div_0_div_7_div_44_button_4_Template(rf, ctx)
     \u0275\u0275property("ngIf", ticket_r5.type === "EARLY_BIRD" && (ctx_r1.event == null ? null : ctx_r1.event.earlyBirdEndDate));
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_44_div_5_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_45_div_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 57);
+    \u0275\u0275elementStart(0, "div", 59);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -148,34 +158,34 @@ function EventDetailModalComponent_div_0_div_7_div_44_div_5_Template(rf, ctx) {
     \u0275\u0275textInterpolate1(" ", ctx_r1.getSelectedTicketReason(), " ");
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_44_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_45_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 43)(1, "label", 44);
-    \u0275\u0275text(2, "Ticket Type");
+    \u0275\u0275elementStart(0, "div", 45)(1, "label", 46);
+    \u0275\u0275text(2, "Your ticket options");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 45);
-    \u0275\u0275template(4, EventDetailModalComponent_div_0_div_7_div_44_button_4_Template, 14, 18, "button", 46);
+    \u0275\u0275elementStart(3, "div", 47);
+    \u0275\u0275template(4, EventDetailModalComponent_div_0_div_7_div_45_button_4_Template, 14, 18, "button", 48);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(5, EventDetailModalComponent_div_0_div_7_div_44_div_5_Template, 2, 1, "div", 47);
+    \u0275\u0275template(5, EventDetailModalComponent_div_0_div_7_div_45_div_5_Template, 2, 1, "div", 49);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
     \u0275\u0275advance(4);
-    \u0275\u0275property("ngForOf", ctx_r1.getTicketTypes());
+    \u0275\u0275property("ngForOf", ctx_r1.getVisibleTicketTypes());
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx_r1.getSelectedTicketReason());
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_66_div_4_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_67_div_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 61)(1, "div", 62);
+    \u0275\u0275elementStart(0, "div", 63)(1, "div", 64);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div")(4, "p", 63);
+    \u0275\u0275elementStart(3, "div")(4, "p", 65);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p", 64);
+    \u0275\u0275elementStart(6, "p", 66);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()()();
   }
@@ -189,13 +199,13 @@ function EventDetailModalComponent_div_0_div_7_div_66_div_4_Template(rf, ctx) {
     \u0275\u0275textInterpolate(s_r6.title);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_66_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_67_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div")(1, "span", 58);
+    \u0275\u0275elementStart(0, "div")(1, "span", 60);
     \u0275\u0275text(2, "Voice & Authority");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 59);
-    \u0275\u0275template(4, EventDetailModalComponent_div_0_div_7_div_66_div_4_Template, 8, 3, "div", 60);
+    \u0275\u0275elementStart(3, "div", 61);
+    \u0275\u0275template(4, EventDetailModalComponent_div_0_div_7_div_67_div_4_Template, 8, 3, "div", 62);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -204,15 +214,15 @@ function EventDetailModalComponent_div_0_div_7_div_66_Template(rf, ctx) {
     \u0275\u0275property("ngForOf", ctx_r1.event.speakers);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_67_div_4_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_68_div_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 66)(1, "div", 67);
+    \u0275\u0275elementStart(0, "div", 68)(1, "div", 69);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 68)(4, "p", 63);
+    \u0275\u0275elementStart(3, "div", 70)(4, "p", 65);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "p", 69);
+    \u0275\u0275elementStart(6, "p", 71);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()()();
   }
@@ -227,13 +237,13 @@ function EventDetailModalComponent_div_0_div_7_div_67_div_4_Template(rf, ctx) {
     \u0275\u0275textInterpolate(item_r7.location);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_67_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_68_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div")(1, "span", 58);
+    \u0275\u0275elementStart(0, "div")(1, "span", 60);
     \u0275\u0275text(2, "Agenda Sequence");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div", 59);
-    \u0275\u0275template(4, EventDetailModalComponent_div_0_div_7_div_67_div_4_Template, 8, 3, "div", 65);
+    \u0275\u0275elementStart(3, "div", 61);
+    \u0275\u0275template(4, EventDetailModalComponent_div_0_div_7_div_68_div_4_Template, 8, 3, "div", 67);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -242,18 +252,18 @@ function EventDetailModalComponent_div_0_div_7_div_67_Template(rf, ctx) {
     \u0275\u0275property("ngForOf", ctx_r1.event.schedules);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_1_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_69_div_6_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 78);
+    \u0275\u0275elementStart(0, "div", 80);
     \u0275\u0275text(1, "Synchronizing Nodes...");
     \u0275\u0275elementEnd();
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_button_12_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_tr_15_button_12_Template(rf, ctx) {
   if (rf & 1) {
     const _r9 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 88);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_button_12_Template_button_click_0_listener() {
+    \u0275\u0275elementStart(0, "button", 90);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_tr_15_button_12_Template_button_click_0_listener() {
       \u0275\u0275restoreView(_r9);
       const a_r10 = \u0275\u0275nextContext().$implicit;
       const ctx_r1 = \u0275\u0275nextContext(6);
@@ -263,22 +273,22 @@ function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_button_1
     \u0275\u0275elementEnd();
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_tr_15_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "tr")(1, "td", 82);
+    \u0275\u0275elementStart(0, "tr")(1, "td", 84);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "td", 83);
+    \u0275\u0275elementStart(3, "td", 85);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "td", 84)(6, "span", 85);
+    \u0275\u0275elementStart(5, "td", 86)(6, "span", 87);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "td")(9, "span", 86);
+    \u0275\u0275elementStart(8, "td")(9, "span", 88);
     \u0275\u0275text(10);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(11, "td", 80);
-    \u0275\u0275template(12, EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_button_12_Template, 2, 0, "button", 87);
+    \u0275\u0275elementStart(11, "td", 82);
+    \u0275\u0275template(12, EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_tr_15_button_12_Template, 2, 0, "button", 89);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -299,9 +309,9 @@ function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_Template
     \u0275\u0275property("ngIf", !a_r10.checkedIn);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 79)(1, "table")(2, "thead")(3, "tr")(4, "th");
+    \u0275\u0275elementStart(0, "div", 81)(1, "table")(2, "thead")(3, "tr")(4, "th");
     \u0275\u0275text(5, "Identity");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(6, "th");
@@ -313,11 +323,11 @@ function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_Template(rf, c
     \u0275\u0275elementStart(10, "th");
     \u0275\u0275text(11, "Attendance");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "th", 80);
+    \u0275\u0275elementStart(12, "th", 82);
     \u0275\u0275text(13, "Actions");
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(14, "tbody");
-    \u0275\u0275template(15, EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_tr_15_Template, 13, 8, "tr", 81);
+    \u0275\u0275template(15, EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_tr_15_Template, 13, 8, "tr", 83);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -326,10 +336,10 @@ function EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_Template(rf, c
     \u0275\u0275property("ngForOf", ctx_r1.attendees);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_68_div_6_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_69_div_6_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 75);
-    \u0275\u0275template(1, EventDetailModalComponent_div_0_div_7_div_68_div_6_div_1_Template, 2, 0, "div", 76)(2, EventDetailModalComponent_div_0_div_7_div_68_div_6_div_2_Template, 16, 1, "div", 77);
+    \u0275\u0275elementStart(0, "div", 77);
+    \u0275\u0275template(1, EventDetailModalComponent_div_0_div_7_div_69_div_6_div_1_Template, 2, 0, "div", 78)(2, EventDetailModalComponent_div_0_div_7_div_69_div_6_div_2_Template, 16, 1, "div", 79);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -340,21 +350,21 @@ function EventDetailModalComponent_div_0_div_7_div_68_div_6_Template(rf, ctx) {
     \u0275\u0275property("ngIf", !ctx_r1.isLoadingAttendees && ctx_r1.attendees.length > 0);
   }
 }
-function EventDetailModalComponent_div_0_div_7_div_68_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_div_69_Template(rf, ctx) {
   if (rf & 1) {
     const _r8 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 70)(1, "div", 71)(2, "span", 72);
+    \u0275\u0275elementStart(0, "div", 72)(1, "div", 73)(2, "span", 74);
     \u0275\u0275text(3, "Attendance Registry");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "button", 73);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_div_68_Template_button_click_4_listener() {
+    \u0275\u0275elementStart(4, "button", 75);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_div_69_Template_button_click_4_listener() {
       \u0275\u0275restoreView(_r8);
       const ctx_r1 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r1.toggleAttendance());
     });
     \u0275\u0275text(5);
     \u0275\u0275elementEnd()();
-    \u0275\u0275template(6, EventDetailModalComponent_div_0_div_7_div_68_div_6_Template, 3, 2, "div", 74);
+    \u0275\u0275template(6, EventDetailModalComponent_div_0_div_7_div_69_div_6_Template, 3, 2, "div", 76);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -365,11 +375,11 @@ function EventDetailModalComponent_div_0_div_7_div_68_Template(rf, ctx) {
     \u0275\u0275property("ngIf", ctx_r1.showAttendance);
   }
 }
-function EventDetailModalComponent_div_0_div_7_button_70_Template(rf, ctx) {
+function EventDetailModalComponent_div_0_div_7_button_71_Template(rf, ctx) {
   if (rf & 1) {
     const _r11 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 89);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_button_70_Template_button_click_0_listener() {
+    \u0275\u0275elementStart(0, "button", 91);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_button_71_Template_button_click_0_listener() {
       \u0275\u0275restoreView(_r11);
       const ctx_r1 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r1.onRegister());
@@ -434,64 +444,64 @@ function EventDetailModalComponent_div_0_div_7_Template(rf, ctx) {
     \u0275\u0275elementStart(41, "div", 23)(42, "span", 24);
     \u0275\u0275text(43, "Financial Valuation");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(44, EventDetailModalComponent_div_0_div_7_div_44_Template, 6, 2, "div", 25);
-    \u0275\u0275elementStart(45, "div", 26)(46, "div")(47, "label", 27);
-    \u0275\u0275text(48, "Unit Price (Base)");
+    \u0275\u0275template(44, EventDetailModalComponent_div_0_div_7_div_44_Template, 2, 0, "div", 25)(45, EventDetailModalComponent_div_0_div_7_div_45_Template, 6, 2, "div", 26);
+    \u0275\u0275elementStart(46, "div", 27)(47, "div")(48, "label", 28);
+    \u0275\u0275text(49, "Unit Price (Base)");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(49, "div", 28);
-    \u0275\u0275text(50);
+    \u0275\u0275elementStart(50, "div", 29);
+    \u0275\u0275text(51);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(51, "div", 29)(52, "label", 30);
-    \u0275\u0275text(53, "Magnitude");
+    \u0275\u0275elementStart(52, "div", 30)(53, "label", 31);
+    \u0275\u0275text(54, "Magnitude");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(54, "div", 31)(55, "button", 32);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_Template_button_click_55_listener() {
+    \u0275\u0275elementStart(55, "div", 32)(56, "button", 33);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_Template_button_click_56_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.decreaseQuantity());
     });
-    \u0275\u0275text(56, "\u2212");
+    \u0275\u0275text(57, "\u2212");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(57, "input", 33);
-    \u0275\u0275twoWayListener("ngModelChange", function EventDetailModalComponent_div_0_div_7_Template_input_ngModelChange_57_listener($event) {
+    \u0275\u0275elementStart(58, "input", 34);
+    \u0275\u0275twoWayListener("ngModelChange", function EventDetailModalComponent_div_0_div_7_Template_input_ngModelChange_58_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
       \u0275\u0275twoWayBindingSet(ctx_r1.quantity, $event) || (ctx_r1.quantity = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("change", function EventDetailModalComponent_div_0_div_7_Template_input_change_57_listener() {
+    \u0275\u0275listener("change", function EventDetailModalComponent_div_0_div_7_Template_input_change_58_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.validateQuantity());
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(58, "button", 32);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_Template_button_click_58_listener() {
+    \u0275\u0275elementStart(59, "button", 33);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_Template_button_click_59_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.increaseQuantity());
     });
-    \u0275\u0275text(59, "+");
+    \u0275\u0275text(60, "+");
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275elementStart(60, "div", 34)(61, "span", 35);
-    \u0275\u0275text(62, "Committing Value");
+    \u0275\u0275elementStart(61, "div", 35)(62, "span", 36);
+    \u0275\u0275text(63, "Committing Value");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(63, "span", 36);
-    \u0275\u0275text(64);
+    \u0275\u0275elementStart(64, "span", 37);
+    \u0275\u0275text(65);
     \u0275\u0275elementEnd()()();
-    \u0275\u0275elementStart(65, "div", 37);
-    \u0275\u0275template(66, EventDetailModalComponent_div_0_div_7_div_66_Template, 5, 1, "div", 38)(67, EventDetailModalComponent_div_0_div_7_div_67_Template, 5, 1, "div", 38);
+    \u0275\u0275elementStart(66, "div", 38);
+    \u0275\u0275template(67, EventDetailModalComponent_div_0_div_7_div_67_Template, 5, 1, "div", 39)(68, EventDetailModalComponent_div_0_div_7_div_68_Template, 5, 1, "div", 39);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(68, EventDetailModalComponent_div_0_div_7_div_68_Template, 7, 2, "div", 39);
-    \u0275\u0275elementStart(69, "div", 40);
-    \u0275\u0275template(70, EventDetailModalComponent_div_0_div_7_button_70_Template, 2, 4, "button", 41);
-    \u0275\u0275elementStart(71, "button", 42);
-    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_Template_button_click_71_listener() {
+    \u0275\u0275template(69, EventDetailModalComponent_div_0_div_7_div_69_Template, 7, 2, "div", 40);
+    \u0275\u0275elementStart(70, "div", 41);
+    \u0275\u0275template(71, EventDetailModalComponent_div_0_div_7_button_71_Template, 2, 4, "button", 42);
+    \u0275\u0275elementStart(72, "button", 43);
+    \u0275\u0275listener("click", function EventDetailModalComponent_div_0_div_7_Template_button_click_72_listener() {
       \u0275\u0275restoreView(_r3);
       const ctx_r1 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r1.onClose());
     });
-    \u0275\u0275text(72, "Dismiss");
+    \u0275\u0275text(73, "Dismiss");
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
@@ -499,7 +509,7 @@ function EventDetailModalComponent_div_0_div_7_Template(rf, ctx) {
     \u0275\u0275advance(2);
     \u0275\u0275property("src", ctx_r1.event.image, \u0275\u0275sanitizeUrl);
     \u0275\u0275advance(3);
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction5(21, _c1, (ctx_r1.event.type || ctx_r1.event.category) === "CONFERENCE", (ctx_r1.event.type || ctx_r1.event.category) === "NETWORKING", (ctx_r1.event.type || ctx_r1.event.category) === "WORKSHOP", (ctx_r1.event.type || ctx_r1.event.category) === "WEBINAR", !\u0275\u0275pureFunction0(20, _c0).includes(ctx_r1.event.type || ctx_r1.event.category)));
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction5(22, _c1, (ctx_r1.event.type || ctx_r1.event.category) === "CONFERENCE", (ctx_r1.event.type || ctx_r1.event.category) === "NETWORKING", (ctx_r1.event.type || ctx_r1.event.category) === "WORKSHOP", (ctx_r1.event.type || ctx_r1.event.category) === "WEBINAR", !\u0275\u0275pureFunction0(21, _c0).includes(ctx_r1.event.type || ctx_r1.event.category)));
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", ctx_r1.event.type || ctx_r1.event.category || "EVENT", " ");
     \u0275\u0275advance(2);
@@ -515,7 +525,9 @@ function EventDetailModalComponent_div_0_div_7_Template(rf, ctx) {
     \u0275\u0275advance(10);
     \u0275\u0275textInterpolate(ctx_r1.event.description || ctx_r1.event.shortDescription || ctx_r1.event.fullDescription);
     \u0275\u0275advance(4);
-    \u0275\u0275property("ngIf", ctx_r1.getTicketTypes().length);
+    \u0275\u0275property("ngIf", ctx_r1.getTicketTypes().length && !ctx_r1.getVisibleTicketTypes().length);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.getVisibleTicketTypes().length);
     \u0275\u0275advance(6);
     \u0275\u0275textInterpolate(ctx_r1.getEventCost());
     \u0275\u0275advance(5);
@@ -562,7 +574,7 @@ function EventDetailModalComponent_div_0_Template(rf, ctx) {
     });
     \u0275\u0275text(6, "\xD7");
     \u0275\u0275elementEnd()();
-    \u0275\u0275template(7, EventDetailModalComponent_div_0_div_7_Template, 73, 27, "div", 5);
+    \u0275\u0275template(7, EventDetailModalComponent_div_0_div_7_Template, 74, 28, "div", 5);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -716,33 +728,7 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
     if (selected) {
       return selected.price === 0 ? "Free" : `\u20B9${selected.price.toLocaleString("en-IN")}`;
     }
-    const pricingType = this.event.pricingType || this.event.pricing?.type;
-    if (pricingType === "FREE" || !pricingType && !this.event.price && !this.event.memberPrice && !this.event.pricing?.memberPrice) {
-      return "Free";
-    }
-    if (pricingType === "PAID" || pricingType === "DISCOUNTED") {
-      const memberPrice = this.event.memberPrice || this.event.pricing?.memberPrice || 0;
-      const nonMemberPrice = this.event.nonMemberPrice || this.event.pricing?.nonMemberPrice || 0;
-      const freeMemberPrice = nonMemberPrice;
-      const isPaidMember = this.isPaidMember();
-      if (isPaidMember && memberPrice > 0) {
-        return `\u20B9${memberPrice.toLocaleString("en-IN")}`;
-      }
-      if (!isPaidMember && freeMemberPrice > 0) {
-        return `\u20B9${freeMemberPrice.toLocaleString("en-IN")}`;
-      }
-      if (memberPrice > 0) {
-        return `\u20B9${memberPrice.toLocaleString("en-IN")}`;
-      }
-      if (freeMemberPrice > 0) {
-        return `\u20B9${freeMemberPrice.toLocaleString("en-IN")}`;
-      }
-    }
-    const price = this.event.price || this.event.pricing?.memberPrice || 0;
-    if (price === 0) {
-      return "Free";
-    }
-    return `\u20B9${price.toLocaleString("en-IN")}`;
+    return formatMemberFacingCost(this.event, this.currentUser);
   }
   isEventPaid() {
     return this.getEventPrice() > 0;
@@ -791,15 +777,6 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
       }
     }
     return this.currentUser.currentPlanLevel || 0;
-  }
-  /**
-   * "Member pricing / member eligibility" is based on plan level.
-   * Current mapping:
-   *  - level >= 2  => member
-   *  - level < 2   => non-member
-   */
-  isPaidMember() {
-    return this.getActivePlanLevel() >= 2;
   }
   // Attendance management (admin only)
   canManageAttendance() {
@@ -975,18 +952,24 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
   }
   initializeTicketSelection() {
     this.currentUser = this.authService.getCurrentUser();
-    const tickets = this.getTicketTypes();
-    if (!tickets.length) {
+    const visible = this.getVisibleTicketTypes();
+    if (!visible.length) {
       this.selectedTicketTypeId = null;
       return;
     }
     if (this.currentUser) {
-      const preferred = tickets.find((t) => this.isTicketEligible(t) && this.isTicketAvailable(t));
-      this.selectedTicketTypeId = preferred?.id ?? tickets[0].id;
+      const level = this.getActivePlanLevel();
+      const paid = visible.find((t) => t.type === "MEMBER" && this.isTicketAvailable(t));
+      const freeM = visible.find((t) => t.type === "FREE_MEMBER" && this.isTicketAvailable(t));
+      let preferred = level >= 2 && paid ? paid : level === 1 && freeM ? freeM : void 0;
+      if (!preferred) {
+        preferred = visible.find((t) => this.isTicketAvailable(t));
+      }
+      this.selectedTicketTypeId = (preferred ?? visible[0]).id;
       return;
     }
-    const firstAvailable = tickets.find((t) => this.isTicketAvailable(t));
-    this.selectedTicketTypeId = firstAvailable?.id ?? tickets[0].id;
+    const firstAvailable = visible.find((t) => this.isTicketAvailable(t));
+    this.selectedTicketTypeId = (firstAvailable ?? visible[0]).id;
   }
   getTicketTypes() {
     if (!this.event)
@@ -997,6 +980,39 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
       price: Number(t.price || 0),
       availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : null
     }));
+  }
+  /**
+   * Tickets shown in the registration UI — only tiers relevant to this viewer (not every tier price).
+   * Admins still see all tiers for support.
+   */
+  getVisibleTicketTypes() {
+    const all = this.getTicketTypes();
+    if (!all.length)
+      return [];
+    const isAdmin = this.currentUser?.role === "admin" || this.currentUser?.type === "ADMIN";
+    if (isAdmin)
+      return all;
+    const level = this.getActivePlanLevel();
+    if (!this.currentUser || level === 0) {
+      return all.filter((t) => {
+        const ty = String(t.type || "").toUpperCase();
+        if (ty === "NON_MEMBER" || ty === "EARLY_BIRD")
+          return true;
+        if (!ty && Number(t.price || 0) === 0)
+          return true;
+        return false;
+      });
+    }
+    let visible = all.filter((t) => this.isTicketEligible(t));
+    const hasMember = all.some((t) => String(t.type || "").toUpperCase() === "MEMBER");
+    const hasFreeMember = all.some((t) => String(t.type || "").toUpperCase() === "FREE_MEMBER");
+    if (level >= 2 && hasMember) {
+      visible = visible.filter((t) => String(t.type || "").toUpperCase() !== "FREE_MEMBER");
+    }
+    if (level === 1 && hasFreeMember) {
+      visible = visible.filter((t) => String(t.type || "").toUpperCase() !== "MEMBER");
+    }
+    return visible;
   }
   getSelectedTicketType() {
     const list = this.getTicketTypes();
@@ -1025,22 +1041,32 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
     return now <= end;
   }
   isTicketEligible(ticket) {
-    if (!ticket || !this.currentUser)
+    if (!ticket)
       return false;
-    if (ticket.price === 0 || ticket.price === "0" || Number(ticket.price) === 0)
-      return true;
+    const typeStr = String(ticket.type || "").toUpperCase();
+    const priceNum = Number(ticket.price ?? 0);
+    if (!this.currentUser) {
+      if (typeStr === "NON_MEMBER" || typeStr === "EARLY_BIRD")
+        return true;
+      return priceNum === 0;
+    }
     const isAdmin = this.currentUser.role === "admin" || this.currentUser.type === "ADMIN";
-    switch (ticket.type) {
+    if (isAdmin)
+      return true;
+    const level = this.getActivePlanLevel();
+    switch (typeStr) {
       case "VIP":
-        return isAdmin || this.getActivePlanLevel() >= 3;
+        return level >= 3;
       case "MEMBER":
-        return isAdmin || this.getActivePlanLevel() >= 2;
+        return level >= 2;
+      case "FREE_MEMBER":
+        return level >= 1;
       case "NON_MEMBER":
-        return isAdmin || this.getActivePlanLevel() < 2;
+        return level < 2;
       case "EARLY_BIRD":
         return this.isEarlyBirdOpen();
       default:
-        return true;
+        return priceNum === 0;
     }
   }
   getTicketStatus(ticket) {
@@ -1106,7 +1132,7 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventDetailModalComponent, selectors: [["app-event-detail-modal"]], inputs: { show: "show", event: "event" }, outputs: { close: "close", registered: "registered", openPayment: "openPayment" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "modal-overlay", 3, "click"], [1, "modal-container", 3, "click"], [1, "modal-header"], ["title", "Close Panel", 1, "btn-close", 3, "click"], ["class", "modal-body !p-0", 4, "ngIf"], [1, "modal-body", "!p-0"], [1, "w-full", "h-64", "relative", "overflow-hidden", "bg-slate-100"], ["alt", "Event Cover", 1, "w-full", "h-full", "object-cover", 3, "src"], [1, "absolute", "inset-0", "bg-gradient-to-t", "from-slate-900/80", "via-slate-900/20", "to-transparent"], [1, "absolute", "bottom-6", "left-8", "right-8"], [1, "px-3", "py-1", "text-white", "text-[10px]", "font-black", "uppercase", "tracking-widest", "rounded-lg", "mb-3", "inline-block", "shadow-lg", 3, "ngClass"], [1, "text-3xl", "font-black", "text-white", "tracking-tighter", "leading-tight"], [1, "p-8"], [1, "content-group"], [1, "group-title"], [1, "info-grid"], [1, "info-item"], [1, "value", "font-bold", "text-slate-900"], [1, "value"], [1, "text-indigo-600", "font-black"], [1, "value", "text-[10px]", "font-black", "uppercase", "text-emerald-500", "tracking-widest", "shadow-sm", "px-2", "py-1", "bg-emerald-50", "rounded-lg", "inline-block"], [1, "value", "text-sm", "leading-relaxed", "text-slate-600", "whitespace-pre-line"], [1, "content-group", "border-indigo-100", "bg-indigo-50/30"], [1, "group-title", "text-indigo-400"], ["class", "mb-4", 4, "ngIf"], [1, "flex", "items-end", "justify-between"], [1, "text-[10px]", "font-black", "text-indigo-300", "uppercase", "mb-1", "block"], [1, "value-large", "text-indigo-600"], [1, "flex", "flex-col", "items-end", "gap-2"], [1, "text-[10px]", "font-black", "text-indigo-300", "uppercase"], [1, "flex", "items-center", "gap-1", "bg-white", "p-1", "rounded-xl", "shadow-sm", "border", "border-indigo-100"], [1, "w-8", "h-8", "rounded-lg", "text-indigo-600", "hover:bg-indigo-50", "disabled:opacity-20", "font-black", 3, "click", "disabled"], ["type", "number", "min", "1", 1, "w-10", "text-center", "font-black", "text-xs", "text-slate-900", "focus:outline-none", 3, "ngModelChange", "change", "ngModel", "max"], [1, "mt-4", "pt-4", "border-t", "border-indigo-100", "flex", "justify-between", "items-center"], [1, "text-[10px]", "font-black", "text-indigo-400", "uppercase"], [1, "text-sm", "font-black", "text-indigo-600", "tracking-tight"], [1, "grid", "grid-cols-1", "md:grid-cols-2", "gap-6", "mt-8"], [4, "ngIf"], ["class", "attendance-track", 4, "ngIf"], [1, "flex", "gap-4", "mt-10"], ["class", "btn-pill btn-primary py-4", 3, "disabled", "btn-disabled", "click", 4, "ngIf"], [1, "btn-pill", "btn-secondary", "px-10", 3, "click"], [1, "mb-4"], [1, "text-[10px]", "font-black", "text-indigo-300", "uppercase", "mb-2", "block"], [1, "grid", "grid-cols-1", "md:grid-cols-2", "gap-2"], ["type", "button", "class", "text-left px-3 py-2 rounded-xl border transition", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], ["class", "mt-2 text-[11px] font-bold text-amber-600", 4, "ngIf"], ["type", "button", 1, "text-left", "px-3", "py-2", "rounded-xl", "border", "transition", 3, "click", "ngClass"], [1, "flex", "items-center", "justify-between", "gap-2"], [1, "text-xs", "font-black", "text-slate-900"], [1, "text-[10px]", "font-black", "uppercase", 3, "ngClass"], [1, "flex", "items-center", "justify-between", "mt-1"], [1, "text-[10px]", "font-black", "uppercase", "text-slate-400"], [1, "text-[11px]", "font-bold", "text-indigo-600"], ["class", "flex items-center justify-between mt-1", 4, "ngIf"], [1, "text-[10px]", "text-slate-500"], [1, "mt-2", "text-[11px]", "font-bold", "text-amber-600"], [1, "group-title", "px-2"], [1, "space-y-3"], ["class", "flex items-center gap-3 p-3 bg-white border border-slate-100 rounded-2xl shadow-sm", 4, "ngFor", "ngForOf"], [1, "flex", "items-center", "gap-3", "p-3", "bg-white", "border", "border-slate-100", "rounded-2xl", "shadow-sm"], [1, "w-10", "h-10", "rounded-xl", "bg-indigo-600", "text-white", "flex", "items-center", "justify-center", "font-black", "text-sm"], [1, "text-xs", "font-black", "text-slate-900", "tracking-tight"], [1, "text-[9px]", "font-bold", "text-slate-400", "uppercase"], ["class", "flex gap-3 p-3 bg-white border border-slate-100 rounded-2xl shadow-sm", 4, "ngFor", "ngForOf"], [1, "flex", "gap-3", "p-3", "bg-white", "border", "border-slate-100", "rounded-2xl", "shadow-sm"], [1, "text-[9px]", "font-black", "text-indigo-600", "uppercase", "w-16", "pt-0.5"], [1, "flex-1"], [1, "text-[9px]", "font-bold", "text-slate-400"], [1, "attendance-track"], [1, "flex", "items-center", "justify-between", "mb-4", "px-2"], [1, "text-sm", "font-black", "text-slate-900", "uppercase", "tracking-widest"], [1, "btn-pill", "btn-secondary", "text-[10px]", "py-1.5", 3, "click"], ["class", "animate-reveal", 4, "ngIf"], [1, "animate-reveal"], ["class", "py-12 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest", 4, "ngIf"], ["class", "scroll-track shadow-inner bg-slate-50/50", 4, "ngIf"], [1, "py-12", "text-center", "text-[10px]", "font-black", "text-slate-400", "uppercase", "tracking-widest"], [1, "scroll-track", "shadow-inner", "bg-slate-50/50"], [1, "text-right"], [4, "ngFor", "ngForOf"], [1, "font-bold"], [1, "text-[10px]", "font-black", "text-slate-400", "uppercase"], [1, "text-center"], [1, "px-2", "py-0.5", "rounded-lg", "text-[9px]", "font-black", 3, "ngClass"], [1, "text-[10px]", "font-black", "uppercase"], ["class", "text-[10px] font-black text-indigo-600 hover:underline", 3, "click", 4, "ngIf"], [1, "text-[10px]", "font-black", "text-indigo-600", "hover:underline", 3, "click"], [1, "btn-pill", "btn-primary", "py-4", 3, "click", "disabled"]], template: function EventDetailModalComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventDetailModalComponent, selectors: [["app-event-detail-modal"]], inputs: { show: "show", event: "event" }, outputs: { close: "close", registered: "registered", openPayment: "openPayment" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "modal-overlay", 3, "click"], [1, "modal-container", 3, "click"], [1, "modal-header"], ["title", "Close Panel", 1, "btn-close", 3, "click"], ["class", "modal-body !p-0", 4, "ngIf"], [1, "modal-body", "!p-0"], [1, "w-full", "h-64", "relative", "overflow-hidden", "bg-slate-100"], ["alt", "Event Cover", 1, "w-full", "h-full", "object-cover", 3, "src"], [1, "absolute", "inset-0", "bg-gradient-to-t", "from-slate-900/80", "via-slate-900/20", "to-transparent"], [1, "absolute", "bottom-6", "left-8", "right-8"], [1, "px-3", "py-1", "text-white", "text-[10px]", "font-black", "uppercase", "tracking-widest", "rounded-lg", "mb-3", "inline-block", "shadow-lg", 3, "ngClass"], [1, "text-3xl", "font-black", "text-white", "tracking-tighter", "leading-tight"], [1, "p-8"], [1, "content-group"], [1, "group-title"], [1, "info-grid"], [1, "info-item"], [1, "value", "font-bold", "text-slate-900"], [1, "value"], [1, "text-indigo-600", "font-black"], [1, "value", "text-[10px]", "font-black", "uppercase", "text-emerald-500", "tracking-widest", "shadow-sm", "px-2", "py-1", "bg-emerald-50", "rounded-lg", "inline-block"], [1, "value", "text-sm", "leading-relaxed", "text-slate-600", "whitespace-pre-line"], [1, "content-group", "border-indigo-100", "bg-indigo-50/30"], [1, "group-title", "text-indigo-400"], ["class", "mb-4 rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2 text-[11px] font-bold text-amber-800", 4, "ngIf"], ["class", "mb-4", 4, "ngIf"], [1, "flex", "items-end", "justify-between"], [1, "text-[10px]", "font-black", "text-indigo-300", "uppercase", "mb-1", "block"], [1, "value-large", "text-indigo-600"], [1, "flex", "flex-col", "items-end", "gap-2"], [1, "text-[10px]", "font-black", "text-indigo-300", "uppercase"], [1, "flex", "items-center", "gap-1", "bg-white", "p-1", "rounded-xl", "shadow-sm", "border", "border-indigo-100"], [1, "w-8", "h-8", "rounded-lg", "text-indigo-600", "hover:bg-indigo-50", "disabled:opacity-20", "font-black", 3, "click", "disabled"], ["type", "number", "min", "1", 1, "w-10", "text-center", "font-black", "text-xs", "text-slate-900", "focus:outline-none", 3, "ngModelChange", "change", "ngModel", "max"], [1, "mt-4", "pt-4", "border-t", "border-indigo-100", "flex", "justify-between", "items-center"], [1, "text-[10px]", "font-black", "text-indigo-400", "uppercase"], [1, "text-sm", "font-black", "text-indigo-600", "tracking-tight"], [1, "grid", "grid-cols-1", "md:grid-cols-2", "gap-6", "mt-8"], [4, "ngIf"], ["class", "attendance-track", 4, "ngIf"], [1, "flex", "gap-4", "mt-10"], ["class", "btn-pill btn-primary py-4", 3, "disabled", "btn-disabled", "click", 4, "ngIf"], [1, "btn-pill", "btn-secondary", "px-10", 3, "click"], [1, "mb-4", "rounded-xl", "border", "border-amber-200", "bg-amber-50/80", "px-3", "py-2", "text-[11px]", "font-bold", "text-amber-800"], [1, "mb-4"], [1, "text-[10px]", "font-black", "text-indigo-300", "uppercase", "mb-2", "block"], [1, "grid", "grid-cols-1", "md:grid-cols-2", "gap-2"], ["type", "button", "class", "text-left px-3 py-2 rounded-xl border transition", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], ["class", "mt-2 text-[11px] font-bold text-amber-600", 4, "ngIf"], ["type", "button", 1, "text-left", "px-3", "py-2", "rounded-xl", "border", "transition", 3, "click", "ngClass"], [1, "flex", "items-center", "justify-between", "gap-2"], [1, "text-xs", "font-black", "text-slate-900"], [1, "text-[10px]", "font-black", "uppercase", 3, "ngClass"], [1, "flex", "items-center", "justify-between", "mt-1"], [1, "text-[10px]", "font-black", "uppercase", "text-slate-400"], [1, "text-[11px]", "font-bold", "text-indigo-600"], ["class", "flex items-center justify-between mt-1", 4, "ngIf"], [1, "text-[10px]", "text-slate-500"], [1, "mt-2", "text-[11px]", "font-bold", "text-amber-600"], [1, "group-title", "px-2"], [1, "space-y-3"], ["class", "flex items-center gap-3 p-3 bg-white border border-slate-100 rounded-2xl shadow-sm", 4, "ngFor", "ngForOf"], [1, "flex", "items-center", "gap-3", "p-3", "bg-white", "border", "border-slate-100", "rounded-2xl", "shadow-sm"], [1, "w-10", "h-10", "rounded-xl", "bg-indigo-600", "text-white", "flex", "items-center", "justify-center", "font-black", "text-sm"], [1, "text-xs", "font-black", "text-slate-900", "tracking-tight"], [1, "text-[9px]", "font-bold", "text-slate-400", "uppercase"], ["class", "flex gap-3 p-3 bg-white border border-slate-100 rounded-2xl shadow-sm", 4, "ngFor", "ngForOf"], [1, "flex", "gap-3", "p-3", "bg-white", "border", "border-slate-100", "rounded-2xl", "shadow-sm"], [1, "text-[9px]", "font-black", "text-indigo-600", "uppercase", "w-16", "pt-0.5"], [1, "flex-1"], [1, "text-[9px]", "font-bold", "text-slate-400"], [1, "attendance-track"], [1, "flex", "items-center", "justify-between", "mb-4", "px-2"], [1, "text-sm", "font-black", "text-slate-900", "uppercase", "tracking-widest"], [1, "btn-pill", "btn-secondary", "text-[10px]", "py-1.5", 3, "click"], ["class", "animate-reveal", 4, "ngIf"], [1, "animate-reveal"], ["class", "py-12 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest", 4, "ngIf"], ["class", "scroll-track shadow-inner bg-slate-50/50", 4, "ngIf"], [1, "py-12", "text-center", "text-[10px]", "font-black", "text-slate-400", "uppercase", "tracking-widest"], [1, "scroll-track", "shadow-inner", "bg-slate-50/50"], [1, "text-right"], [4, "ngFor", "ngForOf"], [1, "font-bold"], [1, "text-[10px]", "font-black", "text-slate-400", "uppercase"], [1, "text-center"], [1, "px-2", "py-0.5", "rounded-lg", "text-[9px]", "font-black", 3, "ngClass"], [1, "text-[10px]", "font-black", "uppercase"], ["class", "text-[10px] font-black text-indigo-600 hover:underline", 3, "click", 4, "ngIf"], [1, "text-[10px]", "font-black", "text-indigo-600", "hover:underline", 3, "click"], [1, "btn-pill", "btn-primary", "py-4", 3, "click", "disabled"]], template: function EventDetailModalComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275template(0, EventDetailModalComponent_div_0_Template, 8, 1, "div", 0);
       }
@@ -1117,10 +1143,10 @@ var EventDetailModalComponent = class _EventDetailModalComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EventDetailModalComponent, { className: "EventDetailModalComponent", filePath: "src\\app\\components\\modals\\event-detail-modal\\event-detail-modal.component.ts", lineNumber: 15 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EventDetailModalComponent, { className: "EventDetailModalComponent", filePath: "src\\app\\components\\modals\\event-detail-modal\\event-detail-modal.component.ts", lineNumber: 16 });
 })();
 
 export {
   EventDetailModalComponent
 };
-//# sourceMappingURL=chunk-FNX347UM.js.map
+//# sourceMappingURL=chunk-EMZJRUO4.js.map

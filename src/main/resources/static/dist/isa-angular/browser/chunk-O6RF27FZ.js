@@ -127,7 +127,7 @@ function EventManagementComponent_div_22_div_3_tr_19_Template(rf, ctx) {
     \u0275\u0275elementStart(15, "td")(16, "span", 36);
     \u0275\u0275text(17, "In Development");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(18, "td")(19, "div", 37)(20, "button", 38);
+    \u0275\u0275elementStart(18, "td", 37)(19, "div", 38)(20, "button", 39);
     \u0275\u0275listener("click", function EventManagementComponent_div_22_div_3_tr_19_Template_button_click_20_listener() {
       const event_r3 = \u0275\u0275restoreView(_r2).$implicit;
       const ctx_r0 = \u0275\u0275nextContext(3);
@@ -135,7 +135,7 @@ function EventManagementComponent_div_22_div_3_tr_19_Template(rf, ctx) {
     });
     \u0275\u0275text(21, "Review");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(22, "button", 39);
+    \u0275\u0275elementStart(22, "button", 40);
     \u0275\u0275listener("click", function EventManagementComponent_div_22_div_3_tr_19_Template_button_click_22_listener() {
       const event_r3 = \u0275\u0275restoreView(_r2).$implicit;
       const ctx_r0 = \u0275\u0275nextContext(3);
@@ -143,7 +143,7 @@ function EventManagementComponent_div_22_div_3_tr_19_Template(rf, ctx) {
     });
     \u0275\u0275text(23, "Modify");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(24, "button", 40);
+    \u0275\u0275elementStart(24, "button", 41);
     \u0275\u0275listener("click", function EventManagementComponent_div_22_div_3_tr_19_Template_button_click_24_listener() {
       const event_r3 = \u0275\u0275restoreView(_r2).$implicit;
       const ctx_r0 = \u0275\u0275nextContext(3);
@@ -252,7 +252,7 @@ function EventManagementComponent_div_23_div_3_tr_19_Template(rf, ctx) {
     \u0275\u0275elementStart(4, "td")(5, "p", 32);
     \u0275\u0275text(6);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(7, "p", 41);
+    \u0275\u0275elementStart(7, "p", 42);
     \u0275\u0275text(8, "Visible to Community");
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(9, "td", 34);
@@ -264,25 +264,25 @@ function EventManagementComponent_div_23_div_3_tr_19_Template(rf, ctx) {
     \u0275\u0275elementStart(13, "td", 35);
     \u0275\u0275text(14);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(15, "td")(16, "span", 42);
+    \u0275\u0275elementStart(15, "td")(16, "span", 43);
     \u0275\u0275text(17, "Published");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(18, "td", 43)(19, "button", 38);
-    \u0275\u0275listener("click", function EventManagementComponent_div_23_div_3_tr_19_Template_button_click_19_listener() {
+    \u0275\u0275elementStart(18, "td", 37)(19, "div", 38)(20, "button", 39);
+    \u0275\u0275listener("click", function EventManagementComponent_div_23_div_3_tr_19_Template_button_click_20_listener() {
       const event_r5 = \u0275\u0275restoreView(_r4).$implicit;
       const ctx_r0 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r0.openDetailModal(event_r5));
     });
-    \u0275\u0275text(20, "Overview");
+    \u0275\u0275text(21, "Overview");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(21, "button", 39);
-    \u0275\u0275listener("click", function EventManagementComponent_div_23_div_3_tr_19_Template_button_click_21_listener() {
+    \u0275\u0275elementStart(22, "button", 40);
+    \u0275\u0275listener("click", function EventManagementComponent_div_23_div_3_tr_19_Template_button_click_22_listener() {
       const event_r5 = \u0275\u0275restoreView(_r4).$implicit;
       const ctx_r0 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r0.onEditEvent(event_r5));
     });
-    \u0275\u0275text(22, "Refine Details");
-    \u0275\u0275elementEnd()()();
+    \u0275\u0275text(23, "Refine Details");
+    \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
     const event_r5 = ctx.$implicit;
@@ -297,7 +297,7 @@ function EventManagementComponent_div_23_div_3_tr_19_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r0.formatEventDateTime(event_r5));
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(event_r5.location || event_r5.venue);
-    \u0275\u0275advance(5);
+    \u0275\u0275advance(6);
     \u0275\u0275property("disabled", ctx_r0.isLoading);
     \u0275\u0275advance(2);
     \u0275\u0275property("disabled", ctx_r0.isLoading);
@@ -327,7 +327,7 @@ function EventManagementComponent_div_23_div_3_Template(rf, ctx) {
     \u0275\u0275text(17, "Administrative");
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(18, "tbody", 27);
-    \u0275\u0275template(19, EventManagementComponent_div_23_div_3_tr_19_Template, 23, 7, "tr", 28);
+    \u0275\u0275template(19, EventManagementComponent_div_23_div_3_tr_19_Template, 24, 7, "tr", 28);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -392,14 +392,14 @@ function EventManagementComponent_div_24_div_3_tr_19_Template(rf, ctx) {
     \u0275\u0275elementStart(12, "td")(13, "span", 47);
     \u0275\u0275text(14);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(15, "td", 26)(16, "button", 38);
-    \u0275\u0275listener("click", function EventManagementComponent_div_24_div_3_tr_19_Template_button_click_16_listener() {
+    \u0275\u0275elementStart(15, "td", 37)(16, "div", 38)(17, "button", 39);
+    \u0275\u0275listener("click", function EventManagementComponent_div_24_div_3_tr_19_Template_button_click_17_listener() {
       const event_r7 = \u0275\u0275restoreView(_r6).$implicit;
       const ctx_r0 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r0.openDetailModal(event_r7));
     });
-    \u0275\u0275text(17, "Review Outcome");
-    \u0275\u0275elementEnd()()();
+    \u0275\u0275text(18, "Review Outcome");
+    \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
     const event_r7 = ctx.$implicit;
@@ -418,7 +418,7 @@ function EventManagementComponent_div_24_div_3_tr_19_Template(rf, ctx) {
     \u0275\u0275property("ngClass", event_r7.status === "CANCELLED" ? "status-cancelled" : "status-completed");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(event_r7.status || "COMPLETED");
-    \u0275\u0275advance(2);
+    \u0275\u0275advance(3);
     \u0275\u0275property("disabled", ctx_r0.isLoading);
   }
 }
@@ -446,7 +446,7 @@ function EventManagementComponent_div_24_div_3_Template(rf, ctx) {
     \u0275\u0275text(17, "Actions");
     \u0275\u0275elementEnd()()();
     \u0275\u0275elementStart(18, "tbody", 27);
-    \u0275\u0275template(19, EventManagementComponent_div_24_div_3_tr_19_Template, 18, 8, "tr", 44);
+    \u0275\u0275template(19, EventManagementComponent_div_24_div_3_tr_19_Template, 19, 8, "tr", 44);
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
@@ -763,7 +763,7 @@ var EventManagementComponent = class _EventManagementComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventManagementComponent, selectors: [["app-event-management"]], outputs: { navigate: "navigate", openDetail: "openDetail", openEdit: "openEdit", openCreate: "openCreate" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 25, vars: 13, consts: [[1, "management-container"], [1, "page-header"], [1, "title-area"], [1, "btn-add-event", 3, "click"], [1, "text-xl"], [1, "tab-nav"], [1, "tab-btn", 3, "click"], ["class", "tab-badge", 4, "ngIf"], ["class", "mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse", 4, "ngIf"], ["class", "table-wrapper", 4, "ngIf"], [1, "tab-badge"], [1, "mb-8", "p-4", "bg-rose-50", "border-l-4", "border-rose-500", "text-rose-700", "rounded-r-2xl", "text-sm", "font-medium", "animate-pulse"], [1, "table-wrapper"], ["class", "p-20 text-center flex flex-col items-center justify-center gap-4", 4, "ngIf"], ["class", "p-20 text-center", 4, "ngIf"], ["class", "overflow-x-auto", 4, "ngIf"], [1, "p-20", "text-center", "flex", "flex-col", "items-center", "justify-center", "gap-4"], [1, "h-10", "w-10", "border-4", "border-indigo-100", "border-t-indigo-600", "rounded-full", "animate-spin"], [1, "text-xs", "font-black", "text-slate-300", "uppercase", "tracking-widest"], [1, "p-20", "text-center"], [1, "text-5xl", "mb-4", "grayscale", "opacity-20"], [1, "text-sm", "font-bold", "text-slate-400"], [1, "overflow-x-auto"], [1, "w-full"], [1, "text-left", "font-bold", "uppercase", "text-[10px]", "tracking-widest", "text-slate-400"], [1, "w-16"], [1, "text-right"], [1, "divide-y", "divide-slate-50"], ["class", "hover:bg-slate-50/50 transition-colors", 4, "ngFor", "ngForOf"], [1, "hover:bg-slate-50/50", "transition-colors"], [1, "h-10", "w-10", "rounded-lg", "overflow-hidden", "bg-slate-100", "border", "border-slate-200"], [1, "h-full", "w-full", "object-cover", 3, "src"], [1, "font-bold", "text-slate-900", "leading-tight"], [1, "text-[10px]", "text-slate-400", "font-bold", "uppercase", "tracking-tight", "mt-1"], [1, "text-sm", "font-medium", "text-slate-600"], [1, "text-sm", "text-slate-500", "font-medium"], [1, "status-pill", "status-draft"], [1, "flex", "items-center", "justify-end", "gap-2"], [1, "btn-pill", "btn-details", 3, "click", "disabled"], [1, "btn-pill", "btn-edit", 3, "click", "disabled"], [1, "btn-pill", "btn-publish", 3, "click", "disabled"], [1, "text-[10px]", "text-emerald-500", "font-bold", "uppercase", "tracking-tight", "mt-1"], [1, "status-pill", "status-published"], [1, "text-right", "space-x-2"], ["class", "hover:bg-slate-50/50 transition-colors grayscale-[0.8] opacity-80", 4, "ngFor", "ngForOf"], [1, "hover:bg-slate-50/50", "transition-colors", "grayscale-[0.8]", "opacity-80"], [1, "font-bold", "text-slate-900"], [1, "status-pill", 3, "ngClass"]], template: function EventManagementComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventManagementComponent, selectors: [["app-event-management"]], outputs: { navigate: "navigate", openDetail: "openDetail", openEdit: "openEdit", openCreate: "openCreate" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 25, vars: 13, consts: [[1, "management-container"], [1, "page-header"], [1, "title-area"], [1, "btn-add-event", 3, "click"], [1, "text-xl"], [1, "tab-nav"], [1, "tab-btn", 3, "click"], ["class", "tab-badge", 4, "ngIf"], ["class", "mb-8 p-4 bg-rose-50 border-l-4 border-rose-500 text-rose-700 rounded-r-2xl text-sm font-medium animate-pulse", 4, "ngIf"], ["class", "table-wrapper", 4, "ngIf"], [1, "tab-badge"], [1, "mb-8", "p-4", "bg-rose-50", "border-l-4", "border-rose-500", "text-rose-700", "rounded-r-2xl", "text-sm", "font-medium", "animate-pulse"], [1, "table-wrapper"], ["class", "p-20 text-center flex flex-col items-center justify-center gap-4", 4, "ngIf"], ["class", "p-20 text-center", 4, "ngIf"], ["class", "overflow-x-auto", 4, "ngIf"], [1, "p-20", "text-center", "flex", "flex-col", "items-center", "justify-center", "gap-4"], [1, "h-10", "w-10", "border-4", "border-indigo-100", "border-t-indigo-600", "rounded-full", "animate-spin"], [1, "text-xs", "font-black", "text-slate-300", "uppercase", "tracking-widest"], [1, "p-20", "text-center"], [1, "text-5xl", "mb-4", "grayscale", "opacity-20"], [1, "text-sm", "font-bold", "text-slate-400"], [1, "overflow-x-auto"], [1, "w-full"], [1, "text-left", "font-bold", "uppercase", "text-[10px]", "tracking-widest", "text-slate-400"], [1, "w-16"], [1, "text-right"], [1, "divide-y", "divide-slate-50"], ["class", "hover:bg-slate-50/50 transition-colors", 4, "ngFor", "ngForOf"], [1, "hover:bg-slate-50/50", "transition-colors"], [1, "h-10", "w-10", "rounded-lg", "overflow-hidden", "bg-slate-100", "border", "border-slate-200"], [1, "h-full", "w-full", "object-cover", 3, "src"], [1, "font-bold", "text-slate-900", "leading-tight"], [1, "text-[10px]", "text-slate-400", "font-bold", "uppercase", "tracking-tight", "mt-1"], [1, "text-sm", "font-medium", "text-slate-600"], [1, "text-sm", "text-slate-500", "font-medium"], [1, "status-pill", "status-draft"], [1, "event-actions-cell"], [1, "event-actions-row"], ["type", "button", 1, "btn-pill", "btn-details", 3, "click", "disabled"], ["type", "button", 1, "btn-pill", "btn-edit", 3, "click", "disabled"], ["type", "button", 1, "btn-pill", "btn-publish", 3, "click", "disabled"], [1, "text-[10px]", "text-emerald-500", "font-bold", "uppercase", "tracking-tight", "mt-1"], [1, "status-pill", "status-published"], ["class", "hover:bg-slate-50/50 transition-colors grayscale-[0.8] opacity-80", 4, "ngFor", "ngForOf"], [1, "hover:bg-slate-50/50", "transition-colors", "grayscale-[0.8]", "opacity-80"], [1, "font-bold", "text-slate-900"], [1, "status-pill", 3, "ngClass"]], template: function EventManagementComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "div", 0)(1, "header", 1)(2, "div", 2)(3, "h1");
         \u0275\u0275text(4, "Event Management");
@@ -826,7 +826,7 @@ var EventManagementComponent = class _EventManagementComponent {
         \u0275\u0275advance();
         \u0275\u0275property("ngIf", ctx.activeTab === "OLD");
       }
-    }, dependencies: [CommonModule, NgClass, NgForOf, NgIf], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n  --event-primary: #6366f1;\n  --event-success: #10b981;\n  --event-draft: #f59e0b;\n  --event-completed: #94a3b8;\n}\n.management-container[_ngcontent-%COMP%] {\n  animation: _ngcontent-%COMP%_fadeIn 0.5s ease-out;\n}\n@keyframes _ngcontent-%COMP%_fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(10px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.page-header[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-end;\n  margin-bottom: 2.5rem;\n}\n.title-area[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  font-size: 2.5rem;\n  font-weight: 900;\n  color: #0f172a;\n  letter-spacing: -0.04em;\n  margin-bottom: 0.5rem;\n}\n.title-area[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  font-size: 0.875rem;\n  color: #64748b;\n  font-weight: 500;\n}\n.btn-add-event[_ngcontent-%COMP%] {\n  background:\n    linear-gradient(\n      135deg,\n      #6366f1,\n      #8b5cf6);\n  color: white;\n  padding: 12px 24px;\n  border-radius: 16px;\n  font-weight: 800;\n  font-size: 0.875rem;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2);\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n  border: none;\n  cursor: pointer;\n}\n.btn-add-event[_ngcontent-%COMP%]:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.3);\n}\n.tab-nav[_ngcontent-%COMP%] {\n  display: flex;\n  gap: 8px;\n  background: #f1f5f9;\n  padding: 6px;\n  border-radius: 24px;\n  max-width: 100%;\n  margin-bottom: 2.5rem;\n  overflow-x: auto;\n  border: 1px solid rgba(226, 232, 240, 0.4);\n  scrollbar-width: none;\n  -ms-overflow-style: none;\n}\n.tab-nav[_ngcontent-%COMP%]::-webkit-scrollbar {\n  display: none;\n}\n.tab-btn[_ngcontent-%COMP%] {\n  padding: 10px 20px;\n  border-radius: 18px;\n  font-size: 0.75rem;\n  font-weight: 800;\n  color: #64748b;\n  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  border: none;\n  background: transparent;\n  cursor: pointer;\n  white-space: nowrap;\n  flex-shrink: 0;\n}\n.tab-btn[_ngcontent-%COMP%]:hover:not(.active) {\n  background: white;\n  color: #1e293b;\n}\n.tab-btn.active[_ngcontent-%COMP%] {\n  background: white;\n  color: var(--event-primary);\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);\n}\n.tab-badge[_ngcontent-%COMP%] {\n  padding: 2px 8px;\n  border-radius: 8px;\n  font-size: 0.7rem;\n  font-weight: 800;\n  background: #e2e8f0;\n  color: #64748b;\n}\n.active[_ngcontent-%COMP%]   .tab-badge[_ngcontent-%COMP%] {\n  background: rgba(99, 102, 241, 0.1);\n  color: var(--event-primary);\n}\n.table-wrapper[_ngcontent-%COMP%] {\n  background: white;\n  border-radius: 32px;\n  border: 1px solid rgba(226, 232, 240, 0.8);\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);\n  overflow: hidden;\n}\ntable[_ngcontent-%COMP%] {\n  width: 100%;\n  border-collapse: collapse;\n  min-width: 900px;\n}\ntable[_ngcontent-%COMP%]   thead[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  background: #f8fafc;\n  padding: 16px 32px;\n  color: #94a3b8;\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.1em;\n  font-size: 0.65rem;\n  border-bottom: 2px solid #f1f5f9;\n  text-align: left;\n  white-space: nowrap;\n}\ntable[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 28px 32px;\n  font-size: 0.9375rem;\n  color: #1e293b;\n  border-bottom: 1px solid #f1f5f9;\n  font-weight: 500;\n  text-align: left;\n  vertical-align: middle;\n}\n.overflow-x-auto[_ngcontent-%COMP%] {\n  scrollbar-width: thin;\n  scrollbar-color: #e2e8f0 transparent;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar {\n  height: 6px;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar-track {\n  background: transparent;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar-thumb {\n  background-color: #e2e8f0;\n  border-radius: 20px;\n  border: 2px solid transparent;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar-thumb:hover {\n  background-color: #cbd5e1;\n}\ntable[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr[_ngcontent-%COMP%]:hover {\n  background: #f8fafc;\n}\n.status-pill[_ngcontent-%COMP%] {\n  padding: 6px 14px;\n  border-radius: 10px;\n  font-size: 0.65rem;\n  font-weight: 900;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n  white-space: nowrap !important;\n  display: inline-flex !important;\n  align-items: center;\n  justify-content: center;\n}\n.status-draft[_ngcontent-%COMP%] {\n  background: #fef3c7;\n  color: #92400e;\n}\n.status-published[_ngcontent-%COMP%] {\n  background: #d1fae5;\n  color: #065f46;\n}\n.status-completed[_ngcontent-%COMP%] {\n  background: #e2e8f0;\n  color: #475569;\n}\n.status-cancelled[_ngcontent-%COMP%] {\n  background: #fee2e2;\n  color: #991b1b;\n}\n.btn-pill[_ngcontent-%COMP%] {\n  padding: 8px 16px;\n  border-radius: 12px;\n  font-size: 0.75rem;\n  font-weight: 700;\n  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);\n  border: none;\n  cursor: pointer;\n}\n.btn-details[_ngcontent-%COMP%] {\n  background: #f1f5f9;\n  color: #475569;\n}\n.btn-details[_ngcontent-%COMP%]:hover {\n  background: #e2e8f0;\n  transform: translateY(-1px);\n}\n.btn-edit[_ngcontent-%COMP%] {\n  background: #eef2ff;\n  color: #6366f1;\n}\n.btn-edit[_ngcontent-%COMP%]:hover {\n  background: #e0e7ff;\n  transform: translateY(-1px);\n}\n.btn-publish[_ngcontent-%COMP%] {\n  background: #10b981;\n  color: white;\n}\n.btn-publish[_ngcontent-%COMP%]:hover {\n  filter: brightness(1.1);\n  transform: translateY(-1px);\n}\n.management-container[_ngcontent-%COMP%] {\n  animation: none !important;\n}\n.management-container[_ngcontent-%COMP%]   .animate-pulse[_ngcontent-%COMP%], .management-container[_ngcontent-%COMP%]   .animate-spin[_ngcontent-%COMP%] {\n  animation-duration: 1.8s;\n}\n/*# sourceMappingURL=event-management.component.css.map */"] });
+    }, dependencies: [CommonModule, NgClass, NgForOf, NgIf], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n  --event-primary: #6366f1;\n  --event-success: #10b981;\n  --event-draft: #f59e0b;\n  --event-completed: #94a3b8;\n}\n.management-container[_ngcontent-%COMP%] {\n  animation: _ngcontent-%COMP%_fadeIn 0.5s ease-out;\n}\n@keyframes _ngcontent-%COMP%_fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(10px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n.page-header[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: flex-end;\n  margin-bottom: 2.5rem;\n}\n.title-area[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  font-size: 2.5rem;\n  font-weight: 900;\n  color: #0f172a;\n  letter-spacing: -0.04em;\n  margin-bottom: 0.5rem;\n}\n.title-area[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  font-size: 0.875rem;\n  color: #64748b;\n  font-weight: 500;\n}\n.btn-add-event[_ngcontent-%COMP%] {\n  background:\n    linear-gradient(\n      135deg,\n      #6366f1,\n      #8b5cf6);\n  color: white;\n  padding: 12px 24px;\n  border-radius: 16px;\n  font-weight: 800;\n  font-size: 0.875rem;\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2);\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n  border: none;\n  cursor: pointer;\n}\n.btn-add-event[_ngcontent-%COMP%]:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.3);\n}\n.tab-nav[_ngcontent-%COMP%] {\n  display: flex;\n  gap: 8px;\n  background: #f1f5f9;\n  padding: 6px;\n  border-radius: 24px;\n  max-width: 100%;\n  margin-bottom: 2.5rem;\n  overflow-x: auto;\n  border: 1px solid rgba(226, 232, 240, 0.4);\n  scrollbar-width: none;\n  -ms-overflow-style: none;\n}\n.tab-nav[_ngcontent-%COMP%]::-webkit-scrollbar {\n  display: none;\n}\n.tab-btn[_ngcontent-%COMP%] {\n  padding: 10px 20px;\n  border-radius: 18px;\n  font-size: 0.75rem;\n  font-weight: 800;\n  color: #64748b;\n  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  border: none;\n  background: transparent;\n  cursor: pointer;\n  white-space: nowrap;\n  flex-shrink: 0;\n}\n.tab-btn[_ngcontent-%COMP%]:hover:not(.active) {\n  background: white;\n  color: #1e293b;\n}\n.tab-btn.active[_ngcontent-%COMP%] {\n  background: white;\n  color: var(--event-primary);\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);\n}\n.tab-badge[_ngcontent-%COMP%] {\n  padding: 2px 8px;\n  border-radius: 8px;\n  font-size: 0.7rem;\n  font-weight: 800;\n  background: #e2e8f0;\n  color: #64748b;\n}\n.active[_ngcontent-%COMP%]   .tab-badge[_ngcontent-%COMP%] {\n  background: rgba(99, 102, 241, 0.1);\n  color: var(--event-primary);\n}\n.table-wrapper[_ngcontent-%COMP%] {\n  background: white;\n  border-radius: 32px;\n  border: 1px solid rgba(226, 232, 240, 0.8);\n  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);\n  overflow: hidden;\n}\ntable[_ngcontent-%COMP%] {\n  width: 100%;\n  border-collapse: collapse;\n  min-width: 900px;\n}\ntable[_ngcontent-%COMP%]   thead[_ngcontent-%COMP%]   th[_ngcontent-%COMP%] {\n  background: #f8fafc;\n  padding: 16px 32px;\n  color: #94a3b8;\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.1em;\n  font-size: 0.65rem;\n  border-bottom: 2px solid #f1f5f9;\n  text-align: left;\n  white-space: nowrap;\n}\ntable[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   td[_ngcontent-%COMP%] {\n  padding: 28px 32px;\n  font-size: 0.9375rem;\n  color: #1e293b;\n  border-bottom: 1px solid #f1f5f9;\n  font-weight: 500;\n  text-align: left;\n  vertical-align: middle;\n}\n.overflow-x-auto[_ngcontent-%COMP%] {\n  scrollbar-width: thin;\n  scrollbar-color: #e2e8f0 transparent;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar {\n  height: 6px;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar-track {\n  background: transparent;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar-thumb {\n  background-color: #e2e8f0;\n  border-radius: 20px;\n  border: 2px solid transparent;\n}\n.overflow-x-auto[_ngcontent-%COMP%]::-webkit-scrollbar-thumb:hover {\n  background-color: #cbd5e1;\n}\ntable[_ngcontent-%COMP%]   tbody[_ngcontent-%COMP%]   tr[_ngcontent-%COMP%]:hover {\n  background: #f8fafc;\n}\n.status-pill[_ngcontent-%COMP%] {\n  padding: 6px 14px;\n  border-radius: 10px;\n  font-size: 0.65rem;\n  font-weight: 900;\n  letter-spacing: 0.05em;\n  text-transform: uppercase;\n  white-space: nowrap !important;\n  display: inline-flex !important;\n  align-items: center;\n  justify-content: center;\n}\n.status-draft[_ngcontent-%COMP%] {\n  background: #fef3c7;\n  color: #92400e;\n}\n.status-published[_ngcontent-%COMP%] {\n  background: #d1fae5;\n  color: #065f46;\n}\n.status-completed[_ngcontent-%COMP%] {\n  background: #e2e8f0;\n  color: #475569;\n}\n.status-cancelled[_ngcontent-%COMP%] {\n  background: #fee2e2;\n  color: #991b1b;\n}\n.event-actions-cell[_ngcontent-%COMP%] {\n  text-align: right;\n  vertical-align: middle;\n}\n.event-actions-row[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n.btn-pill[_ngcontent-%COMP%] {\n  padding: 8px 16px;\n  border-radius: 12px;\n  font-size: 0.75rem;\n  font-weight: 700;\n  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);\n  border: none;\n  cursor: pointer;\n  white-space: nowrap;\n  flex-shrink: 0;\n}\n.btn-details[_ngcontent-%COMP%] {\n  background: #f1f5f9;\n  color: #475569;\n}\n.btn-details[_ngcontent-%COMP%]:hover {\n  background: #e2e8f0;\n  transform: translateY(-1px);\n}\n.btn-edit[_ngcontent-%COMP%] {\n  background: #eef2ff;\n  color: #6366f1;\n}\n.btn-edit[_ngcontent-%COMP%]:hover {\n  background: #e0e7ff;\n  transform: translateY(-1px);\n}\n.btn-publish[_ngcontent-%COMP%] {\n  background: #10b981;\n  color: white;\n}\n.btn-publish[_ngcontent-%COMP%]:hover {\n  filter: brightness(1.1);\n  transform: translateY(-1px);\n}\n.management-container[_ngcontent-%COMP%] {\n  animation: none !important;\n}\n.management-container[_ngcontent-%COMP%]   .animate-pulse[_ngcontent-%COMP%], .management-container[_ngcontent-%COMP%]   .animate-spin[_ngcontent-%COMP%] {\n  animation-duration: 1.8s;\n}\n/*# sourceMappingURL=event-management.component.css.map */"] });
   }
 };
 (() => {
@@ -836,4 +836,4 @@ var EventManagementComponent = class _EventManagementComponent {
 export {
   EventManagementComponent
 };
-//# sourceMappingURL=chunk-OETZIQUK.js.map
+//# sourceMappingURL=chunk-O6RF27FZ.js.map

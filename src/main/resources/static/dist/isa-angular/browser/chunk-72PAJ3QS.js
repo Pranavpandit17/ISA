@@ -6,7 +6,8 @@ import {
 } from "./chunk-6BWAVG33.js";
 import {
   EventDetailModalComponent
-} from "./chunk-FNX347UM.js";
+} from "./chunk-EMZJRUO4.js";
+import "./chunk-WTPJNKEG.js";
 import "./chunk-ZRHEMPKX.js";
 import {
   AuthService
@@ -14,7 +15,7 @@ import {
 import "./chunk-X7FTYMHV.js";
 import {
   EventCreateComponent
-} from "./chunk-PKVTQILV.js";
+} from "./chunk-MLXA72YZ.js";
 import {
   DefaultValueAccessor,
   FormsModule,
@@ -29,7 +30,7 @@ import {
 } from "./chunk-QNLLDZ5O.js";
 import {
   EventManagementComponent
-} from "./chunk-OETZIQUK.js";
+} from "./chunk-O6RF27FZ.js";
 import {
   ConfirmService
 } from "./chunk-HJ6C4NPU.js";
@@ -3254,47 +3255,56 @@ function AdminDashboardComponent_div_91_Template(rf, ctx) {
     \u0275\u0275property("ngIf", !ctx_r0.currentView);
   }
 }
-function AdminDashboardComponent_div_92_div_11_Template(rf, ctx) {
+function AdminDashboardComponent_div_92_div_12_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "div", 106)(1, "span", 107);
+    \u0275\u0275elementStart(0, "div", 107);
+    \u0275\u0275element(1, "div", 108);
+    \u0275\u0275elementStart(2, "p", 109);
+    \u0275\u0275text(3, "Loading\u2026");
+    \u0275\u0275elementEnd()();
+  }
+}
+function AdminDashboardComponent_div_92_ng_container_13_div_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 112)(1, "span", 113);
     \u0275\u0275text(2, "\u{1F4EB}");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "p", 108);
+    \u0275\u0275elementStart(3, "p", 114);
     \u0275\u0275text(4, "Inbox is clear");
     \u0275\u0275elementEnd()();
   }
 }
-function AdminDashboardComponent_div_92_div_12_Template(rf, ctx) {
+function AdminDashboardComponent_div_92_ng_container_13_div_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r12 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 109);
-    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_div_12_Template_div_click_0_listener() {
+    \u0275\u0275elementStart(0, "div", 115);
+    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_ng_container_13_div_2_Template_div_click_0_listener() {
       const n_r13 = \u0275\u0275restoreView(_r12).$implicit;
-      const ctx_r0 = \u0275\u0275nextContext(2);
+      const ctx_r0 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r0.onNotificationClick(n_r13));
     });
-    \u0275\u0275elementStart(1, "div", 110)(2, "div", 111);
+    \u0275\u0275elementStart(1, "div", 116)(2, "div", 117);
     \u0275\u0275element(3, "div");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(4, "div", 112)(5, "div", 113)(6, "p", 114);
+    \u0275\u0275elementStart(4, "div", 118)(5, "div", 119)(6, "p", 120);
     \u0275\u0275text(7);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(8, "span", 115);
+    \u0275\u0275elementStart(8, "span", 121);
     \u0275\u0275text(9);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(10, "p", 116);
+    \u0275\u0275elementStart(10, "p", 122);
     \u0275\u0275text(11);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(12, "p", 117);
+    \u0275\u0275elementStart(12, "p", 123);
     \u0275\u0275text(13);
     \u0275\u0275pipe(14, "date");
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
     const n_r13 = ctx.$implicit;
-    \u0275\u0275property("ngClass", n_r13.read ? "bg-white border-slate-100" : "bg-indigo-50/50 border-indigo-100");
+    \u0275\u0275property("ngClass", n_r13.read ? "bg-white border-slate-100" : "bg-indigo-50/50 border-indigo-100 ring-1 ring-indigo-100");
     \u0275\u0275advance(3);
-    \u0275\u0275classMap(n_r13.read ? "bg-slate-200" : "unread-dot");
+    \u0275\u0275classMap(n_r13.read ? "w-2 h-2 rounded-full bg-slate-200" : "unread-dot");
     \u0275\u0275advance(4);
     \u0275\u0275textInterpolate(n_r13.title);
     \u0275\u0275advance(2);
@@ -3303,6 +3313,20 @@ function AdminDashboardComponent_div_92_div_12_Template(rf, ctx) {
     \u0275\u0275textInterpolate(n_r13.message);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(14, 7, n_r13.createdAt, "MMM d, h:mm a"));
+  }
+}
+function AdminDashboardComponent_div_92_ng_container_13_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementContainerStart(0);
+    \u0275\u0275template(1, AdminDashboardComponent_div_92_ng_container_13_div_1_Template, 5, 0, "div", 110)(2, AdminDashboardComponent_div_92_ng_container_13_div_2_Template, 15, 10, "div", 111);
+    \u0275\u0275elementContainerEnd();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r0.notifications.length === 0);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngForOf", ctx_r0.notifications);
   }
 }
 function AdminDashboardComponent_div_92_Template(rf, ctx) {
@@ -3319,46 +3343,49 @@ function AdminDashboardComponent_div_92_Template(rf, ctx) {
       \u0275\u0275restoreView(_r11);
       return \u0275\u0275resetView($event.stopPropagation());
     });
-    \u0275\u0275elementStart(2, "div", 96)(3, "div", 97)(4, "h3", 98);
+    \u0275\u0275elementStart(2, "div", 96)(3, "div")(4, "h3", 97);
     \u0275\u0275text(5, "System Updates");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(6, "button", 99);
-    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_Template_button_click_6_listener() {
+    \u0275\u0275elementStart(6, "p", 98);
+    \u0275\u0275text(7, "Monitoring platform activity in real-time");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(8, "button", 99);
+    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_Template_button_click_8_listener() {
       \u0275\u0275restoreView(_r11);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.closeNotifications());
     });
-    \u0275\u0275text(7, "\u2715");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(8, "p", 16);
-    \u0275\u0275text(9, "Monitoring platform activity in real-time");
-    \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(10, "div", 100);
-    \u0275\u0275template(11, AdminDashboardComponent_div_92_div_11_Template, 5, 0, "div", 101)(12, AdminDashboardComponent_div_92_div_12_Template, 15, 10, "div", 102);
+    \u0275\u0275namespaceSVG();
+    \u0275\u0275elementStart(9, "svg", 100);
+    \u0275\u0275element(10, "path", 101);
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275namespaceHTML();
+    \u0275\u0275elementStart(11, "div", 102);
+    \u0275\u0275template(12, AdminDashboardComponent_div_92_div_12_Template, 4, 0, "div", 103)(13, AdminDashboardComponent_div_92_ng_container_13_Template, 3, 2, "ng-container", 43);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "div", 103)(14, "button", 104);
-    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_Template_button_click_14_listener() {
+    \u0275\u0275elementStart(14, "div", 104)(15, "button", 105);
+    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_Template_button_click_15_listener() {
       \u0275\u0275restoreView(_r11);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.markAllNotificationsRead());
     });
-    \u0275\u0275text(15, "Mark All Read");
+    \u0275\u0275text(16, "Mark all read");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(16, "button", 105);
-    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_Template_button_click_16_listener() {
+    \u0275\u0275elementStart(17, "button", 106);
+    \u0275\u0275listener("click", function AdminDashboardComponent_div_92_Template_button_click_17_listener() {
       \u0275\u0275restoreView(_r11);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.clearAllNotifications());
     });
-    \u0275\u0275text(17, "Clear All");
+    \u0275\u0275text(18, "Clear all");
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance(11);
-    \u0275\u0275property("ngIf", !ctx_r0.isLoadingNotifications && ctx_r0.notifications.length === 0);
+    \u0275\u0275advance(12);
+    \u0275\u0275property("ngIf", ctx_r0.isLoadingNotifications);
     \u0275\u0275advance();
-    \u0275\u0275property("ngForOf", ctx_r0.notifications);
+    \u0275\u0275property("ngIf", !ctx_r0.isLoadingNotifications);
   }
 }
 var AdminDashboardComponent = class _AdminDashboardComponent {
@@ -3834,7 +3861,7 @@ var AdminDashboardComponent = class _AdminDashboardComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AdminDashboardComponent, selectors: [["app-admin-dashboard"]], outputs: { navigate: "navigate" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 100, vars: 41, consts: [["noCurrentSliderImage", ""], [1, "admin-layout"], [1, "max-w-8xl", "mx-auto", "px-6", "py-10"], [1, "grid", "grid-cols-1", "lg:grid-cols-12", "gap-8", "items-start"], [1, "lg:col-span-4", "space-y-6"], [1, "glass-card", "rounded-3xl", "p-8", "reveal-up"], [1, "flex", "items-start", "justify-between"], [1, "flex", "items-center", "gap-5"], [1, "relative"], [1, "h-20", "w-20", "rounded-2xl", "profile-avatar", "overflow-hidden"], [1, "bg-white", "w-full", "h-full", "p-0.5", "rounded-[14px]", "overflow-hidden"], ["class", "w-full h-full object-cover rounded-[13px]", 3, "src", "alt", 4, "ngIf"], ["class", "w-full h-full flex items-center justify-center bg-slate-50 text-3xl", 4, "ngIf"], [1, "absolute", "-bottom-1", "-right-1", "h-5", "w-5", "bg-emerald-500", "border-4", "border-white", "rounded-full"], [1, "admin-badge", "text-[10px]", "px-2", "py-0.5", "rounded-lg", "mb-2", "inline-block"], [1, "text-xl", "font-black", "text-slate-900", "tracking-tight"], [1, "text-sm", "font-medium", "text-slate-400"], [1, "relative", "p-3", "rounded-2xl", "bg-slate-50", "text-slate-400", "hover:text-indigo-600", "hover:bg-indigo-50", "transition-all", "border", "border-slate-100", "group", 3, "click"], ["width", "24", "height", "24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "viewBox", "0 0 24 24", 1, "group-hover:rotate-12", "transition-transform"], ["stroke-linecap", "round", "stroke-linejoin", "round", "d", "M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"], ["class", "absolute top-2 right-2 h-4 min-w-[16px] px-1 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white", 4, "ngIf"], [1, "glass-card", "rounded-3xl", "p-8", "reveal-up", 2, "animation-delay", "0.1s"], [1, "text-xs", "font-black", "text-slate-400", "uppercase", "tracking-widest", "mb-6"], [1, "grid", "grid-cols-2", "gap-4"], [1, "p-4", "bg-blue-50/50", "rounded-2xl", "border", "border-blue-100/50", "stat-card", "text-blue-600"], [1, "text-[10px]", "font-bold", "uppercase", "tracking-wider", "mb-1", "opacity-70"], [1, "text-2xl", "font-black"], [1, "p-4", "bg-indigo-50/50", "rounded-2xl", "border", "border-indigo-100/50", "stat-card", "text-indigo-600"], [1, "p-4", "bg-emerald-50/50", "rounded-2xl", "border", "border-emerald-100/50", "stat-card", "text-emerald-600"], [1, "p-4", "bg-rose-50/50", "rounded-2xl", "border", "border-rose-100/50", "stat-card", "text-rose-600"], [1, "p-6", "bg-slate-900", "rounded-3xl", "text-white", "shadow-2xl", "reveal-up", 2, "animation-delay", "0.2s"], [1, "flex", "items-center", "gap-3", "mb-3"], [1, "h-8", "w-8", "rounded-lg", "bg-white/10", "flex", "items-center", "justify-center"], [1, "text-sm", "font-bold"], [1, "text-xs", "text-slate-400", "leading-relaxed"], [1, "lg:col-span-8", "space-y-8"], [1, "glass-card", "rounded-[32px]", "p-2", "reveal-up", 2, "animation-delay", "0.3s"], [1, "grid", "grid-cols-2", "md:grid-cols-6", "gap-2"], [1, "nav-item", "rounded-3xl", "p-4", "transition-all", 3, "click"], [1, "icon-box"], [1, "text-[10px]", "font-black", "uppercase", "text-slate-500", "tracking-tight"], [1, "glass-card", "rounded-[40px]", "p-8", "min-h-[500px]", "reveal-up", 2, "animation-delay", "0.4s"], ["class", "flex flex-col items-center justify-center py-24 gap-4", 4, "ngIf"], [4, "ngIf"], ["class", "fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-end p-4 md:p-10", 3, "click", 4, "ngIf"], [3, "close", "saved", "isModal", "show", "editEvent", "saveEvent"], [3, "close", "approve", "reject", "show", "application", "showActions"], ["mode", "APPROVE", 3, "close", "confirm", "show", "application"], ["mode", "REJECT", 3, "close", "confirm", "show", "application"], [3, "close", "show", "event"], [3, "close", "show", "jobPosting"], [3, "close", "saved", "show", "editJob"], [1, "w-full", "h-full", "object-cover", "rounded-[13px]", 3, "src", "alt"], [1, "w-full", "h-full", "flex", "items-center", "justify-center", "bg-slate-50", "text-3xl"], [1, "absolute", "top-2", "right-2", "h-4", "min-w-[16px]", "px-1", "bg-rose-500", "text-white", "text-[10px]", "font-bold", "rounded-full", "flex", "items-center", "justify-center", "border-2", "border-white"], [1, "flex", "flex-col", "items-center", "justify-center", "py-24", "gap-4"], [1, "h-12", "w-12", "border-4", "border-indigo-100", "border-t-indigo-600", "rounded-full", "animate-spin"], [1, "text-sm", "font-bold", "text-slate-400", "uppercase", "tracking-widest"], [3, "openDetail", "openApprove", "openReject", 4, "ngIf"], [3, "openDetail", "openEdit", "openCreate", 4, "ngIf"], [3, "openDetail", "openEdit", 4, "ngIf"], ["class", "space-y-6", 4, "ngIf"], ["class", "flex flex-col items-center justify-center py-20 text-center", 4, "ngIf"], [3, "openDetail", "openApprove", "openReject"], [3, "openDetail", "openEdit", "openCreate"], [3, "openDetail", "openEdit"], [1, "space-y-6"], [1, "border", "border-slate-200", "rounded-3xl", "p-6", "bg-white"], [1, "text-lg", "font-black", "text-slate-900", "mb-2"], [1, "text-sm", "text-slate-500", "mb-5"], [1, "grid", "grid-cols-1", "md:grid-cols-2", "gap-6"], [1, "text-xs", "font-black", "uppercase", "tracking-widest", "text-slate-400", "mb-2"], ["class", "grid grid-cols-2 gap-3 max-h-64 overflow-auto pr-1", 4, "ngIf", "ngIfElse"], ["type", "file", "accept", "image/*", "multiple", "", 1, "block", "w-full", "text-sm", "text-slate-600", "file:mr-4", "file:py-2", "file:px-4", "file:rounded-xl", "file:border-0", "file:bg-indigo-50", "file:text-indigo-700", "file:font-semibold", "hover:file:bg-indigo-100", 3, "change"], ["class", "mt-4 grid grid-cols-2 gap-3 max-h-52 overflow-auto pr-1", 4, "ngIf"], [1, "mt-5", "px-5", "py-3", "rounded-2xl", "bg-indigo-600", "text-white", "font-bold", "hover:bg-indigo-700", "disabled:opacity-60", "disabled:cursor-not-allowed", 3, "click", "disabled"], [1, "grid", "grid-cols-2", "gap-3", "max-h-64", "overflow-auto", "pr-1"], ["class", "slider-image-card", 4, "ngFor", "ngForOf"], [1, "slider-image-card"], ["alt", "Current home slider image", 1, "h-24", "w-full", "object-cover", "rounded-xl", "border", "border-slate-200", 3, "src"], [1, "slider-image-overlay"], ["type", "button", "title", "Delete image", "aria-label", "Delete image", 1, "slider-delete-btn", 3, "click"], [1, "h-52", "rounded-2xl", "border", "border-slate-200", "bg-slate-50", "overflow-hidden", "flex", "items-center", "justify-center"], [1, "text-sm", "text-slate-400"], [1, "mt-4", "grid", "grid-cols-2", "gap-3", "max-h-52", "overflow-auto", "pr-1"], ["class", "h-24 w-full object-cover rounded-xl border border-slate-200", "alt", "New slider preview", 3, "src", 4, "ngFor", "ngForOf"], ["alt", "New slider preview", 1, "h-24", "w-full", "object-cover", "rounded-xl", "border", "border-slate-200", 3, "src"], [1, "flex", "flex-col", "items-center", "justify-center", "py-20", "text-center"], [1, "h-32", "w-32", "bg-indigo-50", "rounded-full", "flex", "items-center", "justify-center", "text-5xl", "mb-8", "animate-pulse"], [1, "text-3xl", "font-black", "text-slate-900", "mb-4", "tracking-tighter"], [1, "text-slate-500", "max-w-sm", "mx-auto", "font-medium", "leading-relaxed", "mb-10"], [1, "flex", "gap-3"], [1, "px-6", "py-3", "bg-white", "border", "border-slate-200", "rounded-2xl", "text-sm", "font-bold", "hover:bg-slate-50", "transition-colors", 3, "click"], [1, "px-6", "py-3", "btn-premium", "rounded-2xl", "text-sm", "font-bold", 3, "click"], [1, "fixed", "inset-0", "bg-slate-900/60", "backdrop-blur-sm", "z-[100]", "flex", "items-center", "justify-end", "p-4", "md:p-10", 3, "click"], [1, "bg-white", "w-full", "max-w-lg", "h-full", "rounded-[40px]", "shadow-2xl", "overflow-hidden", "flex", "flex-col", "reveal-up", 3, "click"], [1, "p-8", "border-b", "border-slate-100"], [1, "flex", "items-center", "justify-between", "mb-2"], [1, "text-2xl", "font-black", "text-slate-900", "tracking-tighter"], [1, "h-10", "w-10", "flex", "items-center", "justify-center", "bg-slate-50", "rounded-full", "hover:bg-slate-100", "transition-colors", "text-slate-400", 3, "click"], [1, "flex-1", "overflow-y-auto", "p-6", "space-y-3"], ["class", "flex flex-col items-center justify-center h-full opacity-30 grayscale", 4, "ngIf"], ["class", "p-5 rounded-3xl border transition-all cursor-pointer notif-item", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "p-8", "border-t", "border-slate-100", "bg-slate-50/50", "flex", "gap-4"], [1, "flex-1", "px-4", "py-3", "bg-white", "border", "border-slate-200", "rounded-2xl", "text-xs", "font-black", "uppercase", "tracking-widest", "text-slate-600", "hover:bg-white", "hover:border-indigo-200", "transition-all", 3, "click"], [1, "px-4", "py-3", "text-rose-500", "text-xs", "font-black", "uppercase", "tracking-widest", 3, "click"], [1, "flex", "flex-col", "items-center", "justify-center", "h-full", "opacity-30", "grayscale"], [1, "text-6xl", "mb-4"], [1, "font-bold", "uppercase", "tracking-widest", "text-xs"], [1, "p-5", "rounded-3xl", "border", "transition-all", "cursor-pointer", "notif-item", 3, "click", "ngClass"], [1, "flex", "gap-4"], [1, "mt-1"], [1, "flex-1"], [1, "flex", "items-center", "gap-2", "mb-1"], [1, "text-sm", "font-black", "text-slate-900"], [1, "text-[9px]", "font-black", "uppercase", "px-1.5", "py-0.5", "bg-white", "border", "border-slate-100", "rounded", "text-slate-400"], [1, "text-sm", "text-slate-500", "font-medium", "leading-snug"], [1, "text-[10px]", "text-slate-400", "mt-3", "font-bold", "uppercase", "tracking-tight"]], template: function AdminDashboardComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _AdminDashboardComponent, selectors: [["app-admin-dashboard"]], outputs: { navigate: "navigate" }, standalone: true, features: [\u0275\u0275StandaloneFeature], decls: 100, vars: 41, consts: [["noCurrentSliderImage", ""], [1, "admin-layout"], [1, "max-w-8xl", "mx-auto", "px-6", "py-10"], [1, "grid", "grid-cols-1", "lg:grid-cols-12", "gap-8", "items-start"], [1, "lg:col-span-4", "space-y-6"], [1, "glass-card", "rounded-3xl", "p-8", "reveal-up"], [1, "flex", "items-start", "justify-between"], [1, "flex", "items-center", "gap-5"], [1, "relative"], [1, "h-20", "w-20", "rounded-2xl", "profile-avatar", "overflow-hidden"], [1, "bg-white", "w-full", "h-full", "p-0.5", "rounded-[14px]", "overflow-hidden"], ["class", "w-full h-full object-cover rounded-[13px]", 3, "src", "alt", 4, "ngIf"], ["class", "w-full h-full flex items-center justify-center bg-slate-50 text-3xl", 4, "ngIf"], [1, "absolute", "-bottom-1", "-right-1", "h-5", "w-5", "bg-emerald-500", "border-4", "border-white", "rounded-full"], [1, "admin-badge", "text-[10px]", "px-2", "py-0.5", "rounded-lg", "mb-2", "inline-block"], [1, "text-xl", "font-black", "text-slate-900", "tracking-tight"], [1, "text-sm", "font-medium", "text-slate-400"], [1, "relative", "p-3", "rounded-2xl", "bg-slate-50", "text-slate-400", "hover:text-indigo-600", "hover:bg-indigo-50", "transition-all", "border", "border-slate-100", "group", 3, "click"], ["width", "24", "height", "24", "fill", "none", "stroke", "currentColor", "stroke-width", "2", "viewBox", "0 0 24 24", 1, "group-hover:rotate-12", "transition-transform"], ["stroke-linecap", "round", "stroke-linejoin", "round", "d", "M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"], ["class", "absolute top-2 right-2 h-4 min-w-[16px] px-1 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white", 4, "ngIf"], [1, "glass-card", "rounded-3xl", "p-8", "reveal-up", 2, "animation-delay", "0.1s"], [1, "text-xs", "font-black", "text-slate-400", "uppercase", "tracking-widest", "mb-6"], [1, "grid", "grid-cols-2", "gap-4"], [1, "p-4", "bg-blue-50/50", "rounded-2xl", "border", "border-blue-100/50", "stat-card", "text-blue-600"], [1, "text-[10px]", "font-bold", "uppercase", "tracking-wider", "mb-1", "opacity-70"], [1, "text-2xl", "font-black"], [1, "p-4", "bg-indigo-50/50", "rounded-2xl", "border", "border-indigo-100/50", "stat-card", "text-indigo-600"], [1, "p-4", "bg-emerald-50/50", "rounded-2xl", "border", "border-emerald-100/50", "stat-card", "text-emerald-600"], [1, "p-4", "bg-rose-50/50", "rounded-2xl", "border", "border-rose-100/50", "stat-card", "text-rose-600"], [1, "p-6", "bg-slate-900", "rounded-3xl", "text-white", "shadow-2xl", "reveal-up", 2, "animation-delay", "0.2s"], [1, "flex", "items-center", "gap-3", "mb-3"], [1, "h-8", "w-8", "rounded-lg", "bg-white/10", "flex", "items-center", "justify-center"], [1, "text-sm", "font-bold"], [1, "text-xs", "text-slate-400", "leading-relaxed"], [1, "lg:col-span-8", "space-y-8"], [1, "glass-card", "rounded-[32px]", "p-2", "reveal-up", 2, "animation-delay", "0.3s"], [1, "grid", "grid-cols-2", "md:grid-cols-6", "gap-2"], [1, "nav-item", "rounded-3xl", "p-4", "transition-all", 3, "click"], [1, "icon-box"], [1, "text-[10px]", "font-black", "uppercase", "text-slate-500", "tracking-tight"], [1, "glass-card", "rounded-[40px]", "p-8", "min-h-[500px]", "reveal-up", 2, "animation-delay", "0.4s"], ["class", "flex flex-col items-center justify-center py-24 gap-4", 4, "ngIf"], [4, "ngIf"], ["class", "fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in", 3, "click", 4, "ngIf"], [3, "close", "saved", "isModal", "show", "editEvent", "saveEvent"], [3, "close", "approve", "reject", "show", "application", "showActions"], ["mode", "APPROVE", 3, "close", "confirm", "show", "application"], ["mode", "REJECT", 3, "close", "confirm", "show", "application"], [3, "close", "show", "event"], [3, "close", "show", "jobPosting"], [3, "close", "saved", "show", "editJob"], [1, "w-full", "h-full", "object-cover", "rounded-[13px]", 3, "src", "alt"], [1, "w-full", "h-full", "flex", "items-center", "justify-center", "bg-slate-50", "text-3xl"], [1, "absolute", "top-2", "right-2", "h-4", "min-w-[16px]", "px-1", "bg-rose-500", "text-white", "text-[10px]", "font-bold", "rounded-full", "flex", "items-center", "justify-center", "border-2", "border-white"], [1, "flex", "flex-col", "items-center", "justify-center", "py-24", "gap-4"], [1, "h-12", "w-12", "border-4", "border-indigo-100", "border-t-indigo-600", "rounded-full", "animate-spin"], [1, "text-sm", "font-bold", "text-slate-400", "uppercase", "tracking-widest"], [3, "openDetail", "openApprove", "openReject", 4, "ngIf"], [3, "openDetail", "openEdit", "openCreate", 4, "ngIf"], [3, "openDetail", "openEdit", 4, "ngIf"], ["class", "space-y-6", 4, "ngIf"], ["class", "flex flex-col items-center justify-center py-20 text-center", 4, "ngIf"], [3, "openDetail", "openApprove", "openReject"], [3, "openDetail", "openEdit", "openCreate"], [3, "openDetail", "openEdit"], [1, "space-y-6"], [1, "border", "border-slate-200", "rounded-3xl", "p-6", "bg-white"], [1, "text-lg", "font-black", "text-slate-900", "mb-2"], [1, "text-sm", "text-slate-500", "mb-5"], [1, "grid", "grid-cols-1", "md:grid-cols-2", "gap-6"], [1, "text-xs", "font-black", "uppercase", "tracking-widest", "text-slate-400", "mb-2"], ["class", "grid grid-cols-2 gap-3 max-h-64 overflow-auto pr-1", 4, "ngIf", "ngIfElse"], ["type", "file", "accept", "image/*", "multiple", "", 1, "block", "w-full", "text-sm", "text-slate-600", "file:mr-4", "file:py-2", "file:px-4", "file:rounded-xl", "file:border-0", "file:bg-indigo-50", "file:text-indigo-700", "file:font-semibold", "hover:file:bg-indigo-100", 3, "change"], ["class", "mt-4 grid grid-cols-2 gap-3 max-h-52 overflow-auto pr-1", 4, "ngIf"], [1, "mt-5", "px-5", "py-3", "rounded-2xl", "bg-indigo-600", "text-white", "font-bold", "hover:bg-indigo-700", "disabled:opacity-60", "disabled:cursor-not-allowed", 3, "click", "disabled"], [1, "grid", "grid-cols-2", "gap-3", "max-h-64", "overflow-auto", "pr-1"], ["class", "slider-image-card", 4, "ngFor", "ngForOf"], [1, "slider-image-card"], ["alt", "Current home slider image", 1, "h-24", "w-full", "object-cover", "rounded-xl", "border", "border-slate-200", 3, "src"], [1, "slider-image-overlay"], ["type", "button", "title", "Delete image", "aria-label", "Delete image", 1, "slider-delete-btn", 3, "click"], [1, "h-52", "rounded-2xl", "border", "border-slate-200", "bg-slate-50", "overflow-hidden", "flex", "items-center", "justify-center"], [1, "text-sm", "text-slate-400"], [1, "mt-4", "grid", "grid-cols-2", "gap-3", "max-h-52", "overflow-auto", "pr-1"], ["class", "h-24 w-full object-cover rounded-xl border border-slate-200", "alt", "New slider preview", 3, "src", 4, "ngFor", "ngForOf"], ["alt", "New slider preview", 1, "h-24", "w-full", "object-cover", "rounded-xl", "border", "border-slate-200", 3, "src"], [1, "flex", "flex-col", "items-center", "justify-center", "py-20", "text-center"], [1, "h-32", "w-32", "bg-indigo-50", "rounded-full", "flex", "items-center", "justify-center", "text-5xl", "mb-8", "animate-pulse"], [1, "text-3xl", "font-black", "text-slate-900", "mb-4", "tracking-tighter"], [1, "text-slate-500", "max-w-sm", "mx-auto", "font-medium", "leading-relaxed", "mb-10"], [1, "flex", "gap-3"], [1, "px-6", "py-3", "bg-white", "border", "border-slate-200", "rounded-2xl", "text-sm", "font-bold", "hover:bg-slate-50", "transition-colors", 3, "click"], [1, "px-6", "py-3", "btn-premium", "rounded-2xl", "text-sm", "font-bold", 3, "click"], [1, "fixed", "inset-0", "z-[100]", "flex", "items-center", "justify-center", "p-4", "bg-slate-900/40", "backdrop-blur-sm", "animate-fade-in", 3, "click"], [1, "bg-white", "rounded-3xl", "shadow-2xl", "w-full", "max-w-xl", "max-h-[85vh]", "overflow-hidden", "flex", "flex-col", "min-h-0", "reveal-up", 3, "click"], [1, "p-8", "border-b", "border-slate-100", "flex-shrink-0", "flex", "items-center", "justify-between", "bg-gradient-to-r", "from-slate-50", "to-white"], [1, "text-2xl", "font-black", "text-slate-900", "tracking-tighter"], [1, "text-sm", "font-medium", "text-slate-400", "mt-1"], ["type", "button", 1, "w-10", "h-10", "flex", "items-center", "justify-center", "rounded-2xl", "bg-white", "border", "border-slate-200", "text-slate-400", "hover:text-slate-900", "transition-colors", 3, "click"], ["fill", "none", "stroke", "currentColor", "viewBox", "0 0 24 24", 1, "w-6", "h-6"], ["stroke-linecap", "round", "stroke-linejoin", "round", "stroke-width", "2", "d", "M6 18L18 6M6 6l12 12"], [1, "flex-1", "min-h-0", "overflow-y-auto", "overflow-x-hidden", "p-8", "space-y-4", "custom-scrollbar"], ["class", "flex flex-col items-center justify-center py-20", 4, "ngIf"], [1, "p-8", "border-t", "border-slate-100", "bg-slate-50", "flex-shrink-0", "flex", "flex-wrap", "items-center", "justify-between", "gap-4"], ["type", "button", 1, "text-xs", "font-black", "text-indigo-600", "uppercase", "tracking-widest", "hover:underline", "px-2", "py-2", 3, "click"], ["type", "button", 1, "text-xs", "font-black", "text-red-500", "uppercase", "tracking-widest", "hover:underline", "px-2", "py-2", 3, "click"], [1, "flex", "flex-col", "items-center", "justify-center", "py-20"], [1, "w-10", "h-10", "border-4", "border-indigo-100", "border-t-indigo-600", "rounded-full", "animate-spin"], [1, "text-xs", "font-bold", "text-slate-400", "mt-4", "uppercase", "tracking-widest"], ["class", "text-center py-16 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-100", 4, "ngIf"], ["class", "p-5 rounded-3xl border transition-all cursor-pointer notif-item", 3, "ngClass", "click", 4, "ngFor", "ngForOf"], [1, "text-center", "py-16", "bg-slate-50", "rounded-3xl", "border-2", "border-dashed", "border-slate-100"], [1, "text-5xl", "block", "mb-4", "opacity-40", "grayscale"], [1, "text-slate-500", "font-bold"], [1, "p-5", "rounded-3xl", "border", "transition-all", "cursor-pointer", "notif-item", 3, "click", "ngClass"], [1, "flex", "gap-4"], [1, "mt-1", "flex-shrink-0"], [1, "flex-1", "min-w-0"], [1, "flex", "items-center", "gap-2", "mb-1", "flex-wrap"], [1, "text-sm", "font-black", "text-slate-900"], [1, "text-[9px]", "font-black", "uppercase", "px-1.5", "py-0.5", "bg-white", "border", "border-slate-100", "rounded", "text-slate-400"], [1, "text-sm", "text-slate-500", "font-medium", "leading-snug"], [1, "text-[10px]", "text-slate-400", "mt-3", "font-bold", "uppercase", "tracking-tight"]], template: function AdminDashboardComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275elementStart(0, "div", 1)(1, "div", 2)(2, "div", 3)(3, "aside", 4)(4, "div", 5)(5, "div", 6)(6, "div", 7)(7, "div", 8)(8, "div", 9)(9, "div", 10);
         \u0275\u0275template(10, AdminDashboardComponent_img_10_Template, 1, 2, "img", 11)(11, AdminDashboardComponent_div_11_Template, 2, 0, "div", 12);
@@ -3960,7 +3987,7 @@ var AdminDashboardComponent = class _AdminDashboardComponent {
         \u0275\u0275elementStart(89, "section", 41);
         \u0275\u0275template(90, AdminDashboardComponent_div_90_Template, 4, 0, "div", 42)(91, AdminDashboardComponent_div_91_Template, 8, 7, "div", 43);
         \u0275\u0275elementEnd()()()();
-        \u0275\u0275template(92, AdminDashboardComponent_div_92_Template, 18, 2, "div", 44);
+        \u0275\u0275template(92, AdminDashboardComponent_div_92_Template, 19, 2, "div", 44);
         \u0275\u0275elementStart(93, "app-event-create", 45);
         \u0275\u0275listener("close", function AdminDashboardComponent_Template_app_event_create_close_93_listener() {
           return ctx.closeGlobalModals();
@@ -4087,4 +4114,4 @@ var AdminDashboardComponent = class _AdminDashboardComponent {
 export {
   AdminDashboardComponent
 };
-//# sourceMappingURL=chunk-VZQ5HP63.js.map
+//# sourceMappingURL=chunk-72PAJ3QS.js.map

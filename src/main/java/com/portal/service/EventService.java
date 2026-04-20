@@ -28,9 +28,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -238,15 +240,9 @@ public class EventService {
             }
         }
 
-        // Replace ticket types for this event when provided by edit payload
+        // Merge ticket types: never bulk-delete rows still referenced by event_registrations (FK).
         if (eventDTO.getTicketTypes() != null) {
-            ticketTypeRepository.deleteByEventId(event.getId());
-            List<TicketType> updatedTicketTypes = new ArrayList<>();
-            for (TicketTypeDTO ticketDTO : normalizeTicketTypeDTOs(eventDTO.getTicketTypes())) {
-                TicketType ticketType = convertTicketTypeToEntity(ticketDTO, event);
-                updatedTicketTypes.add(ticketType);
-            }
-            event.setTicketTypes(updatedTicketTypes);
+            syncEventTicketTypes(event, eventDTO.getTicketTypes());
         }
         
         Event updatedEvent = eventRepository.save(event);
@@ -552,8 +548,66 @@ public class EventService {
         }
     }
 
-    private TicketType convertTicketTypeToEntity(TicketTypeDTO dto, Event event) {
-        TicketType ticketType = new TicketType();
+    /**
+     * Updates ticket tiers without deleting rows referenced by {@code event_registrations}.
+     * Matches DTO rows by {@code id} when present, otherwise by the same key as {@link #normalizeTicketTypeDTOs}.
+     * Tiers removed from the payload are deleted only when they have no registrations; otherwise they are kept.
+     */
+    private void syncEventTicketTypes(Event event, List<TicketTypeDTO> rawDtos) {
+        List<TicketTypeDTO> dtos = normalizeTicketTypeDTOs(rawDtos);
+        List<TicketType> existing = ticketTypeRepository.findByEventId(event.getId());
+        Map<Long, TicketType> existingById = existing.stream()
+                .collect(Collectors.toMap(TicketType::getId, t -> t, (a, b) -> a));
+
+        List<TicketType> merged = new ArrayList<>();
+        Set<Long> consumedIds = new HashSet<>();
+
+        for (TicketTypeDTO dto : dtos) {
+            TicketType tt = null;
+            if (dto.getId() != null) {
+                tt = existingById.get(dto.getId());
+            }
+            if (tt == null) {
+                tt = findUnmatchedExistingForDto(dto, existing, consumedIds);
+            }
+            if (tt != null) {
+                applyTicketTypeDtoToEntity(tt, dto, event);
+                merged.add(tt);
+                consumedIds.add(tt.getId());
+            } else {
+                merged.add(convertTicketTypeToEntity(dto, event));
+            }
+        }
+
+        for (TicketType tt : existing) {
+            if (consumedIds.contains(tt.getId())) {
+                continue;
+            }
+            if (registrationRepository.countByTicketTypeId(tt.getId()) > 0) {
+                merged.add(tt);
+            } else {
+                ticketTypeRepository.delete(tt);
+            }
+        }
+
+        event.setTicketTypes(merged);
+    }
+
+    private TicketType findUnmatchedExistingForDto(TicketTypeDTO dto, List<TicketType> pool, Set<Long> consumedIds) {
+        String key = buildTicketTypeKey(dto.getType(), dto.getName());
+        for (TicketType t : pool) {
+            if (consumedIds.contains(t.getId())) {
+                continue;
+            }
+            String tk = buildTicketTypeKey(t.getType() != null ? t.getType().name() : null, t.getName());
+            if (key.equals(tk)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    private void applyTicketTypeDtoToEntity(TicketType ticketType, TicketTypeDTO dto, Event event) {
         ticketType.setEvent(event);
         ticketType.setName(dto.getName());
         if (dto.getType() != null) {
@@ -569,6 +623,11 @@ public class EventService {
         ticketType.setQuantityLimit(dto.getQuantityLimit());
         ticketType.setAvailableQuantity(dto.getAvailableQuantity() != null ? dto.getAvailableQuantity() : event.getCapacity());
         ticketType.setDescription(dto.getDescription());
+    }
+
+    private TicketType convertTicketTypeToEntity(TicketTypeDTO dto, Event event) {
+        TicketType ticketType = new TicketType();
+        applyTicketTypeDtoToEntity(ticketType, dto, event);
         return ticketType;
     }
 

@@ -384,6 +384,13 @@
   flex: 0 0 auto;
 }
 
+.early-bird-date-block {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.95);
+  width: 100%;
+}
+
 .remove-link {
   position: absolute;
   top: 12px;

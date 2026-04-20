@@ -106,11 +106,15 @@
         
         <!-- Ticket Types Grid (registration) -->
         <ng-container *ngIf="!isArchiveContext">
-        <div *ngIf="getTicketTypes().length" class="mb-6">
-          <label class="text-[10px] font-black text-indigo-300 uppercase mb-3 block">Available Ticket Tiers</label>
+        <div *ngIf="getTicketTypes().length && !getVisibleTicketTypes().length"
+          class="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-900">
+          No ticket tier is available for your current membership. Upgrade your plan or contact support if you believe this is an error.
+        </div>
+        <div *ngIf="getVisibleTicketTypes().length" class="mb-6">
+          <label class="text-[10px] font-black text-indigo-300 uppercase mb-3 block">Your ticket options</label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
             <button type="button"
-                    *ngFor="let ticket of getTicketTypes()"
+                    *ngFor="let ticket of getVisibleTicketTypes()"
                     (click)="selectTicket(ticket)"
                     class="text-left px-4 py-3 rounded-2xl border-2 transition-all"
                     [ngClass]="{

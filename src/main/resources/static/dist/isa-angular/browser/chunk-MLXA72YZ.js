@@ -505,23 +505,66 @@ function EventCreateComponent_div_0_div_15_div_34_Template(rf, ctx) {
     \u0275\u0275elementEnd();
   }
 }
-function EventCreateComponent_div_0_div_15_div_35_div_1_input_25_Template(rf, ctx) {
+function EventCreateComponent_div_0_div_15_div_35_div_1_div_25_p_6_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 96);
+    \u0275\u0275text(1, " Calendar allows ");
+    \u0275\u0275elementStart(2, "strong");
+    \u0275\u0275text(3, "today");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(4, " through ");
+    \u0275\u0275elementStart(5, "strong");
+    \u0275\u0275text(6);
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(7, " (event end). ");
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext(6);
+    \u0275\u0275advance(6);
+    \u0275\u0275textInterpolate(ctx_r1.eventData.endDate);
+  }
+}
+function EventCreateComponent_div_0_div_15_div_35_div_1_div_25_p_7_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 97);
+    \u0275\u0275text(1, " Set ");
+    \u0275\u0275elementStart(2, "strong");
+    \u0275\u0275text(3, "End date");
+    \u0275\u0275elementEnd();
+    \u0275\u0275text(4, " in step 2 (Date & time) so the calendar can cap at the event end. ");
+    \u0275\u0275elementEnd();
+  }
+}
+function EventCreateComponent_div_0_div_15_div_35_div_1_div_25_Template(rf, ctx) {
   if (rf & 1) {
     const _r15 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "input", 91);
-    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_input_25_Template_input_ngModelChange_0_listener($event) {
+    \u0275\u0275elementStart(0, "div", 91)(1, "label", 92);
+    \u0275\u0275text(2, "Early bird pricing ends ");
+    \u0275\u0275elementStart(3, "span", 27);
+    \u0275\u0275text(4, "*");
+    \u0275\u0275elementEnd()();
+    \u0275\u0275elementStart(5, "input", 93);
+    \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_15_div_35_div_1_div_25_Template_input_ngModelChange_5_listener($event) {
       \u0275\u0275restoreView(_r15);
       const t_r14 = \u0275\u0275nextContext().$implicit;
       \u0275\u0275twoWayBindingSet(t_r14.earlyBirdEndDate, $event) || (t_r14.earlyBirdEndDate = $event);
       return \u0275\u0275resetView($event);
     });
     \u0275\u0275elementEnd();
+    \u0275\u0275template(6, EventCreateComponent_div_0_div_15_div_35_div_1_div_25_p_6_Template, 8, 1, "p", 94)(7, EventCreateComponent_div_0_div_15_div_35_div_1_div_25_p_7_Template, 5, 0, "p", 95);
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const t_r14 = \u0275\u0275nextContext().$implicit;
     const ctx_r1 = \u0275\u0275nextContext(4);
+    \u0275\u0275advance(5);
     \u0275\u0275twoWayProperty("ngModel", t_r14.earlyBirdEndDate);
     \u0275\u0275property("min", ctx_r1.getMinDate())("max", ctx_r1.getEarlyBirdMaxDate());
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", ctx_r1.eventData.endDate);
+    \u0275\u0275advance();
+    \u0275\u0275property("ngIf", !ctx_r1.eventData.endDate);
   }
 }
 function EventCreateComponent_div_0_div_15_div_35_div_1_Template(rf, ctx) {
@@ -583,9 +626,9 @@ function EventCreateComponent_div_0_div_15_div_35_div_1_Template(rf, ctx) {
       \u0275\u0275twoWayBindingSet(t_r14.availableQuantity, $event) || (t_r14.availableQuantity = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275elementEnd()();
-    \u0275\u0275template(25, EventCreateComponent_div_0_div_15_div_35_div_1_input_25_Template, 1, 3, "input", 90);
-    \u0275\u0275elementEnd()();
+    \u0275\u0275elementEnd()()();
+    \u0275\u0275template(25, EventCreateComponent_div_0_div_15_div_35_div_1_div_25_Template, 8, 5, "div", 90);
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const t_r14 = ctx.$implicit;
@@ -706,7 +749,7 @@ function EventCreateComponent_div_0_div_15_Template(rf, ctx) {
 function EventCreateComponent_div_0_div_16_div_9_div_24_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "div", 43);
-    \u0275\u0275element(1, "img", 103);
+    \u0275\u0275element(1, "img", 109);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -718,7 +761,7 @@ function EventCreateComponent_div_0_div_16_div_9_div_24_Template(rf, ctx) {
 function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
   if (rf & 1) {
     const _r17 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 93)(1, "button", 94);
+    \u0275\u0275elementStart(0, "div", 99)(1, "button", 100);
     \u0275\u0275listener("click", function EventCreateComponent_div_0_div_16_div_9_Template_button_click_1_listener() {
       const i_r18 = \u0275\u0275restoreView(_r17).index;
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -726,7 +769,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     });
     \u0275\u0275text(2, "Remove");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "p", 95);
+    \u0275\u0275elementStart(3, "p", 101);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 24)(6, "div", 25)(7, "label", 26);
@@ -734,7 +777,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(9, "span", 27);
     \u0275\u0275text(10, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(11, "input", 96);
+    \u0275\u0275elementStart(11, "input", 102);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_input_ngModelChange_11_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.name, $event) || (s_r19.name = $event);
@@ -744,7 +787,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(12, "div", 25)(13, "label", 26);
     \u0275\u0275text(14, "Title");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(15, "input", 97);
+    \u0275\u0275elementStart(15, "input", 103);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_input_ngModelChange_15_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.title, $event) || (s_r19.title = $event);
@@ -754,7 +797,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(16, "div", 25)(17, "label", 26);
     \u0275\u0275text(18, "Company");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(19, "input", 98);
+    \u0275\u0275elementStart(19, "input", 104);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_input_ngModelChange_19_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.company, $event) || (s_r19.company = $event);
@@ -776,7 +819,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(25, "div", 37)(26, "label", 26);
     \u0275\u0275text(27, "Bio");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(28, "textarea", 99);
+    \u0275\u0275elementStart(28, "textarea", 105);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_textarea_ngModelChange_28_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.bio, $event) || (s_r19.bio = $event);
@@ -786,7 +829,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(29, "div", 25)(30, "label", 26);
     \u0275\u0275text(31, "LinkedIn");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(32, "input", 100);
+    \u0275\u0275elementStart(32, "input", 106);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_input_ngModelChange_32_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.linkedinUrl, $event) || (s_r19.linkedinUrl = $event);
@@ -796,7 +839,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(33, "div", 25)(34, "label", 26);
     \u0275\u0275text(35, "Twitter");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(36, "input", 101);
+    \u0275\u0275elementStart(36, "input", 107);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_input_ngModelChange_36_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.twitterUrl, $event) || (s_r19.twitterUrl = $event);
@@ -806,7 +849,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
     \u0275\u0275elementStart(37, "div", 25)(38, "label", 26);
     \u0275\u0275text(39, "Website");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(40, "input", 102);
+    \u0275\u0275elementStart(40, "input", 108);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_9_Template_input_ngModelChange_40_listener($event) {
       const s_r19 = \u0275\u0275restoreView(_r17).$implicit;
       \u0275\u0275twoWayBindingSet(s_r19.websiteUrl, $event) || (s_r19.websiteUrl = $event);
@@ -839,7 +882,7 @@ function EventCreateComponent_div_0_div_16_div_9_Template(rf, ctx) {
 }
 function EventCreateComponent_div_0_div_16_div_16_option_38_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "option", 107);
+    \u0275\u0275elementStart(0, "option", 113);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -853,7 +896,7 @@ function EventCreateComponent_div_0_div_16_div_16_option_38_Template(rf, ctx) {
 function EventCreateComponent_div_0_div_16_div_16_Template(rf, ctx) {
   if (rf & 1) {
     const _r20 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 93)(1, "button", 94);
+    \u0275\u0275elementStart(0, "div", 99)(1, "button", 100);
     \u0275\u0275listener("click", function EventCreateComponent_div_0_div_16_div_16_Template_button_click_1_listener() {
       const i_r21 = \u0275\u0275restoreView(_r20).index;
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -861,7 +904,7 @@ function EventCreateComponent_div_0_div_16_div_16_Template(rf, ctx) {
     });
     \u0275\u0275text(2, "Remove");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "p", 95);
+    \u0275\u0275elementStart(3, "p", 101);
     \u0275\u0275text(4);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(5, "div", 47)(6, "div", 25)(7, "label", 26);
@@ -893,7 +936,7 @@ function EventCreateComponent_div_0_div_16_div_16_Template(rf, ctx) {
     \u0275\u0275elementStart(21, "span", 27);
     \u0275\u0275text(22, "*");
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(23, "input", 104);
+    \u0275\u0275elementStart(23, "input", 110);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_16_Template_input_ngModelChange_23_listener($event) {
       const item_r22 = \u0275\u0275restoreView(_r20).$implicit;
       \u0275\u0275twoWayBindingSet(item_r22.title, $event) || (item_r22.title = $event);
@@ -903,7 +946,7 @@ function EventCreateComponent_div_0_div_16_div_16_Template(rf, ctx) {
     \u0275\u0275elementStart(24, "div", 37)(25, "label", 26);
     \u0275\u0275text(26, "Description");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(27, "textarea", 105);
+    \u0275\u0275elementStart(27, "textarea", 111);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_16_Template_textarea_ngModelChange_27_listener($event) {
       const item_r22 = \u0275\u0275restoreView(_r20).$implicit;
       \u0275\u0275twoWayBindingSet(item_r22.description, $event) || (item_r22.description = $event);
@@ -913,7 +956,7 @@ function EventCreateComponent_div_0_div_16_div_16_Template(rf, ctx) {
     \u0275\u0275elementStart(28, "div", 25)(29, "label", 26);
     \u0275\u0275text(30, "Room / location");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(31, "input", 106);
+    \u0275\u0275elementStart(31, "input", 112);
     \u0275\u0275twoWayListener("ngModelChange", function EventCreateComponent_div_0_div_16_div_16_Template_input_ngModelChange_31_listener($event) {
       const item_r22 = \u0275\u0275restoreView(_r20).$implicit;
       \u0275\u0275twoWayBindingSet(item_r22.location, $event) || (item_r22.location = $event);
@@ -929,10 +972,10 @@ function EventCreateComponent_div_0_div_16_div_16_Template(rf, ctx) {
       \u0275\u0275twoWayBindingSet(item_r22.speakerIndex, $event) || (item_r22.speakerIndex = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275elementStart(36, "option", 107);
+    \u0275\u0275elementStart(36, "option", 113);
     \u0275\u0275text(37, "No speaker");
     \u0275\u0275elementEnd();
-    \u0275\u0275template(38, EventCreateComponent_div_0_div_16_div_16_option_38_Template, 2, 2, "option", 108);
+    \u0275\u0275template(38, EventCreateComponent_div_0_div_16_div_16_option_38_Template, 2, 2, "option", 114);
     \u0275\u0275elementEnd()()()();
   }
   if (rf & 2) {
@@ -977,7 +1020,7 @@ function EventCreateComponent_div_0_div_16_Template(rf, ctx) {
     \u0275\u0275text(7, "+ Add speaker");
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(8, "div", 74);
-    \u0275\u0275template(9, EventCreateComponent_div_0_div_16_div_9_Template, 41, 9, "div", 92);
+    \u0275\u0275template(9, EventCreateComponent_div_0_div_16_div_9_Template, 41, 9, "div", 98);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(10, "div", 70)(11, "h4", 71);
     \u0275\u0275text(12, "Event schedule");
@@ -991,7 +1034,7 @@ function EventCreateComponent_div_0_div_16_Template(rf, ctx) {
     \u0275\u0275text(14, "+ Add schedule item");
     \u0275\u0275elementEnd()();
     \u0275\u0275elementStart(15, "div", 74);
-    \u0275\u0275template(16, EventCreateComponent_div_0_div_16_div_16_Template, 39, 9, "div", 92);
+    \u0275\u0275template(16, EventCreateComponent_div_0_div_16_div_16_Template, 39, 9, "div", 98);
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
@@ -1005,7 +1048,7 @@ function EventCreateComponent_div_0_div_16_Template(rf, ctx) {
 function EventCreateComponent_div_0_button_18_Template(rf, ctx) {
   if (rf & 1) {
     const _r24 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 109);
+    \u0275\u0275elementStart(0, "button", 115);
     \u0275\u0275listener("click", function EventCreateComponent_div_0_button_18_Template_button_click_0_listener() {
       \u0275\u0275restoreView(_r24);
       const ctx_r1 = \u0275\u0275nextContext(2);
@@ -1018,7 +1061,7 @@ function EventCreateComponent_div_0_button_18_Template(rf, ctx) {
 function EventCreateComponent_div_0_div_19_Template(rf, ctx) {
   if (rf & 1) {
     const _r25 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 110)(1, "button", 111);
+    \u0275\u0275elementStart(0, "div", 116)(1, "button", 117);
     \u0275\u0275listener("click", function EventCreateComponent_div_0_div_19_Template_button_click_1_listener() {
       \u0275\u0275restoreView(_r25);
       const ctx_r1 = \u0275\u0275nextContext(2);
@@ -1036,7 +1079,7 @@ function EventCreateComponent_div_0_div_19_Template(rf, ctx) {
 function EventCreateComponent_div_0_div_20_Template(rf, ctx) {
   if (rf & 1) {
     const _r26 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 110)(1, "button", 112);
+    \u0275\u0275elementStart(0, "div", 116)(1, "button", 118);
     \u0275\u0275listener("click", function EventCreateComponent_div_0_div_20_Template_button_click_1_listener() {
       \u0275\u0275restoreView(_r26);
       const ctx_r1 = \u0275\u0275nextContext(2);
@@ -1526,8 +1569,18 @@ var EventCreateComponent = class _EventCreateComponent {
             this.errorMessage = "Early Bird ticket requires an end date.";
             return false;
           }
-          if (this.eventData.startDate && earlyBirdEndDate > this.eventData.startDate) {
-            this.errorMessage = "Early Bird end date must be on or before event start date.";
+          const today = this.getMinDate();
+          if (earlyBirdEndDate < today) {
+            this.errorMessage = "Early Bird end date cannot be before today.";
+            return false;
+          }
+          const eventEnd = this.eventData.endDate ? String(this.eventData.endDate).split("T")[0] : "";
+          if (!eventEnd) {
+            this.errorMessage = "Set the event end date in Date & time (step 2) before using Early Bird.";
+            return false;
+          }
+          if (earlyBirdEndDate > eventEnd) {
+            this.errorMessage = "Early Bird end date must be on or before the event end date.";
             return false;
           }
         }
@@ -1855,8 +1908,12 @@ var EventCreateComponent = class _EventCreateComponent {
   getMinEndDate() {
     return this.eventData.startDate || this.getMinDate();
   }
+  /** Upper bound for Early Bird end date: last day of the event (step 2 end date). */
   getEarlyBirdMaxDate() {
-    return this.eventData.startDate || "";
+    if (!this.eventData?.endDate) {
+      return "";
+    }
+    return String(this.eventData.endDate).split("T")[0];
   }
   hasDateValidationError() {
     if (!this.eventData.startDate || !this.eventData.startTime || this.isEditMode) {
@@ -1885,14 +1942,14 @@ var EventCreateComponent = class _EventCreateComponent {
     };
   }
   static {
-    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventCreateComponent, selectors: [["app-event-create"]], inputs: { isModal: "isModal", editEvent: "editEvent", show: "show", saveEvent: "saveEvent" }, outputs: { navigate: "navigate", close: "close", saved: "saved" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "modal-overlay", 3, "click"], [1, "modal-container", 3, "click"], [1, "modal-header"], [1, "modal-title"], ["type", "button", "aria-label", "Close", 1, "btn-close", 3, "click"], [1, "step-track"], ["class", "step-node", 3, "active", "completed", 4, "ngFor", "ngForOf"], ["class", "alert alert-error", 4, "ngIf"], ["class", "alert alert-success", 4, "ngIf"], [1, "modal-body"], ["class", "step-section", 4, "ngIf"], [1, "modal-footer"], ["type", "button", "class", "btn-pill btn-secondary", 3, "click", 4, "ngIf"], ["class", "footer-next", 4, "ngIf"], [1, "step-node"], [1, "step-circle"], [1, "step-label"], ["class", "step-line", 3, "filled", 4, "ngIf"], [1, "step-line"], [1, "alert", "alert-error"], [1, "alert", "alert-success"], [1, "step-section"], [1, "form-title"], [1, "form-grid"], [1, "input-group"], [1, "input-label"], [1, "req"], ["type", "text", "placeholder", "Event name", 1, "premium-input", 3, "ngModelChange", "ngModel"], [1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "CONFERENCE"], ["value", "WORKSHOP"], ["value", "NETWORKING"], ["value", "SEMINAR"], ["value", "WEBINAR"], ["value", "TRAINING"], ["value", "OTHER"], [1, "input-group", "full-width"], ["type", "text", "placeholder", "One line summary", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "file", "accept", "image/jpeg,image/png,image/gif,image/webp", 1, "premium-input", "file-input", 3, "change"], [1, "hint"], ["class", "image-preview-row", 4, "ngIf"], ["rows", "4", "placeholder", "Full details (optional)", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], [1, "image-preview-row"], ["alt", "Event preview", 1, "thumb-preview", 3, "src"], ["type", "button", "class", "link-button", 3, "click", 4, "ngIf"], ["type", "button", 1, "link-button", 3, "click"], [1, "form-grid", "form-grid-2"], ["type", "date", 1, "premium-input", 3, "ngModelChange", "ngModel", "min"], ["type", "time", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "field-hint warn", 4, "ngIf"], [1, "field-hint", "warn"], ["value", "IN_PERSON"], ["value", "ONLINE"], ["value", "HYBRID"], ["type", "text", "placeholder", "Address or venue name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "input-group full-width", 4, "ngIf"], ["type", "number", "min", "1", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "PUBLIC"], ["value", "MEMBERS_ONLY"], ["type", "url", "placeholder", "https://example.com/meeting", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Organizer name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "email", "placeholder", "name@example.com", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "+1 \u2026 (optional)", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "FREE"], ["value", "PAID"], ["value", "DISCOUNTED"], ["class", "subsection-head", 4, "ngIf"], ["class", "field-hint", 4, "ngIf"], ["class", "stack", 4, "ngIf"], [1, "subsection-head"], [1, "subsection-title"], ["type", "button", 1, "btn-pill", "btn-primary", "btn-small", 3, "click"], [1, "field-hint"], [1, "stack"], ["class", "ticket-card", 4, "ngFor", "ngForOf"], [1, "ticket-card"], ["type", "button", 1, "remove-link", 3, "click"], [1, "ticket-row"], [1, "premium-input", "grow", "flex", "items-center", "min-h-[42px]", "text-slate-800", "font-semibold", "bg-slate-50", "border", "border-slate-200", "rounded-xl", "px-3", 3, "title"], [1, "premium-input", "ticket-type-select", 3, "ngModelChange", "ngModel"], ["value", "MEMBER"], ["value", "FREE_MEMBER"], ["value", "NON_MEMBER"], ["value", "VIP"], ["value", "EARLY_BIRD"], [1, "inline-input-group"], [1, "inline-input-label"], ["type", "number", "min", "0", "step", "0.01", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "number", "min", "0", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "date", "class", "premium-input early-bird-date", "placeholder", "Early bird end date", 3, "ngModel", "min", "max", "ngModelChange", 4, "ngIf"], ["type", "date", "placeholder", "Early bird end date", 1, "premium-input", "early-bird-date", 3, "ngModelChange", "ngModel", "min", "max"], ["class", "item-card", 4, "ngFor", "ngForOf"], [1, "item-card"], ["type", "button", 1, "remove-link", "card-remove", 3, "click"], [1, "card-kicker"], ["type", "text", "placeholder", "Speaker name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Job title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Company name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "3", "placeholder", "Speaker biography", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "LinkedIn URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Twitter URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Website URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["alt", "", 1, "thumb-preview", "sm", 3, "src"], ["type", "text", "placeholder", "Session title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "2", "placeholder", "Session description", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Room or venue", 1, "premium-input", 3, "ngModelChange", "ngModel"], [3, "ngValue"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["type", "button", 1, "btn-pill", "btn-secondary", 3, "click"], [1, "footer-next"], ["type", "button", 1, "btn-pill", "btn-primary", 3, "click", "disabled"], ["type", "button", 1, "btn-pill", "btn-success", 3, "click", "disabled"]], template: function EventCreateComponent_Template(rf, ctx) {
+    this.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _EventCreateComponent, selectors: [["app-event-create"]], inputs: { isModal: "isModal", editEvent: "editEvent", show: "show", saveEvent: "saveEvent" }, outputs: { navigate: "navigate", close: "close", saved: "saved" }, standalone: true, features: [\u0275\u0275NgOnChangesFeature, \u0275\u0275StandaloneFeature], decls: 1, vars: 1, consts: [["class", "modal-overlay", 3, "click", 4, "ngIf"], [1, "modal-overlay", 3, "click"], [1, "modal-container", 3, "click"], [1, "modal-header"], [1, "modal-title"], ["type", "button", "aria-label", "Close", 1, "btn-close", 3, "click"], [1, "step-track"], ["class", "step-node", 3, "active", "completed", 4, "ngFor", "ngForOf"], ["class", "alert alert-error", 4, "ngIf"], ["class", "alert alert-success", 4, "ngIf"], [1, "modal-body"], ["class", "step-section", 4, "ngIf"], [1, "modal-footer"], ["type", "button", "class", "btn-pill btn-secondary", 3, "click", 4, "ngIf"], ["class", "footer-next", 4, "ngIf"], [1, "step-node"], [1, "step-circle"], [1, "step-label"], ["class", "step-line", 3, "filled", 4, "ngIf"], [1, "step-line"], [1, "alert", "alert-error"], [1, "alert", "alert-success"], [1, "step-section"], [1, "form-title"], [1, "form-grid"], [1, "input-group"], [1, "input-label"], [1, "req"], ["type", "text", "placeholder", "Event name", 1, "premium-input", 3, "ngModelChange", "ngModel"], [1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "CONFERENCE"], ["value", "WORKSHOP"], ["value", "NETWORKING"], ["value", "SEMINAR"], ["value", "WEBINAR"], ["value", "TRAINING"], ["value", "OTHER"], [1, "input-group", "full-width"], ["type", "text", "placeholder", "One line summary", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "file", "accept", "image/jpeg,image/png,image/gif,image/webp", 1, "premium-input", "file-input", 3, "change"], [1, "hint"], ["class", "image-preview-row", 4, "ngIf"], ["rows", "4", "placeholder", "Full details (optional)", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], [1, "image-preview-row"], ["alt", "Event preview", 1, "thumb-preview", 3, "src"], ["type", "button", "class", "link-button", 3, "click", 4, "ngIf"], ["type", "button", 1, "link-button", 3, "click"], [1, "form-grid", "form-grid-2"], ["type", "date", 1, "premium-input", 3, "ngModelChange", "ngModel", "min"], ["type", "time", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "field-hint warn", 4, "ngIf"], [1, "field-hint", "warn"], ["value", "IN_PERSON"], ["value", "ONLINE"], ["value", "HYBRID"], ["type", "text", "placeholder", "Address or venue name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["class", "input-group full-width", 4, "ngIf"], ["type", "number", "min", "1", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "PUBLIC"], ["value", "MEMBERS_ONLY"], ["type", "url", "placeholder", "https://example.com/meeting", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Organizer name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "email", "placeholder", "name@example.com", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "+1 \u2026 (optional)", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["value", "FREE"], ["value", "PAID"], ["value", "DISCOUNTED"], ["class", "subsection-head", 4, "ngIf"], ["class", "field-hint", 4, "ngIf"], ["class", "stack", 4, "ngIf"], [1, "subsection-head"], [1, "subsection-title"], ["type", "button", 1, "btn-pill", "btn-primary", "btn-small", 3, "click"], [1, "field-hint"], [1, "stack"], ["class", "ticket-card", 4, "ngFor", "ngForOf"], [1, "ticket-card"], ["type", "button", 1, "remove-link", 3, "click"], [1, "ticket-row"], [1, "premium-input", "grow", "flex", "items-center", "min-h-[42px]", "text-slate-800", "font-semibold", "bg-slate-50", "border", "border-slate-200", "rounded-xl", "px-3", 3, "title"], [1, "premium-input", "ticket-type-select", 3, "ngModelChange", "ngModel"], ["value", "MEMBER"], ["value", "FREE_MEMBER"], ["value", "NON_MEMBER"], ["value", "VIP"], ["value", "EARLY_BIRD"], [1, "inline-input-group"], [1, "inline-input-label"], ["type", "number", "min", "0", "step", "0.01", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["type", "number", "min", "0", "placeholder", "0", 1, "premium-input", "num", 3, "ngModelChange", "ngModel"], ["class", "early-bird-date-block", 4, "ngIf"], [1, "early-bird-date-block"], [1, "input-label", "text-xs", "font-bold", "text-slate-600"], ["type", "date", 1, "premium-input", "early-bird-date", "mt-1", "max-w-xs", 3, "ngModelChange", "ngModel", "min", "max"], ["class", "field-hint mt-1", 4, "ngIf"], ["class", "field-hint warn mt-1", 4, "ngIf"], [1, "field-hint", "mt-1"], [1, "field-hint", "warn", "mt-1"], ["class", "item-card", 4, "ngFor", "ngForOf"], [1, "item-card"], ["type", "button", 1, "remove-link", "card-remove", 3, "click"], [1, "card-kicker"], ["type", "text", "placeholder", "Speaker name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Job title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Company name", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "3", "placeholder", "Speaker biography", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "LinkedIn URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Twitter URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["type", "url", "placeholder", "Website URL", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["alt", "", 1, "thumb-preview", "sm", 3, "src"], ["type", "text", "placeholder", "Session title", 1, "premium-input", 3, "ngModelChange", "ngModel"], ["rows", "2", "placeholder", "Session description", 1, "premium-input", "resize-y", 3, "ngModelChange", "ngModel"], ["type", "text", "placeholder", "Room or venue", 1, "premium-input", 3, "ngModelChange", "ngModel"], [3, "ngValue"], [3, "ngValue", 4, "ngFor", "ngForOf"], ["type", "button", 1, "btn-pill", "btn-secondary", 3, "click"], [1, "footer-next"], ["type", "button", 1, "btn-pill", "btn-primary", 3, "click", "disabled"], ["type", "button", 1, "btn-pill", "btn-success", 3, "click", "disabled"]], template: function EventCreateComponent_Template(rf, ctx) {
       if (rf & 1) {
         \u0275\u0275template(0, EventCreateComponent_div_0_Template, 21, 13, "div", 0);
       }
       if (rf & 2) {
         \u0275\u0275property("ngIf", ctx.show);
       }
-    }, dependencies: [CommonModule, NgForOf, NgIf, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, DefaultValueAccessor, NumberValueAccessor, SelectControlValueAccessor, NgControlStatus, MinValidator, NgModel], styles: ["\n\n[_nghost-%COMP%] {\n  --modal-primary: #6366f1;\n  --modal-success: #10b981;\n}\n.modal-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.4);\n  -webkit-backdrop-filter: blur(12px);\n  backdrop-filter: blur(12px);\n  z-index: 1000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px;\n}\n.modal-container[_ngcontent-%COMP%] {\n  background: rgba(255, 255, 255, 0.98);\n  border-radius: 32px;\n  width: 100%;\n  max-width: 900px;\n  max-height: 90vh;\n  overflow-y: auto;\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);\n  animation: _ngcontent-%COMP%_modalReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;\n  scrollbar-width: thin;\n}\n@keyframes _ngcontent-%COMP%_modalReveal {\n  from {\n    opacity: 0;\n    transform: scale(0.95);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n.modal-header[_ngcontent-%COMP%] {\n  padding: 32px 40px;\n  border-bottom: 1px solid #f1f5f9;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.step-track[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 40px;\n  background: #f8fafc;\n  margin: 0 40px 40px;\n  border-radius: 24px;\n  border: 1px solid #f1f5f9;\n}\n.step-node[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  z-index: 2;\n  flex: 1;\n}\n.step-circle[_ngcontent-%COMP%] {\n  width: 32px;\n  height: 32px;\n  border-radius: 10px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.75rem;\n  font-weight: 900;\n  transition: all 0.3s;\n  background: white;\n  border: 2px solid #e2e8f0;\n  color: #94a3b8;\n}\n.step-node.active[_ngcontent-%COMP%]   .step-circle[_ngcontent-%COMP%] {\n  background: var(--modal-primary);\n  border-color: var(--modal-primary);\n  color: white;\n  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);\n}\n.step-node.completed[_ngcontent-%COMP%]   .step-circle[_ngcontent-%COMP%] {\n  background: var(--modal-success);\n  border-color: var(--modal-success);\n  color: white;\n}\n.step-label[_ngcontent-%COMP%] {\n  font-size: 0.6rem;\n  font-weight: 800;\n  color: #94a3b8;\n  text-transform: uppercase;\n  letter-spacing: 0.1em;\n  margin-top: 12px;\n}\n.step-node.active[_ngcontent-%COMP%]   .step-label[_ngcontent-%COMP%] {\n  color: #0f172a;\n}\n.step-line[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 16px;\n  left: 50%;\n  width: 100%;\n  height: 2px;\n  background: #e2e8f0;\n  z-index: 1;\n}\n.step-line.filled[_ngcontent-%COMP%] {\n  background: var(--modal-primary);\n}\n.modal-body[_ngcontent-%COMP%] {\n  padding: 0 40px 40px;\n}\n.form-title[_ngcontent-%COMP%] {\n  font-size: 1.25rem;\n  font-weight: 900;\n  color: #0f172a;\n  margin-bottom: 24px;\n}\n.input-label[_ngcontent-%COMP%] {\n  display: block;\n  font-size: 0.65rem;\n  font-weight: 800;\n  color: #64748b;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  margin-bottom: 8px;\n}\n.premium-input[_ngcontent-%COMP%] {\n  width: 100%;\n  padding: 12px 16px;\n  background: #f8fafc;\n  border: 2px solid #f1f5f9;\n  border-radius: 14px;\n  font-size: 0.875rem;\n  font-weight: 600;\n  transition: all 0.2s;\n}\n.premium-input[_ngcontent-%COMP%]:focus {\n  outline: none;\n  border-color: var(--modal-primary);\n  background: white;\n}\n.modal-footer[_ngcontent-%COMP%] {\n  padding: 32px 40px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: space-between;\n  border-radius: 0 0 32px 32px;\n}\n.btn-pill[_ngcontent-%COMP%] {\n  padding: 12px 28px;\n  border-radius: 16px;\n  font-size: 0.75rem;\n  font-weight: 900;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  border: none;\n  cursor: pointer;\n  transition: all 0.2s;\n}\n.btn-secondary[_ngcontent-%COMP%] {\n  background: white;\n  border: 2px solid #e2e8f0;\n  color: #64748b;\n}\n.btn-primary[_ngcontent-%COMP%] {\n  background: var(--modal-primary);\n  color: white;\n}\n.item-card[_ngcontent-%COMP%] {\n  background: white;\n  border: 1px solid #f1f5f9;\n  border-radius: 20px;\n  padding: 24px;\n  margin-bottom: 16px;\n  position: relative;\n}\n.modal-title[_ngcontent-%COMP%] {\n  font-size: 1.25rem;\n  font-weight: 800;\n  color: #0f172a;\n  margin: 0;\n}\n.step-section[_ngcontent-%COMP%] {\n  padding-bottom: 8px;\n}\n.form-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 20px;\n}\n.form-grid-2[_ngcontent-%COMP%] {\n  grid-template-columns: 1fr 1fr;\n}\n@media (max-width: 640px) {\n  .form-grid[_ngcontent-%COMP%], .form-grid-2[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n.input-group.full-width[_ngcontent-%COMP%] {\n  grid-column: 1 / -1;\n}\n.req[_ngcontent-%COMP%] {\n  color: #ef4444;\n}\n.alert[_ngcontent-%COMP%] {\n  margin: 0 40px 16px;\n  padding: 12px 16px;\n  border-radius: 12px;\n  font-size: 0.875rem;\n}\n.alert-error[_ngcontent-%COMP%] {\n  background: #fef2f2;\n  border: 1px solid #fecaca;\n  color: #b91c1c;\n}\n.alert-success[_ngcontent-%COMP%] {\n  background: #ecfdf5;\n  border: 1px solid #a7f3d0;\n  color: #047857;\n}\n.file-input[_ngcontent-%COMP%] {\n  padding: 10px 12px;\n  font-size: 0.8rem;\n}\n.hint[_ngcontent-%COMP%] {\n  font-size: 0.75rem;\n  color: #64748b;\n  margin: 6px 0 0;\n}\n.image-preview-row[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-top: 10px;\n}\n.thumb-preview[_ngcontent-%COMP%] {\n  max-height: 120px;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n}\n.thumb-preview.sm[_ngcontent-%COMP%] {\n  max-height: 64px;\n}\n.link-button[_ngcontent-%COMP%] {\n  background: none;\n  border: none;\n  color: #6366f1;\n  font-size: 0.8rem;\n  font-weight: 700;\n  cursor: pointer;\n  text-decoration: underline;\n}\n.resize-y[_ngcontent-%COMP%] {\n  resize: vertical;\n}\n.field-hint[_ngcontent-%COMP%] {\n  font-size: 0.8rem;\n  margin-top: 8px;\n}\n.field-hint.warn[_ngcontent-%COMP%] {\n  color: #b45309;\n}\n.subsection-head[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin: 28px 0 12px;\n}\n.subsection-title[_ngcontent-%COMP%] {\n  margin: 0;\n  font-size: 1rem;\n  font-weight: 800;\n  color: #0f172a;\n}\n.btn-small[_ngcontent-%COMP%] {\n  padding: 8px 16px;\n  font-size: 0.65rem;\n}\n.price-box[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 16px;\n  margin: 16px 0 8px;\n  padding: 16px;\n  background: #f8fafc;\n  border-radius: 16px;\n  border: 1px solid #f1f5f9;\n}\n@media (max-width: 640px) {\n  .price-box[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n.stack[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n.ticket-card[_ngcontent-%COMP%] {\n  position: relative;\n  background: #fff;\n  border: 1px solid #f1f5f9;\n  border-radius: 16px;\n  padding: 16px 16px 12px;\n}\n.ticket-row[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 10px;\n  align-items: center;\n  padding-top: 8px;\n}\n.grow[_ngcontent-%COMP%] {\n  flex: 1 1 140px;\n}\n.premium-input.num[_ngcontent-%COMP%] {\n  width: 96px;\n  flex: 0 0 auto;\n}\n.inline-input-group[_ngcontent-%COMP%] {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n}\n.inline-input-label[_ngcontent-%COMP%] {\n  font-size: 0.75rem;\n  font-weight: 700;\n  color: #475569;\n  white-space: nowrap;\n}\n.ticket-type-select[_ngcontent-%COMP%] {\n  min-width: 120px;\n  flex: 0 0 auto;\n}\n.early-bird-date[_ngcontent-%COMP%] {\n  min-width: 170px;\n  flex: 0 0 auto;\n}\n.remove-link[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 12px;\n  right: 14px;\n  background: none;\n  border: none;\n  color: #ef4444;\n  font-size: 0.8rem;\n  font-weight: 700;\n  cursor: pointer;\n}\n.card-remove[_ngcontent-%COMP%] {\n  top: 16px;\n  right: 16px;\n}\n.card-kicker[_ngcontent-%COMP%] {\n  font-size: 0.7rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.06em;\n  color: #6366f1;\n  margin: 0 0 12px;\n}\n.footer-next[_ngcontent-%COMP%] {\n  margin-left: auto;\n}\n.btn-success[_ngcontent-%COMP%] {\n  background: #059669;\n  color: #fff;\n}\n.btn-success[_ngcontent-%COMP%]:disabled, .btn-primary[_ngcontent-%COMP%]:disabled {\n  opacity: 0.55;\n  cursor: not-allowed;\n}\n.modal-overlay[_ngcontent-%COMP%] {\n  backdrop-filter: none;\n  -webkit-backdrop-filter: none;\n}\n.modal-container[_ngcontent-%COMP%] {\n  animation: none;\n}\n.btn-pill[_ngcontent-%COMP%], .step-circle[_ngcontent-%COMP%] {\n  transition: none;\n}\n/*# sourceMappingURL=event-create.component.css.map */"] });
+    }, dependencies: [CommonModule, NgForOf, NgIf, FormsModule, NgSelectOption, \u0275NgSelectMultipleOption, DefaultValueAccessor, NumberValueAccessor, SelectControlValueAccessor, NgControlStatus, MinValidator, NgModel], styles: ["\n\n[_nghost-%COMP%] {\n  --modal-primary: #6366f1;\n  --modal-success: #10b981;\n}\n.modal-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  inset: 0;\n  background: rgba(15, 23, 42, 0.4);\n  -webkit-backdrop-filter: blur(12px);\n  backdrop-filter: blur(12px);\n  z-index: 1000;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 24px;\n}\n.modal-container[_ngcontent-%COMP%] {\n  background: rgba(255, 255, 255, 0.98);\n  border-radius: 32px;\n  width: 100%;\n  max-width: 900px;\n  max-height: 90vh;\n  overflow-y: auto;\n  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);\n  animation: _ngcontent-%COMP%_modalReveal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;\n  scrollbar-width: thin;\n}\n@keyframes _ngcontent-%COMP%_modalReveal {\n  from {\n    opacity: 0;\n    transform: scale(0.95);\n  }\n  to {\n    opacity: 1;\n    transform: scale(1);\n  }\n}\n.modal-header[_ngcontent-%COMP%] {\n  padding: 32px 40px;\n  border-bottom: 1px solid #f1f5f9;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.step-track[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 40px;\n  background: #f8fafc;\n  margin: 0 40px 40px;\n  border-radius: 24px;\n  border: 1px solid #f1f5f9;\n}\n.step-node[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  position: relative;\n  z-index: 2;\n  flex: 1;\n}\n.step-circle[_ngcontent-%COMP%] {\n  width: 32px;\n  height: 32px;\n  border-radius: 10px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.75rem;\n  font-weight: 900;\n  transition: all 0.3s;\n  background: white;\n  border: 2px solid #e2e8f0;\n  color: #94a3b8;\n}\n.step-node.active[_ngcontent-%COMP%]   .step-circle[_ngcontent-%COMP%] {\n  background: var(--modal-primary);\n  border-color: var(--modal-primary);\n  color: white;\n  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);\n}\n.step-node.completed[_ngcontent-%COMP%]   .step-circle[_ngcontent-%COMP%] {\n  background: var(--modal-success);\n  border-color: var(--modal-success);\n  color: white;\n}\n.step-label[_ngcontent-%COMP%] {\n  font-size: 0.6rem;\n  font-weight: 800;\n  color: #94a3b8;\n  text-transform: uppercase;\n  letter-spacing: 0.1em;\n  margin-top: 12px;\n}\n.step-node.active[_ngcontent-%COMP%]   .step-label[_ngcontent-%COMP%] {\n  color: #0f172a;\n}\n.step-line[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 16px;\n  left: 50%;\n  width: 100%;\n  height: 2px;\n  background: #e2e8f0;\n  z-index: 1;\n}\n.step-line.filled[_ngcontent-%COMP%] {\n  background: var(--modal-primary);\n}\n.modal-body[_ngcontent-%COMP%] {\n  padding: 0 40px 40px;\n}\n.form-title[_ngcontent-%COMP%] {\n  font-size: 1.25rem;\n  font-weight: 900;\n  color: #0f172a;\n  margin-bottom: 24px;\n}\n.input-label[_ngcontent-%COMP%] {\n  display: block;\n  font-size: 0.65rem;\n  font-weight: 800;\n  color: #64748b;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  margin-bottom: 8px;\n}\n.premium-input[_ngcontent-%COMP%] {\n  width: 100%;\n  padding: 12px 16px;\n  background: #f8fafc;\n  border: 2px solid #f1f5f9;\n  border-radius: 14px;\n  font-size: 0.875rem;\n  font-weight: 600;\n  transition: all 0.2s;\n}\n.premium-input[_ngcontent-%COMP%]:focus {\n  outline: none;\n  border-color: var(--modal-primary);\n  background: white;\n}\n.modal-footer[_ngcontent-%COMP%] {\n  padding: 32px 40px;\n  background: #f8fafc;\n  display: flex;\n  justify-content: space-between;\n  border-radius: 0 0 32px 32px;\n}\n.btn-pill[_ngcontent-%COMP%] {\n  padding: 12px 28px;\n  border-radius: 16px;\n  font-size: 0.75rem;\n  font-weight: 900;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  border: none;\n  cursor: pointer;\n  transition: all 0.2s;\n}\n.btn-secondary[_ngcontent-%COMP%] {\n  background: white;\n  border: 2px solid #e2e8f0;\n  color: #64748b;\n}\n.btn-primary[_ngcontent-%COMP%] {\n  background: var(--modal-primary);\n  color: white;\n}\n.item-card[_ngcontent-%COMP%] {\n  background: white;\n  border: 1px solid #f1f5f9;\n  border-radius: 20px;\n  padding: 24px;\n  margin-bottom: 16px;\n  position: relative;\n}\n.modal-title[_ngcontent-%COMP%] {\n  font-size: 1.25rem;\n  font-weight: 800;\n  color: #0f172a;\n  margin: 0;\n}\n.step-section[_ngcontent-%COMP%] {\n  padding-bottom: 8px;\n}\n.form-grid[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 20px;\n}\n.form-grid-2[_ngcontent-%COMP%] {\n  grid-template-columns: 1fr 1fr;\n}\n@media (max-width: 640px) {\n  .form-grid[_ngcontent-%COMP%], .form-grid-2[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n.input-group.full-width[_ngcontent-%COMP%] {\n  grid-column: 1 / -1;\n}\n.req[_ngcontent-%COMP%] {\n  color: #ef4444;\n}\n.alert[_ngcontent-%COMP%] {\n  margin: 0 40px 16px;\n  padding: 12px 16px;\n  border-radius: 12px;\n  font-size: 0.875rem;\n}\n.alert-error[_ngcontent-%COMP%] {\n  background: #fef2f2;\n  border: 1px solid #fecaca;\n  color: #b91c1c;\n}\n.alert-success[_ngcontent-%COMP%] {\n  background: #ecfdf5;\n  border: 1px solid #a7f3d0;\n  color: #047857;\n}\n.file-input[_ngcontent-%COMP%] {\n  padding: 10px 12px;\n  font-size: 0.8rem;\n}\n.hint[_ngcontent-%COMP%] {\n  font-size: 0.75rem;\n  color: #64748b;\n  margin: 6px 0 0;\n}\n.image-preview-row[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-top: 10px;\n}\n.thumb-preview[_ngcontent-%COMP%] {\n  max-height: 120px;\n  border-radius: 12px;\n  border: 1px solid #e2e8f0;\n}\n.thumb-preview.sm[_ngcontent-%COMP%] {\n  max-height: 64px;\n}\n.link-button[_ngcontent-%COMP%] {\n  background: none;\n  border: none;\n  color: #6366f1;\n  font-size: 0.8rem;\n  font-weight: 700;\n  cursor: pointer;\n  text-decoration: underline;\n}\n.resize-y[_ngcontent-%COMP%] {\n  resize: vertical;\n}\n.field-hint[_ngcontent-%COMP%] {\n  font-size: 0.8rem;\n  margin-top: 8px;\n}\n.field-hint.warn[_ngcontent-%COMP%] {\n  color: #b45309;\n}\n.subsection-head[_ngcontent-%COMP%] {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin: 28px 0 12px;\n}\n.subsection-title[_ngcontent-%COMP%] {\n  margin: 0;\n  font-size: 1rem;\n  font-weight: 800;\n  color: #0f172a;\n}\n.btn-small[_ngcontent-%COMP%] {\n  padding: 8px 16px;\n  font-size: 0.65rem;\n}\n.price-box[_ngcontent-%COMP%] {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 16px;\n  margin: 16px 0 8px;\n  padding: 16px;\n  background: #f8fafc;\n  border-radius: 16px;\n  border: 1px solid #f1f5f9;\n}\n@media (max-width: 640px) {\n  .price-box[_ngcontent-%COMP%] {\n    grid-template-columns: 1fr;\n  }\n}\n.stack[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n.ticket-card[_ngcontent-%COMP%] {\n  position: relative;\n  background: #fff;\n  border: 1px solid #f1f5f9;\n  border-radius: 16px;\n  padding: 16px 16px 12px;\n}\n.ticket-row[_ngcontent-%COMP%] {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 10px;\n  align-items: center;\n  padding-top: 8px;\n}\n.grow[_ngcontent-%COMP%] {\n  flex: 1 1 140px;\n}\n.premium-input.num[_ngcontent-%COMP%] {\n  width: 96px;\n  flex: 0 0 auto;\n}\n.inline-input-group[_ngcontent-%COMP%] {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n}\n.inline-input-label[_ngcontent-%COMP%] {\n  font-size: 0.75rem;\n  font-weight: 700;\n  color: #475569;\n  white-space: nowrap;\n}\n.ticket-type-select[_ngcontent-%COMP%] {\n  min-width: 120px;\n  flex: 0 0 auto;\n}\n.early-bird-date[_ngcontent-%COMP%] {\n  min-width: 170px;\n  flex: 0 0 auto;\n}\n.early-bird-date-block[_ngcontent-%COMP%] {\n  margin-top: 0.75rem;\n  padding-top: 0.75rem;\n  border-top: 1px solid rgba(226, 232, 240, 0.95);\n  width: 100%;\n}\n.remove-link[_ngcontent-%COMP%] {\n  position: absolute;\n  top: 12px;\n  right: 14px;\n  background: none;\n  border: none;\n  color: #ef4444;\n  font-size: 0.8rem;\n  font-weight: 700;\n  cursor: pointer;\n}\n.card-remove[_ngcontent-%COMP%] {\n  top: 16px;\n  right: 16px;\n}\n.card-kicker[_ngcontent-%COMP%] {\n  font-size: 0.7rem;\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.06em;\n  color: #6366f1;\n  margin: 0 0 12px;\n}\n.footer-next[_ngcontent-%COMP%] {\n  margin-left: auto;\n}\n.btn-success[_ngcontent-%COMP%] {\n  background: #059669;\n  color: #fff;\n}\n.btn-success[_ngcontent-%COMP%]:disabled, .btn-primary[_ngcontent-%COMP%]:disabled {\n  opacity: 0.55;\n  cursor: not-allowed;\n}\n.modal-overlay[_ngcontent-%COMP%] {\n  backdrop-filter: none;\n  -webkit-backdrop-filter: none;\n}\n.modal-container[_ngcontent-%COMP%] {\n  animation: none;\n}\n.btn-pill[_ngcontent-%COMP%], .step-circle[_ngcontent-%COMP%] {\n  transition: none;\n}\n/*# sourceMappingURL=event-create.component.css.map */"] });
   }
 };
 (() => {
@@ -1902,4 +1959,4 @@ var EventCreateComponent = class _EventCreateComponent {
 export {
   EventCreateComponent
 };
-//# sourceMappingURL=chunk-PKVTQILV.js.map
+//# sourceMappingURL=chunk-MLXA72YZ.js.map

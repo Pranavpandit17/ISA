@@ -2,6 +2,9 @@ import {
   ToastService
 } from "./chunk-BMTGONH6.js";
 import {
+  resolveMemberFacingUnitPrice
+} from "./chunk-WTPJNKEG.js";
+import {
   MembershipService
 } from "./chunk-ZRHEMPKX.js";
 import {
@@ -504,15 +507,27 @@ var PaymentModalComponent = class _PaymentModalComponent {
     }
   }
   isFormValid() {
-    if (this.selectedPaymentMethod === "CREDIT_CARD") {
-      return !!(this.cardDetails.number && this.cardDetails.expiry && this.cardDetails.cvv && this.cardDetails.name);
-    } else {
-      if (!this.selectedUpiOption)
-        return false;
-      if (this.selectedUpiOption === "OTHER")
-        return !!this.upiId;
+    if (this.paymentType === "EVENT") {
       return true;
     }
+    if (this.paymentType === "MEMBERSHIP" && !this.currentUser && this.planData) {
+      return true;
+    }
+    if (this.getPaymentAmount() <= 0) {
+      return true;
+    }
+    if (this.selectedPaymentMethod === "CREDIT_CARD") {
+      const n = this.cardDetails.number?.trim();
+      const e = this.cardDetails.expiry?.trim();
+      const c = this.cardDetails.cvv?.trim();
+      const nm = this.cardDetails.name?.trim();
+      return !!(n && e && c && nm);
+    }
+    if (!this.selectedUpiOption)
+      return false;
+    if (this.selectedUpiOption === "OTHER")
+      return !!this.upiId?.trim();
+    return true;
   }
   getPaymentTitle() {
     if (this.paymentType === "EVENT" && this.event) {
@@ -547,46 +562,30 @@ var PaymentModalComponent = class _PaymentModalComponent {
     if (this.event.selectedTicketType?.price != null) {
       return Number(this.event.selectedTicketType.price) || 0;
     }
+    this.currentUser = this.authService.getCurrentUser();
     const pricingType = this.event.pricingType || this.event.pricing?.type;
     if (pricingType === "FREE") {
       return 0;
     }
-    const isPaidMember = (() => {
-      if (!this.currentUser)
-        return false;
-      const type = String(this.currentUser.type || "").toUpperCase();
-      return type === "PREMIUM" || type === "ADMIN";
-    })();
-    if (pricingType === "PAID" || pricingType === "DISCOUNTED") {
-      const memberPrice = this.event.memberPrice || this.event.pricing?.memberPrice || 0;
-      const freeMemberPrice = this.event.nonMemberPrice || this.event.pricing?.nonMemberPrice || 0;
-      if (isPaidMember && memberPrice > 0) {
-        return memberPrice;
-      }
-      if (!isPaidMember && freeMemberPrice > 0) {
-        return freeMemberPrice;
-      }
-      if (memberPrice > 0)
-        return memberPrice;
-      if (freeMemberPrice > 0)
-        return freeMemberPrice;
-    }
-    return this.event.price || this.event.pricing?.memberPrice || 0;
+    return resolveMemberFacingUnitPrice(this.event, this.currentUser);
   }
   processPayment() {
-    if (this.selectedPaymentMethod === "CREDIT_CARD") {
-      if (!this.cardDetails.number || !this.cardDetails.expiry || !this.cardDetails.cvv || !this.cardDetails.name) {
-        this.errorMessage = "Please fill all card details";
-        return;
-      }
-    } else if (this.selectedPaymentMethod === "UPI") {
-      if (!this.selectedUpiOption) {
-        this.errorMessage = "Please select a UPI option";
-        return;
-      }
-      if (this.selectedUpiOption === "OTHER" && !this.upiId) {
-        this.errorMessage = "Please enter your UPI ID";
-        return;
+    const skipInstrument = this.paymentType === "EVENT" || this.paymentType === "MEMBERSHIP" && !this.currentUser && this.planData || this.getPaymentAmount() <= 0;
+    if (!skipInstrument) {
+      if (this.selectedPaymentMethod === "CREDIT_CARD") {
+        if (!this.cardDetails.number?.trim() || !this.cardDetails.expiry?.trim() || !this.cardDetails.cvv?.trim() || !this.cardDetails.name?.trim()) {
+          this.errorMessage = "Please fill all card details";
+          return;
+        }
+      } else if (this.selectedPaymentMethod === "UPI") {
+        if (!this.selectedUpiOption) {
+          this.errorMessage = "Please select a UPI option";
+          return;
+        }
+        if (this.selectedUpiOption === "OTHER" && !this.upiId?.trim()) {
+          this.errorMessage = "Please enter your UPI ID";
+          return;
+        }
       }
     }
     if (this.paymentType === "EVENT" && this.event) {
@@ -698,10 +697,10 @@ var PaymentModalComponent = class _PaymentModalComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PaymentModalComponent, { className: "PaymentModalComponent", filePath: "src\\app\\components\\modals\\payment-modal\\payment-modal.component.ts", lineNumber: 16 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PaymentModalComponent, { className: "PaymentModalComponent", filePath: "src\\app\\components\\modals\\payment-modal\\payment-modal.component.ts", lineNumber: 17 });
 })();
 
 export {
   PaymentModalComponent
 };
-//# sourceMappingURL=chunk-PABM2YHL.js.map
+//# sourceMappingURL=chunk-HH7YY52T.js.map

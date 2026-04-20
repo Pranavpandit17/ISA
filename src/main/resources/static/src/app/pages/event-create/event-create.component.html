@@ -188,9 +188,22 @@
                 <span class="inline-input-label">Quantity</span>
                 <input type="number" [(ngModel)]="t.availableQuantity" class="premium-input num" min="0" placeholder="0" />
               </div>
-              <input *ngIf="t.type === 'EARLY_BIRD'" type="date" [(ngModel)]="t.earlyBirdEndDate"
-                [min]="getMinDate()" [max]="getEarlyBirdMaxDate()" class="premium-input early-bird-date"
-                placeholder="Early bird end date" />
+            </div>
+            <div *ngIf="t.type === 'EARLY_BIRD'" class="early-bird-date-block">
+              <label class="input-label text-xs font-bold text-slate-600">Early bird pricing ends <span class="req">*</span></label>
+              <input
+                type="date"
+                [(ngModel)]="t.earlyBirdEndDate"
+                [min]="getMinDate()"
+                [max]="getEarlyBirdMaxDate()"
+                class="premium-input early-bird-date mt-1 max-w-xs"
+              />
+              <p *ngIf="eventData.endDate" class="field-hint mt-1">
+                Calendar allows <strong>today</strong> through <strong>{{ eventData.endDate }}</strong> (event end).
+              </p>
+              <p *ngIf="!eventData.endDate" class="field-hint warn mt-1">
+                Set <strong>End date</strong> in step 2 (Date &amp; time) so the calendar can cap at the event end.
+              </p>
             </div>
           </div>
         </div>

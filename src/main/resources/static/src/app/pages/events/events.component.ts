@@ -8,6 +8,11 @@ import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
 import { MembershipService } from '../../services/membership.service';
 import { AppModalService } from '../../services/app-modal.service';
+import {
+  formatMemberFacingCost,
+  normalizeTicketTypes,
+  resolveMemberFacingUnitPrice
+} from '../../utils/event-member-pricing';
 
 @Component({
   selector: 'app-events',
@@ -248,42 +253,7 @@ export class EventsComponent implements OnInit {
   }
 
   getEventCost(event: Event | any): string {
-    // Determine pricing type
-    const pricingType = event.pricingType || event.pricing?.type;
-
-    // Completely free event
-    if (pricingType === 'FREE' || (!pricingType && !event.price && !event.memberPrice && !event.pricing?.memberPrice)) {
-      return 'Free';
-    }
-
-    // Paid / discounted events - show price based on member type
-    if (pricingType === 'PAID' || pricingType === 'DISCOUNTED') {
-      const memberPrice = event.memberPrice || event.pricing?.memberPrice || 0;
-      const freeMemberPrice = event.nonMemberPrice || event.pricing?.nonMemberPrice || 0; // stored in nonMemberPrice
-      const isPaidMember = this.isPaidMember();
-
-      if (isPaidMember && memberPrice > 0) {
-        return `₹${memberPrice.toLocaleString('en-IN')}`;
-      }
-      if (!isPaidMember && freeMemberPrice > 0) {
-        return `₹${freeMemberPrice.toLocaleString('en-IN')}`;
-      }
-
-      // Fallbacks if type is missing
-      if (memberPrice > 0) {
-        return `₹${memberPrice.toLocaleString('en-IN')}`;
-      }
-      if (freeMemberPrice > 0) {
-        return `₹${freeMemberPrice.toLocaleString('en-IN')}`;
-      }
-    }
-
-    // Fallback to legacy single price
-    const price = event.price || event.pricing?.memberPrice || 0;
-    if (price === 0) {
-      return 'Free';
-    }
-    return `₹${price.toLocaleString('en-IN')}`;
+    return formatMemberFacingCost(event, this.currentUser);
   }
 
   // Helper to determine if an event should be treated as Free or Paid
@@ -291,26 +261,29 @@ export class EventsComponent implements OnInit {
     if (!event) return true;
 
     const pricingType = event.pricingType || event.pricing?.type;
-    const memberPrice = event.memberPrice ?? event.pricing?.memberPrice ?? 0;
-    const nonMemberPrice = event.nonMemberPrice ?? event.pricing?.nonMemberPrice ?? 0;
-    const basePrice = event.price ?? 0;
-
-    // Explicit FREE type
     if (pricingType === 'FREE') {
       return true;
     }
 
-    // Explicit PAID / DISCOUNTED type
+    const tickets = normalizeTicketTypes(event);
+    if (tickets.length > 0) {
+      const maxTicket = Math.max(0, ...tickets.map(t => Number(t.price || 0)));
+      if (maxTicket > 0) return false;
+      return true;
+    }
+
+    const unit = resolveMemberFacingUnitPrice(event, this.currentUser);
+    if (unit > 0) return false;
+
+    const memberPrice = event.memberPrice ?? event.pricing?.memberPrice ?? 0;
+    const nonMemberPrice = event.nonMemberPrice ?? event.pricing?.nonMemberPrice ?? 0;
+    const basePrice = event.price ?? 0;
+
     if (pricingType === 'PAID' || pricingType === 'DISCOUNTED') {
       return memberPrice <= 0 && nonMemberPrice <= 0;
     }
 
-    // Fallback to legacy price field
     return basePrice === 0;
-  }
-
-  private isPaidMember(): boolean {
-    return !!this.currentUser && this.currentUser.type === 'PREMIUM';
   }
 
   formatEventDateTime(event: Event | any, useStartDate: boolean = true): string {

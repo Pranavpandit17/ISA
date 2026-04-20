@@ -5,6 +5,11 @@ import {
   DataService
 } from "./chunk-RLDPKJFY.js";
 import {
+  formatMemberFacingCost,
+  normalizeTicketTypes,
+  resolveMemberFacingUnitPrice
+} from "./chunk-WTPJNKEG.js";
+import {
   MembershipService
 } from "./chunk-ZRHEMPKX.js";
 import {
@@ -379,51 +384,33 @@ var EventsComponent = class _EventsComponent {
     return colors[category?.toUpperCase()] || "bg-slate-500";
   }
   getEventCost(event) {
-    const pricingType = event.pricingType || event.pricing?.type;
-    if (pricingType === "FREE" || !pricingType && !event.price && !event.memberPrice && !event.pricing?.memberPrice) {
-      return "Free";
-    }
-    if (pricingType === "PAID" || pricingType === "DISCOUNTED") {
-      const memberPrice = event.memberPrice || event.pricing?.memberPrice || 0;
-      const freeMemberPrice = event.nonMemberPrice || event.pricing?.nonMemberPrice || 0;
-      const isPaidMember = this.isPaidMember();
-      if (isPaidMember && memberPrice > 0) {
-        return `\u20B9${memberPrice.toLocaleString("en-IN")}`;
-      }
-      if (!isPaidMember && freeMemberPrice > 0) {
-        return `\u20B9${freeMemberPrice.toLocaleString("en-IN")}`;
-      }
-      if (memberPrice > 0) {
-        return `\u20B9${memberPrice.toLocaleString("en-IN")}`;
-      }
-      if (freeMemberPrice > 0) {
-        return `\u20B9${freeMemberPrice.toLocaleString("en-IN")}`;
-      }
-    }
-    const price = event.price || event.pricing?.memberPrice || 0;
-    if (price === 0) {
-      return "Free";
-    }
-    return `\u20B9${price.toLocaleString("en-IN")}`;
+    return formatMemberFacingCost(event, this.currentUser);
   }
   // Helper to determine if an event should be treated as Free or Paid
   isFreeEvent(event) {
     if (!event)
       return true;
     const pricingType = event.pricingType || event.pricing?.type;
-    const memberPrice = event.memberPrice ?? event.pricing?.memberPrice ?? 0;
-    const nonMemberPrice = event.nonMemberPrice ?? event.pricing?.nonMemberPrice ?? 0;
-    const basePrice = event.price ?? 0;
     if (pricingType === "FREE") {
       return true;
     }
+    const tickets = normalizeTicketTypes(event);
+    if (tickets.length > 0) {
+      const maxTicket = Math.max(0, ...tickets.map((t) => Number(t.price || 0)));
+      if (maxTicket > 0)
+        return false;
+      return true;
+    }
+    const unit = resolveMemberFacingUnitPrice(event, this.currentUser);
+    if (unit > 0)
+      return false;
+    const memberPrice = event.memberPrice ?? event.pricing?.memberPrice ?? 0;
+    const nonMemberPrice = event.nonMemberPrice ?? event.pricing?.nonMemberPrice ?? 0;
+    const basePrice = event.price ?? 0;
     if (pricingType === "PAID" || pricingType === "DISCOUNTED") {
       return memberPrice <= 0 && nonMemberPrice <= 0;
     }
     return basePrice === 0;
-  }
-  isPaidMember() {
-    return !!this.currentUser && this.currentUser.type === "PREMIUM";
   }
   formatEventDateTime(event, useStartDate = true) {
     if (!event)
@@ -834,9 +821,9 @@ var EventsComponent = class _EventsComponent {
   }
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EventsComponent, { className: "EventsComponent", filePath: "src\\app\\pages\\events\\events.component.ts", lineNumber: 19 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(EventsComponent, { className: "EventsComponent", filePath: "src\\app\\pages\\events\\events.component.ts", lineNumber: 24 });
 })();
 export {
   EventsComponent
 };
-//# sourceMappingURL=chunk-US57M6QG.js.map
+//# sourceMappingURL=chunk-BYDGV2VW.js.map

@@ -41,12 +41,10 @@ public class TicketTypeSchemaMigrationRunner implements ApplicationRunner {
         final String columnType;
         try {
             columnType = jdbcTemplate.queryForObject(
-                    """
-                            SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS
-                            WHERE TABLE_SCHEMA = DATABASE()
-                              AND TABLE_NAME = 'ticket_types'
-                              AND COLUMN_NAME = 'type'
-                            """,
+                    "SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS "
+                            + "WHERE TABLE_SCHEMA = DATABASE() "
+                            + "AND TABLE_NAME = 'ticket_types' "
+                            + "AND COLUMN_NAME = 'type'",
                     String.class);
         } catch (EmptyResultDataAccessException e) {
             log.debug("ticket_types.type migration skipped: table or column not found yet.");

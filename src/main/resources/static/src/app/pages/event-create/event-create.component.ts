@@ -459,8 +459,21 @@ export class EventCreateComponent implements OnInit, OnChanges {
             this.errorMessage = 'Early Bird ticket requires an end date.';
             return false;
           }
-          if (this.eventData.startDate && earlyBirdEndDate > this.eventData.startDate) {
-            this.errorMessage = 'Early Bird end date must be on or before event start date.';
+          const today = this.getMinDate();
+          if (earlyBirdEndDate < today) {
+            this.errorMessage = 'Early Bird end date cannot be before today.';
+            return false;
+          }
+          const eventEnd = this.eventData.endDate
+            ? String(this.eventData.endDate).split('T')[0]
+            : '';
+          if (!eventEnd) {
+            this.errorMessage = 'Set the event end date in Date & time (step 2) before using Early Bird.';
+            return false;
+          }
+          if (earlyBirdEndDate > eventEnd) {
+            this.errorMessage =
+              'Early Bird end date must be on or before the event end date.';
             return false;
           }
         }
@@ -846,8 +859,12 @@ export class EventCreateComponent implements OnInit, OnChanges {
     return this.eventData.startDate || this.getMinDate();
   }
 
+  /** Upper bound for Early Bird end date: last day of the event (step 2 end date). */
   getEarlyBirdMaxDate(): string {
-    return this.eventData.startDate || '';
+    if (!this.eventData?.endDate) {
+      return '';
+    }
+    return String(this.eventData.endDate).split('T')[0];
   }
 
   hasDateValidationError(): boolean {

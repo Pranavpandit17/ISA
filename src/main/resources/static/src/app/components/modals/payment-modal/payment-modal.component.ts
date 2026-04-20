@@ -5,6 +5,7 @@ import { ApiService } from '../../../services/api.service';
 import { AuthService } from '../../../services/auth.service';
 import { ToastService } from '../../../services/toast.service';
 import { MembershipService } from '../../../services/membership.service';
+import { resolveMemberFacingUnitPrice } from '../../../utils/event-member-pricing';
 
 @Component({
   selector: 'app-payment-modal',
@@ -77,13 +78,32 @@ export class PaymentModalComponent implements OnInit {
   }
 
   isFormValid(): boolean {
-    if (this.selectedPaymentMethod === 'CREDIT_CARD') {
-      return !!(this.cardDetails.number && this.cardDetails.expiry && this.cardDetails.cvv && this.cardDetails.name);
-    } else {
-      if (!this.selectedUpiOption) return false;
-      if (this.selectedUpiOption === 'OTHER') return !!this.upiId;
+    // Event registration uses the dummy gateway path — no real card/UPI capture; don't block Pay Now.
+    if (this.paymentType === 'EVENT') {
       return true;
     }
+
+    // Membership: guest picking a plan continues without instrument (handled in processMembershipPayment).
+    if (this.paymentType === 'MEMBERSHIP' && !this.currentUser && this.planData) {
+      return true;
+    }
+
+    // Zero total — confirm only (e.g. free tier / legacy flow).
+    if (this.getPaymentAmount() <= 0) {
+      return true;
+    }
+
+    if (this.selectedPaymentMethod === 'CREDIT_CARD') {
+      const n = this.cardDetails.number?.trim();
+      const e = this.cardDetails.expiry?.trim();
+      const c = this.cardDetails.cvv?.trim();
+      const nm = this.cardDetails.name?.trim();
+      return !!(n && e && c && nm);
+    }
+
+    if (!this.selectedUpiOption) return false;
+    if (this.selectedUpiOption === 'OTHER') return !!this.upiId?.trim();
+    return true;
   }
 
   getPaymentTitle(): string {
@@ -122,52 +142,36 @@ export class PaymentModalComponent implements OnInit {
     if (this.event.selectedTicketType?.price != null) {
       return Number(this.event.selectedTicketType.price) || 0;
     }
-    
+    this.currentUser = this.authService.getCurrentUser();
     const pricingType = this.event.pricingType || this.event.pricing?.type;
     if (pricingType === 'FREE') {
       return 0;
     }
-    
-    // Choose price based on member type
-    const isPaidMember = (() => {
-      if (!this.currentUser) return false;
-      const type = String(this.currentUser.type || '').toUpperCase();
-      return type === 'PREMIUM' || type === 'ADMIN';
-    })();
-    
-    if (pricingType === 'PAID' || pricingType === 'DISCOUNTED') {
-      const memberPrice = this.event.memberPrice || this.event.pricing?.memberPrice || 0;
-      const freeMemberPrice = this.event.nonMemberPrice || this.event.pricing?.nonMemberPrice || 0;
-
-      if (isPaidMember && memberPrice > 0) {
-        return memberPrice;
-      }
-      if (!isPaidMember && freeMemberPrice > 0) {
-        return freeMemberPrice;
-      }
-
-      // Fallbacks
-      if (memberPrice > 0) return memberPrice;
-      if (freeMemberPrice > 0) return freeMemberPrice;
-    }
-    
-    return this.event.price || this.event.pricing?.memberPrice || 0;
+    return resolveMemberFacingUnitPrice(this.event, this.currentUser);
   }
 
   processPayment(): void {
-    if (this.selectedPaymentMethod === 'CREDIT_CARD') {
-      if (!this.cardDetails.number || !this.cardDetails.expiry || !this.cardDetails.cvv || !this.cardDetails.name) {
-        this.errorMessage = 'Please fill all card details';
-        return;
-      }
-    } else if (this.selectedPaymentMethod === 'UPI') {
-      if (!this.selectedUpiOption) {
-        this.errorMessage = 'Please select a UPI option';
-        return;
-      }
-      if (this.selectedUpiOption === 'OTHER' && !this.upiId) {
-        this.errorMessage = 'Please enter your UPI ID';
-        return;
+    const skipInstrument =
+      this.paymentType === 'EVENT' ||
+      (this.paymentType === 'MEMBERSHIP' && !this.currentUser && this.planData) ||
+      this.getPaymentAmount() <= 0;
+
+    if (!skipInstrument) {
+      if (this.selectedPaymentMethod === 'CREDIT_CARD') {
+        if (!this.cardDetails.number?.trim() || !this.cardDetails.expiry?.trim()
+            || !this.cardDetails.cvv?.trim() || !this.cardDetails.name?.trim()) {
+          this.errorMessage = 'Please fill all card details';
+          return;
+        }
+      } else if (this.selectedPaymentMethod === 'UPI') {
+        if (!this.selectedUpiOption) {
+          this.errorMessage = 'Please select a UPI option';
+          return;
+        }
+        if (this.selectedUpiOption === 'OTHER' && !this.upiId?.trim()) {
+          this.errorMessage = 'Please enter your UPI ID';
+          return;
+        }
       }
     }
 

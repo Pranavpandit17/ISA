@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
 import { AuthService, User } from '../../../services/auth.service';
 import { MembershipService } from '../../../services/membership.service';
+import { formatMemberFacingCost } from '../../../utils/event-member-pricing';
 
 @Component({
   selector: 'app-event-detail-modal',
@@ -186,47 +187,12 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
   getEventCost(): string {
     if (!this.event) return 'Free';
 
-    // Prioritize selected ticket price
     const selected = this.getSelectedTicketType();
     if (selected) {
       return selected.price === 0 ? 'Free' : `₹${selected.price.toLocaleString('en-IN')}`;
     }
-    
-    // Fallback to base pricing if no ticket selected
-    const pricingType = this.event.pricingType || this.event.pricing?.type;
-    if (pricingType === 'FREE' || (!pricingType && !this.event.price && !this.event.memberPrice && !this.event.pricing?.memberPrice)) {
-      return 'Free';
-    }
-    
-    // For paid events, show price based on member type
-    if (pricingType === 'PAID' || pricingType === 'DISCOUNTED') {
-      const memberPrice = this.event.memberPrice || this.event.pricing?.memberPrice || 0;
-      const nonMemberPrice = this.event.nonMemberPrice || this.event.pricing?.nonMemberPrice || 0;
-      const freeMemberPrice = nonMemberPrice; // renamed in UI
-      const isPaidMember = this.isPaidMember();
 
-      if (isPaidMember && memberPrice > 0) {
-        return `₹${memberPrice.toLocaleString('en-IN')}`;
-      }
-      if (!isPaidMember && freeMemberPrice > 0) {
-        return `₹${freeMemberPrice.toLocaleString('en-IN')}`;
-      }
-
-      // Fallbacks
-      if (memberPrice > 0) {
-        return `₹${memberPrice.toLocaleString('en-IN')}`;
-      }
-      if (freeMemberPrice > 0) {
-        return `₹${freeMemberPrice.toLocaleString('en-IN')}`;
-      }
-    }
-    
-    // Fallback to old format
-    const price = this.event.price || this.event.pricing?.memberPrice || 0;
-    if (price === 0) {
-      return 'Free';
-    }
-    return `₹${price.toLocaleString('en-IN')}`;
+    return formatMemberFacingCost(this.event, this.currentUser);
   }
 
   isEventPaid(): boolean {
@@ -286,16 +252,6 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
     }
 
     return this.currentUser.currentPlanLevel || 0;
-  }
-
-  /**
-   * "Member pricing / member eligibility" is based on plan level.
-   * Current mapping:
-   *  - level >= 2  => member
-   *  - level < 2   => non-member
-   */
-  private isPaidMember(): boolean {
-    return this.getActivePlanLevel() >= 2;
   }
 
   // Attendance management (admin only)
@@ -500,20 +456,25 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
 
   private initializeTicketSelection(): void {
     this.currentUser = this.authService.getCurrentUser();
-    const tickets = this.getTicketTypes();
-    if (!tickets.length) {
+    const visible = this.getVisibleTicketTypes();
+    if (!visible.length) {
       this.selectedTicketTypeId = null;
       return;
     }
-    // If user is logged in, prefer an eligible + available ticket.
     if (this.currentUser) {
-      const preferred = tickets.find(t => this.isTicketEligible(t) && this.isTicketAvailable(t));
-      this.selectedTicketTypeId = preferred?.id ?? tickets[0].id;
+      const level = this.getActivePlanLevel();
+      const paid = visible.find(t => t.type === 'MEMBER' && this.isTicketAvailable(t));
+      const freeM = visible.find(t => t.type === 'FREE_MEMBER' && this.isTicketAvailable(t));
+      let preferred =
+        level >= 2 && paid ? paid : level === 1 && freeM ? freeM : undefined;
+      if (!preferred) {
+        preferred = visible.find(t => this.isTicketAvailable(t));
+      }
+      this.selectedTicketTypeId = (preferred ?? visible[0]).id;
       return;
     }
-    // If not logged in, default to first available ticket (eligibility will be checked after login).
-    const firstAvailable = tickets.find(t => this.isTicketAvailable(t));
-    this.selectedTicketTypeId = firstAvailable?.id ?? tickets[0].id;
+    const firstAvailable = visible.find(t => this.isTicketAvailable(t));
+    this.selectedTicketTypeId = (firstAvailable ?? visible[0]).id;
   }
 
   getTicketTypes(): any[] {
@@ -527,6 +488,44 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
         price: Number(t.price || 0),
         availableQuantity: t.availableQuantity != null ? Number(t.availableQuantity) : null
       }));
+  }
+
+  /**
+   * Tickets shown in the registration UI — only tiers relevant to this viewer (not every tier price).
+   * Admins still see all tiers for support.
+   */
+  getVisibleTicketTypes(): any[] {
+    const all = this.getTicketTypes();
+    if (!all.length) return [];
+
+    const isAdmin =
+      this.currentUser?.role === 'admin' || this.currentUser?.type === 'ADMIN';
+    if (isAdmin) return all;
+
+    const level = this.getActivePlanLevel();
+
+    if (!this.currentUser || level === 0) {
+      return all.filter(t => {
+        const ty = String(t.type || '').toUpperCase();
+        if (ty === 'NON_MEMBER' || ty === 'EARLY_BIRD') return true;
+        if (!ty && Number(t.price || 0) === 0) return true;
+        return false;
+      });
+    }
+
+    let visible = all.filter(t => this.isTicketEligible(t));
+
+    const hasMember = all.some(t => String(t.type || '').toUpperCase() === 'MEMBER');
+    const hasFreeMember = all.some(t => String(t.type || '').toUpperCase() === 'FREE_MEMBER');
+
+    if (level >= 2 && hasMember) {
+      visible = visible.filter(t => String(t.type || '').toUpperCase() !== 'FREE_MEMBER');
+    }
+    if (level === 1 && hasFreeMember) {
+      visible = visible.filter(t => String(t.type || '').toUpperCase() !== 'MEMBER');
+    }
+
+    return visible;
   }
 
   getSelectedTicketType(): any | null {
@@ -556,23 +555,34 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
   }
 
   isTicketEligible(ticket: any): boolean {
-    if (!ticket || !this.currentUser) return false;
-    
-    // If ticket is free, it should be available for everyone
-    if (ticket.price === 0 || ticket.price === '0' || Number(ticket.price) === 0) return true;
+    if (!ticket) return false;
+
+    const typeStr = String(ticket.type || '').toUpperCase();
+    const priceNum = Number(ticket.price ?? 0);
+
+    if (!this.currentUser) {
+      if (typeStr === 'NON_MEMBER' || typeStr === 'EARLY_BIRD') return true;
+      return priceNum === 0;
+    }
 
     const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
-    switch (ticket.type) {
+    if (isAdmin) return true;
+
+    const level = this.getActivePlanLevel();
+
+    switch (typeStr) {
       case 'VIP':
-        return isAdmin || this.getActivePlanLevel() >= 3;
+        return level >= 3;
       case 'MEMBER':
-        return isAdmin || this.getActivePlanLevel() >= 2;
+        return level >= 2;
+      case 'FREE_MEMBER':
+        return level >= 1;
       case 'NON_MEMBER':
-        return isAdmin || this.getActivePlanLevel() < 2;
+        return level < 2;
       case 'EARLY_BIRD':
         return this.isEarlyBirdOpen();
       default:
-        return true;
+        return priceNum === 0;
     }
   }
 
