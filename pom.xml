@@ -140,14 +140,13 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
                             <resources>
-                                <!-- Copy from frontend/dist (if built) -->
+                                <!-- Angular output: static/dist/isa-angular/browser (see static/package.json) -->
                                 <resource>
-                                    <directory>frontend/dist/isa-angular</directory>
+                                    <directory>src/main/resources/static/dist/isa-angular/browser</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
-                            <!-- Note: If frontend/dist/isa-angular doesn't exist, this will skip silently -->
-                            <!-- Build frontend first: cd frontend && npm install && npm run build -->
+                            <!-- If that directory is missing, run: cd src/main/resources/static && npm run build -->
                         </configuration>
                     </execution>
                 </executions>

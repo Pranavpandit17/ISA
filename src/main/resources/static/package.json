@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:spring": "ng build && node scripts/copy-browser-to-static-root.cjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
