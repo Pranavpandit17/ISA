@@ -23,6 +23,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <frontend.workingDirectory>src/main/resources/static</frontend.workingDirectory>
     </properties>
     
     <dependencies>
@@ -124,8 +125,48 @@
     
     <build>
         <plugins>
+            <!-- Build Angular frontend as part of Maven lifecycle using system npm -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>frontend-npm-ci</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${frontend.workingDirectory}</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>ci</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>frontend-ng-build</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <workingDirectory>${frontend.workingDirectory}</workingDirectory>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                                <argument>--</argument>
+                                <argument>--configuration</argument>
+                                <argument>production</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Copy Angular build output to Spring Boot static resources -->
-            <!-- Frontend should be built manually first: cd frontend && npm install && npm run build -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -146,7 +187,6 @@
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
-                            <!-- If that directory is missing, run: cd src/main/resources/static && npm run build -->
                         </configuration>
                     </execution>
                 </executions>
@@ -161,15 +201,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-            <!-- Plugin to run SchemaGenerator -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <mainClass>com.portal.util.SchemaGenerator</mainClass>
                 </configuration>
             </plugin>
         </plugins>
