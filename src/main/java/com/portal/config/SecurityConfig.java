@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll() // Allow viewing individual
                                                                                        // events
                         .requestMatchers(HttpMethod.GET, "/api/home-slider").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/gallery").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/plans").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/plans/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/payment-plans").permitAll()

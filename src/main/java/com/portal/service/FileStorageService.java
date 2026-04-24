@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -16,9 +18,7 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-    private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of(
-            "image/jpeg", "image/png", "image/gif", "image/webp"
-    );
+    private static final Set<String> ALLOWED_IMAGE_TYPES = new HashSet<>(Arrays.asList( "image/jpeg", "image/png", "image/gif", "image/webp"));
 
     private final Path uploadRoot = Paths.get("uploads").toAbsolutePath().normalize();
 

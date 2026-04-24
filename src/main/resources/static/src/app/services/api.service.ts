@@ -98,14 +98,31 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/home-slider`);
   }
 
+  getGalleryConfig(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/gallery`);
+  }
+
   updateHomeSliderImages(formData: FormData): Observable<any> {
     return this.http.put(`${this.apiUrl}/home-slider`, formData, {
       headers: this.getAuthHeaders()
     });
   }
 
+  updateGalleryImages(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/gallery`, formData, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
   deleteHomeSliderImage(imageId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/home-slider`, {
+      headers: this.getHeaders(),
+      params: { imageId }
+    });
+  }
+
+  deleteGalleryImage(imageId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/gallery`, {
       headers: this.getHeaders(),
       params: { imageId }
     });

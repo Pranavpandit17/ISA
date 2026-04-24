@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/pages/old-events/old-events.component.css"],
-  "sourcesContent": ["/* Scoped tweaks on top of events.component.css */\r\n.old-events-page .event-card:hover {\r\n  transform: translateY(-4px);\r\n  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12);\r\n}\r\n\r\n.old-events-page .reveal-up {\r\n  animation: none;\r\n  opacity: 1;\r\n  transform: none;\r\n}\r\n"],
-  "mappings": ";AACA,CAAC,gBAAgB,CAAC,UAAU;AAC1B,aAAW,WAAW;AACtB,cAAY,EAAE,KAAK,KAAK,MAAM,KAAK,EAAE,EAAE,EAAE,EAAE,EAAE,EAAE;AACjD;AAEA,CALC,gBAKgB,CAAC;AAChB,aAAW;AACX,WAAS;AACT,aAAW;AACb;",
-  "names": []
-}

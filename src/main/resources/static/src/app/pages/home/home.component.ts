@@ -25,7 +25,7 @@ type HomeTestimonial = {
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  readonly defaultTestimonialVideoPoster = 'assets/default-event.png';
+  readonly defaultTestimonialVideoPoster = 'assets/ISA-logo.png';
 
   events: any[] = [];
   boardMembers: BoardMember[] = [];
@@ -56,28 +56,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   // Frontend-only testimonials (static content from local assets)
   testimonials: HomeTestimonial[] = [
     {
-      quote: 'ISA created real collaboration between companies that usually operate in silos. The value from networking alone is outstanding.',
-      name: 'Rahul Sharma',
-      role: 'VP Engineering',
-      company: 'TechNova Systems',
-      videoUrl: 'assets/testimonials/rahul-sharma.mp4',
-      videoPoster: 'assets/testimonials/rahul-sharma.jpg'
+      quote: 'ISA helped us convert networking into measurable partnerships and faster execution across teams.',
+      name: 'Member Testimonial 1',
+      role: 'Industry Leader',
+      company: 'ISA Community',
+      videoUrl: 'assets/videos/video1.mp4',
+      videoPoster: 'assets/ISA-logo.png'
     },
     {
-      quote: 'Through ISA sessions, we discovered practical policy insights and strong hiring connections that helped us scale faster.',
-      name: 'Neha Verma',
-      role: 'Director - Operations',
-      company: 'Infinitive Labs',
-      videoUrl: 'assets/testimonials/neha-verma.mp4',
-      videoPoster: 'assets/testimonials/neha-verma.jpg'
-    },
-    {
-      quote: 'The community is focused, credible, and action-driven. Every meetup translates into useful business and talent outcomes.',
-      name: 'Amit Jain',
-      role: 'Founder & CEO',
-      company: 'CortexSphere',
-      videoUrl: 'assets/testimonials/amit-jain.mp4',
-      videoPoster: 'assets/testimonials/amit-jain.jpg'
+      quote: 'The ISA network gave us the right visibility, hiring connections, and trusted peer support to scale confidently.',
+      name: 'Member Testimonial 2',
+      role: 'Technology Executive',
+      company: 'ISA Community',
+      videoUrl: 'assets/videos/video2.mp4',
+      videoPoster: 'assets/ISA-logo.png'
     }
   ];
 
@@ -131,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       },
       error: () => {
-        // Keep fallback static gallery image when API is unavailable.
+        // Keep fallback static slider images when API is unavailable.
       }
     });
   }

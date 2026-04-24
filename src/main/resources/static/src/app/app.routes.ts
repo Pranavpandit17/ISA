@@ -8,6 +8,7 @@ import { planSelectedGuard } from './guards/plan-selected.guard';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent) },
+  { path: 'gallery', loadComponent: () => import('./pages/gallery/gallery.component').then(c => c.GalleryComponent) },
   { path: 'dashboard', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent) },
   { path: 'admin-dashboard', canActivate: [adminGuard], loadComponent: () => import('./pages/admin-dashboard/admin-dashboard.component').then(c => c.AdminDashboardComponent) },
   { path: 'directory', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/directory/directory.component').then(c => c.DirectoryComponent) },

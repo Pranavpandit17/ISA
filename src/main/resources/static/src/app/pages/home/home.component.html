@@ -146,18 +146,22 @@
   <section class="py-28 px-4 bg-white">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-16 reveal-up">
-        <span class="section-tag">Testimonials</span>
-        <h2 class="text-4xl md:text-5xl section-title mb-6">Trusted by Industry Leaders</h2>
+        <span class="section-tag">Video Testimonials</span>
+        <h2 class="text-4xl md:text-5xl section-title mb-6">Voices from the ISA Community</h2>
         <p class="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
-          Hear from members who are actively shaping the future of Indore's technology ecosystem.
+          Watch real member experiences and how ISA is helping shape Indore's technology ecosystem.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="testimonial-video-grid grid grid-cols-1 md:grid-cols-2 gap-8">
         <article *ngFor="let testimonial of testimonials; let i = index" class="testimonial-card reveal-up"
           [style.animation-delay]="i * 0.1 + 's'">
           <div *ngIf="testimonial.videoUrl" class="testimonial-video-wrap">
-            <video class="testimonial-video" [attr.poster]="testimonial.videoPoster || defaultTestimonialVideoPoster" controls
+            <video
+              class="testimonial-video"
+              [attr.poster]="testimonial.videoPoster || defaultTestimonialVideoPoster"
+              controls
+              playsinline
               preload="metadata">
               <source [src]="testimonial.videoUrl" type="video/mp4">
               Your browser does not support video playback.

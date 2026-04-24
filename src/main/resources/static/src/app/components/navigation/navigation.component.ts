@@ -22,6 +22,7 @@ export class NavigationComponent implements OnInit {
 
   navItems: Array<{ label: string; path: string }> = [
     { label: 'Home', path: '/home' },
+    { label: 'Gallery', path: '/gallery' },
     { label: 'Events', path: '/events' },
     { label: 'Old Events', path: '/old-events' },
     { label: 'Resources', path: '/bench' },

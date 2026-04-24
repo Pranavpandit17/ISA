@@ -18,7 +18,15 @@ import { ApproveRejectModalComponent } from '../../components/modals/approve-rej
 import { ConfirmService } from '../../services/confirm.service';
 import { ToastrService } from 'ngx-toastr';
 
-type ManagementView = 'MEMBER_MANAGEMENT' | 'EVENT_MANAGEMENT' | 'POST_MANAGEMENT' | 'PLAN_MANAGEMENT' | 'FEATURE_MANAGEMENT' | 'HOME_MEDIA_MANAGEMENT' | null;
+type ManagementView =
+  | 'MEMBER_MANAGEMENT'
+  | 'EVENT_MANAGEMENT'
+  | 'POST_MANAGEMENT'
+  | 'PLAN_MANAGEMENT'
+  | 'FEATURE_MANAGEMENT'
+  | 'HOME_MEDIA_MANAGEMENT'
+  | 'GALLERY_MEDIA_MANAGEMENT'
+  | null;
 
 interface AppNotification {
   id: number;
@@ -101,6 +109,12 @@ export class AdminDashboardComponent implements OnInit {
   sliderImagesFromServer: SliderImageItem[] = [];
   isUpdatingSliderImage = false;
 
+  // Gallery media management
+  galleryImageFiles: File[] = [];
+  galleryImagePreviewUrls: string[] = [];
+  galleryImagesFromServer: SliderImageItem[] = [];
+  isUpdatingGalleryImage = false;
+
   constructor(
     private apiService: ApiService,
     private authService: AuthService,
@@ -118,6 +132,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadUserProfile();
     this.loadStats();
     this.loadHomeSliderSettings();
+    this.loadGallerySettings();
     this.refreshUnreadNotificationsCount();
   }
 
@@ -238,7 +253,16 @@ export class AdminDashboardComponent implements OnInit {
     const viewParam = params.get('view') as ManagementView | null;
 
     if (viewParam) {
-      const supported: ManagementView[] = ['MEMBER_MANAGEMENT', 'EVENT_MANAGEMENT', 'POST_MANAGEMENT', 'PLAN_MANAGEMENT', 'FEATURE_MANAGEMENT', 'HOME_MEDIA_MANAGEMENT', null];
+      const supported: ManagementView[] = [
+        'MEMBER_MANAGEMENT',
+        'EVENT_MANAGEMENT',
+        'POST_MANAGEMENT',
+        'PLAN_MANAGEMENT',
+        'FEATURE_MANAGEMENT',
+        'HOME_MEDIA_MANAGEMENT',
+        'GALLERY_MEDIA_MANAGEMENT',
+        null
+      ];
       if ((supported as any).includes(viewParam)) {
         this.onSelectView(viewParam);
         this.closeNotifications();
@@ -349,6 +373,9 @@ export class AdminDashboardComponent implements OnInit {
     } else if (view === 'HOME_MEDIA_MANAGEMENT') {
       this.loadHomeSliderSettings();
       this.isLoading = false;
+    } else if (view === 'GALLERY_MEDIA_MANAGEMENT') {
+      this.loadGallerySettings();
+      this.isLoading = false;
     }
   }
 
@@ -456,6 +483,97 @@ export class AdminDashboardComponent implements OnInit {
       },
       error: (error) => {
         const message = error?.error?.message || 'Failed to delete slider image.';
+        this.toastr.error(message, 'Error');
+      }
+    });
+  }
+
+  loadGallerySettings(): void {
+    this.apiService.getGalleryConfig().subscribe({
+      next: (response: any) => {
+        const images = Array.isArray(response?.images) ? response.images : [];
+        this.galleryImagesFromServer = images
+          .map((img: any) => ({
+            id: Number(img?.id),
+            imageUrl: this.resolveImageUrl(img?.imageUrl)
+          }))
+          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+      },
+      error: () => {
+        this.galleryImagesFromServer = [];
+      }
+    });
+  }
+
+  onGalleryImageSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+    this.galleryImageFiles = files;
+    if (!files.length) {
+      this.galleryImagePreviewUrls = [];
+      return;
+    }
+    const readers = files.map((file) => {
+      return new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.readAsDataURL(file);
+      });
+    });
+    Promise.all(readers).then((previews) => {
+      this.galleryImagePreviewUrls = previews;
+    });
+  }
+
+  saveGalleryImages(): void {
+    if (!this.galleryImageFiles.length) {
+      this.toastr.warning('Please select at least one image.', 'No file selected');
+      return;
+    }
+    const formData = new FormData();
+    this.galleryImageFiles.forEach((file) => {
+      formData.append('images', file, file.name);
+    });
+    this.isUpdatingGalleryImage = true;
+    this.apiService.updateGalleryImages(formData).subscribe({
+      next: (response: any) => {
+        const images = Array.isArray(response?.images) ? response.images : [];
+        this.toastr.success('Gallery images updated successfully.', 'Updated');
+        this.galleryImagesFromServer = images
+          .map((img: any) => ({
+            id: Number(img?.id),
+            imageUrl: this.resolveImageUrl(img?.imageUrl)
+          }))
+          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.galleryImagePreviewUrls = [];
+        this.galleryImageFiles = [];
+        this.isUpdatingGalleryImage = false;
+      },
+      error: (error) => {
+        const message = error?.error?.message || 'Failed to update gallery images.';
+        this.toastr.error(message, 'Error');
+        this.isUpdatingGalleryImage = false;
+      }
+    });
+  }
+
+  deleteGalleryImage(imageId: number): void {
+    if (!imageId) {
+      return;
+    }
+    this.apiService.deleteGalleryImage(imageId).subscribe({
+      next: (response: any) => {
+        const images = Array.isArray(response?.images) ? response.images : [];
+        this.galleryImagesFromServer = images
+          .map((img: any) => ({
+            id: Number(img?.id),
+            imageUrl: this.resolveImageUrl(img?.imageUrl)
+          }))
+          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.toastr.success('Gallery image deleted successfully.', 'Deleted');
+      },
+      error: (error) => {
+        const message = error?.error?.message || 'Failed to delete gallery image.';
         this.toastr.error(message, 'Error');
       }
     });

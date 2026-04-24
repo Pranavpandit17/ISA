@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  backendBaseUrl: 'http://localhost:8080'
+  // Default local development backend URL
+  backendBaseUrl: 'http://20.59.34.19:8080'
 };
