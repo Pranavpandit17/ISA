@@ -463,6 +463,11 @@
   background: #fff;
   border: 1px solid transparent;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 280px;
 }
 
 .leader-card:hover {
@@ -505,6 +510,24 @@
 .leader-card:hover .leader-img {
   filter: grayscale(0%);
   transform: scale(1.05);
+}
+
+.leader-name {
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leader-role {
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leader-company {
+  min-height: 1.5rem;
 }
 
 /* ---------- FAQ Box ---------- */

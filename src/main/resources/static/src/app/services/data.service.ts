@@ -7,10 +7,10 @@ import { Member, Event, Resource, Project, BlogPost, Transaction, Announcement, 
 export class DataService {
   
   boardMembers: BoardMember[] = [
-    { name: 'Amit Rathi', role: 'President', company: 'TechInfini', image: 'https://ui-avatars.com/api/?name=Amit+Rathi&background=0D8ABC&color=fff' },
-    { name: 'Neelam Singh', role: 'Vice President', company: 'SoftGet', image: 'https://ui-avatars.com/api/?name=Neelam+Singh&background=random' },
-    { name: 'Vikram Seth', role: 'Secretary', company: 'DataMinds', image: 'https://ui-avatars.com/api/?name=Vikram+Seth&background=random' },
-    { name: 'Rahul Jain', role: 'Treasurer', company: 'FinanceTech', image: 'https://ui-avatars.com/api/?name=Rahul+Jain&background=random' }
+    { name: 'Sachin Saboo', role: 'Vice President', company: 'Computronics Systems (India) Pvt. Ltd', image: 'https://ui-avatars.com/api/?name=Neelam+Singh&background=random' },
+    { name: 'Swapnil Bansal', role: 'Treasurer', company: 'Mastrics Consulting India Pvt. Ltd', image: 'https://ui-avatars.com/api/?name=Vikram+Seth&background=random' },
+    { name: 'Vipin Maru', role: 'Member Benifit Officer', company: 'Infowind Technologies IT Pvt. Ltd', image: 'https://ui-avatars.com/api/?name=Amit+Rathi&background=0D8ABC&color=fff' },
+   // { name: 'Sarvesh Sharma', role: 'Program Coordinator', company: 'Exatip', image: 'https://ui-avatars.com/api/?name=Rahul+Jain&background=random' }
   ];
 
   faqs: FaqItem[] = [

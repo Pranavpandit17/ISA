@@ -17,7 +17,7 @@ export class FooterComponent {
   quickLinks = [
     { label: 'About Us', path: '/home' },
     { label: 'Events', path: '/events' },
-    { label: 'Old Events', path: '/old-events' },
+    { label: 'Past Events', path: '/old-events' },
     { label: 'Member Directory', path: '/directory' },
     { label: 'Insights & Blogs', path: '/blogs' },
     { label: 'Bench Exchange', path: '/bench' },
