@@ -4,12 +4,26 @@ import { User } from '../services/auth.service';
 export function getActivePlanLevel(user: User | null): number {
   if (!user) return 0;
   if (user.role === 'admin' || user.type === 'ADMIN') return 999;
-  if (!user.currentPlanId) return 0;
   if (user.planExpiryDate) {
     const expiry = new Date(user.planExpiryDate);
     if (expiry < new Date(new Date().toDateString())) return 0;
   }
-  return user.currentPlanLevel || 0;
+  if (user.currentPlanLevel && user.currentPlanLevel > 0) {
+    return user.currentPlanLevel;
+  }
+
+  const hasSelectedPlan =
+    !!user.currentPlanId ||
+    user.planStatus === 'SELECTED' ||
+    user.hasPlan === true;
+  if (!hasSelectedPlan) {
+    return 0;
+  }
+
+  if (user.type === 'PREMIUM') {
+    return 2;
+  }
+  return 1;
 }
 
 /** Paid membership tier (fee plan level ≥ 2). */

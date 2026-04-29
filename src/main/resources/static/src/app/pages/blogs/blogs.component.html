@@ -1,17 +1,89 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-  <button *ngIf="currentUser" (click)="onNavigate('DASHBOARD')" class="mb-6 text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium transition-colors">
-    ← Back to Dashboard
-  </button>
-  <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold">Knowledge Hub</h2>
-    <button (click)="onNavigate('BLOG_CREATE')" class="px-4 py-2 bg-slate-900 text-white rounded">Write Article</button>
-  </div>
-  <div class="grid gap-6 md:grid-cols-3">
-    <div *ngFor="let post of blogPosts" class="bg-white p-6 rounded shadow border border-slate-200">
-      <div class="text-xs text-blue-600 font-bold mb-2">{{ post.category }}</div>
-      <h3 class="font-bold text-lg mb-2">{{ post.title }}</h3>
-      <p class="text-sm text-slate-500 line-clamp-2">{{ post.excerpt }}</p>
-    </div>
-  </div>
-</div>
+<div class="news-page-root min-h-screen bg-slate-50">
+  <!-- Header -->
+  <header class="news-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button
+        *ngIf="currentUser"
+        (click)="onNavigate('DASHBOARD')"
+        class="mb-4 text-slate-500 hover:text-slate-800 flex items-center gap-1 font-medium transition-colors text-sm"
+      >
+        ← Back to Dashboard
+      </button>
 
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+        <div>
+          <span class="section-tag">Latest from the ISA ecosystem</span>
+          <h1 class="news-title">{{ pageHeading }}</h1>
+          <p class="news-subtitle">
+            Curated updates, policy highlights, and ecosystem stories for Indore’s tech leaders.
+          </p>
+        </div>
+
+        <div class="news-actions" *ngIf="currentUser">
+          <button (click)="onNavigate('BLOG_CREATE')" class="news-write-btn">
+            Write Article
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Grid of news cards -->
+    <section *ngIf="blogPosts && blogPosts.length > 0" class="news-grid">
+      <article *ngFor="let post of blogPosts" class="news-card">
+        <div class="news-card-header">
+          <span class="news-category-pill">{{ post.category }}</span>
+          <span class="news-meta">
+            <span>{{ post.date }}</span>
+            <span class="news-meta-separator">•</span>
+            <span>{{ post.readTime }}</span>
+          </span>
+        </div>
+
+        <h2 class="news-card-title">
+          {{ post.title }}
+        </h2>
+
+        <p class="news-card-excerpt line-clamp-2">
+          {{ post.excerpt }}
+        </p>
+
+        <div class="news-card-footer">
+          <div class="news-author">
+            <div class="news-author-avatar">
+              {{ post.authorName ? (post.authorName[0] | uppercase) : 'I' }}
+            </div>
+            <div class="news-author-text">
+              <span class="news-author-name">{{ post.authorName }}</span>
+            </div>
+          </div>
+
+          <div class="news-badge" *ngIf="post.status === 'PUBLISHED'">
+            Published
+          </div>
+          <div class="news-badge news-badge-draft" *ngIf="post.status !== 'PUBLISHED'">
+            Draft
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Empty state -->
+    <section *ngIf="!blogPosts || blogPosts.length === 0" class="news-empty-state">
+      <div class="news-empty-icon">📰</div>
+      <h2 class="news-empty-title">No news published yet</h2>
+      <p class="news-empty-text">
+        Once ISA starts publishing announcements and stories, they’ll appear here.
+      </p>
+      <button
+        *ngIf="currentUser"
+        (click)="onNavigate('BLOG_CREATE')"
+        class="news-empty-cta"
+      >
+        Publish the first story
+      </button>
+    </section>
+  </main>
+</div>

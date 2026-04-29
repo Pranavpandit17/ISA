@@ -31,8 +31,10 @@ export class EventDetailComponent implements OnInit {
   selectedTicketTypeId: number | null = null;
   ticketTypes: any[] = [];
   isLoadingTickets: boolean = false;
-  /** Routed under `/old-events/:id` — keep navigation inside Old Events archive */
+  /** Routed under `/old-events/:id` — keep navigation inside Past Events archive */
   isArchiveContext = false;
+  eventPhotos: string[] = [];
+  activePhotoIndex = 0;
 
   constructor(
     private authService: AuthService,
@@ -95,6 +97,7 @@ export class EventDetailComponent implements OnInit {
         if (!image) {
           image = 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=1200&auto=format&fit=crop';
         }
+        const photos = this.buildEventPhotoList(data, image);
 
         this.event = {
           ...data,
@@ -103,6 +106,8 @@ export class EventDetailComponent implements OnInit {
           location: data.location || data.venue,
           image: image
         };
+        this.eventPhotos = photos;
+        this.activePhotoIndex = 0;
         const archive = this.route.snapshot.data['eventArchive'] === true;
         this.ticketTypes = Array.isArray(data.ticketTypes) ? data.ticketTypes : [];
         this.isLoading = false;
@@ -117,6 +122,54 @@ export class EventDetailComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  private buildEventPhotoList(data: any, primaryImage: string): string[] {
+    const photos: string[] = [];
+    const addPhoto = (value: any) => {
+      const resolved = this.resolveEventImageUrl(typeof value === 'string' ? value : (value?.imageUrl || value?.url));
+      if (resolved) {
+        photos.push(resolved);
+      }
+    };
+
+    if (Array.isArray(data?.images)) {
+      data.images.forEach((img: any) => addPhoto(img));
+    }
+
+    if (Array.isArray(data?.imageUrls)) {
+      data.imageUrls.forEach((img: any) => addPhoto(img));
+    }
+
+    addPhoto(data?.imageUrl || data?.image);
+
+    if (primaryImage) {
+      photos.push(primaryImage);
+    }
+
+    return Array.from(new Set(photos.filter(Boolean)));
+  }
+
+  getActiveEventPhoto(): string {
+    if (!this.eventPhotos.length) {
+      return this.event?.image || '';
+    }
+    return this.eventPhotos[this.activePhotoIndex] || this.eventPhotos[0];
+  }
+
+  nextPhoto(): void {
+    if (this.eventPhotos.length < 2) return;
+    this.activePhotoIndex = (this.activePhotoIndex + 1) % this.eventPhotos.length;
+  }
+
+  prevPhoto(): void {
+    if (this.eventPhotos.length < 2) return;
+    this.activePhotoIndex = (this.activePhotoIndex - 1 + this.eventPhotos.length) % this.eventPhotos.length;
+  }
+
+  goToPhoto(index: number): void {
+    if (index < 0 || index >= this.eventPhotos.length) return;
+    this.activePhotoIndex = index;
   }
 
   private loadTicketTypes(): void {
@@ -283,10 +336,6 @@ export class EventDetailComponent implements OnInit {
     const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
     if (isAdmin) return 999;
 
-    if (!this.currentUser.currentPlanId) {
-      return 0;
-    }
-
     if (this.currentUser.planExpiryDate) {
       const expiry = new Date(this.currentUser.planExpiryDate);
       if (expiry < new Date(new Date().toDateString())) {
@@ -294,7 +343,24 @@ export class EventDetailComponent implements OnInit {
       }
     }
 
-    return this.currentUser.currentPlanLevel || 0;
+    if (this.currentUser.currentPlanLevel && this.currentUser.currentPlanLevel > 0) {
+      return this.currentUser.currentPlanLevel;
+    }
+
+    // Fallback for sessions where plan is selected but level is missing.
+    const hasSelectedPlan =
+      !!this.currentUser.currentPlanId ||
+      this.currentUser.planStatus === 'SELECTED' ||
+      this.currentUser.hasPlan === true;
+    if (!hasSelectedPlan) {
+      return 0;
+    }
+
+    // PREMIUM behaves as paid tier, REGULAR as entry tier.
+    if (this.currentUser.type === 'PREMIUM') {
+      return 2;
+    }
+    return 1;
   }
 
   getSelectedTicket(): any {

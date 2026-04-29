@@ -6,18 +6,14 @@ export const memberGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated() && authService.isMember()) {
+  // Allow both regular members and admins to access member-guarded routes
+  if (authService.isAuthenticated() && (authService.isMember() || authService.isAdmin())) {
     return true;
   }
 
   if (!authService.isAuthenticated()) {
     sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
     return router.createUrlTree(['/home']);
-  }
-
-  // If authenticated but is an admin, redirect to admin dashboard
-  if (authService.isAdmin()) {
-    return router.createUrlTree(['/admin-dashboard']);
   }
 
   return router.createUrlTree(['/home']);

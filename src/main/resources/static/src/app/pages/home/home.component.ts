@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
 import { Event, BoardMember, FaqItem } from '../../models/interfaces';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
@@ -204,9 +205,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadUpcomingEvents(): void {
     this.isLoadingEvents = true;
-    this.apiService.getPublishedEvents().subscribe({
+    const eventsRequest: Observable<any> = this.authService.isAuthenticated()
+      ? this.apiService.getEvents()
+      : this.apiService.getPublishedEvents();
+    eventsRequest.subscribe({
       next: (response: any) => {
-        const events = Array.isArray(response) ? response : [];
+        const rawEvents = Array.isArray(response) ? response : [];
+        const events = this.authService.isAuthenticated()
+          ? rawEvents.filter((e: any) => e?.status === 'PUBLISHED')
+          : rawEvents;
         const now = Date.now();
         const upcoming = events.filter((e: any) => {
           const endMs = this.getEventSortEndMillis(e);

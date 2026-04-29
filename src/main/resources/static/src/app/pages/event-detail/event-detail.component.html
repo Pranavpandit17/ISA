@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto px-4 py-8 w-full">
-  <button (click)="onNavigate('EVENTS')" class="mb-4 text-blue-600">← Back to {{ isArchiveContext ? 'Old Events' : 'Events' }}</button>
+  <button (click)="onNavigate('EVENTS')" class="mb-4 text-blue-600">← Back to {{ isArchiveContext ? 'Past Events' : 'Events' }}</button>
   
   <!-- Loading state -->
   <div *ngIf="isLoading" class="flex justify-center py-20">
@@ -10,15 +10,41 @@
   <div class="bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in" *ngIf="!isLoading && event">
     <!-- Event Image -->
     <div class="w-full h-[400px] relative overflow-hidden bg-slate-100">
-      <img [src]="event.image" 
+      <img [src]="getActiveEventPhoto()"
            class="w-full h-full object-cover" 
            [alt]="event.title">
       <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+      <div *ngIf="isArchiveContext && eventPhotos.length > 1" class="absolute inset-x-0 top-1/2 -translate-y-1/2 px-4 flex items-center justify-between pointer-events-none">
+        <button
+          type="button"
+          (click)="prevPhoto()"
+          class="archive-carousel-nav pointer-events-auto"
+          aria-label="Previous photo">
+          ‹
+        </button>
+        <button
+          type="button"
+          (click)="nextPhoto()"
+          class="archive-carousel-nav pointer-events-auto"
+          aria-label="Next photo">
+          ›
+        </button>
+      </div>
       <div class="absolute bottom-6 left-8">
         <span class="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg mb-2 inline-block">
           {{ event.category || 'Event' }}
         </span>
         <h1 class="text-4xl font-black text-white tracking-tight">{{ event.title }}</h1>
+      </div>
+      <div *ngIf="isArchiveContext && eventPhotos.length > 1" class="absolute bottom-6 right-8 flex items-center gap-2">
+        <button
+          type="button"
+          *ngFor="let photo of eventPhotos; let i = index"
+          (click)="goToPhoto(i)"
+          class="archive-carousel-dot"
+          [class.active]="i === activePhotoIndex"
+          [attr.aria-label]="'Show photo ' + (i + 1)">
+        </button>
       </div>
     </div>
 
@@ -75,7 +101,7 @@
         <p *ngIf="event.organizerPhone" class="text-slate-600 mt-1">{{ event.organizerPhone }}</p>
       </div>
       
-      <!-- Pricing: read-only tiers in Old Events archive; live registration otherwise -->
+      <!-- Pricing: read-only tiers in Past Events archive; live registration otherwise -->
       <div class="content-group border-indigo-100 bg-indigo-50/30 mb-12">
         <span class="group-title text-indigo-400">{{ isArchiveContext ? 'Pricing & tiers (archive)' : 'Financial Valuation' }}</span>
 
@@ -239,7 +265,7 @@
   <!-- Error or No Event -->
   <div *ngIf="!isLoading && !event" class="text-center py-20 bg-white rounded-2xl border border-slate-100 shadow-sm">
     <p class="text-slate-500 font-bold mb-4">Event could not be found or has been removed.</p>
-    <button (click)="onNavigate('EVENTS')" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold">{{ isArchiveContext ? 'Back to Old Events' : 'Back to Directory' }}</button>
+    <button (click)="onNavigate('EVENTS')" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-xl font-bold">{{ isArchiveContext ? 'Back to Past Events' : 'Back to Directory' }}</button>
   </div>
 </div>
 

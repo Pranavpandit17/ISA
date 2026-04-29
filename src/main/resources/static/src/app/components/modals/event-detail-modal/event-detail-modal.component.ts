@@ -240,10 +240,6 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
     const isAdmin = this.currentUser.role === 'admin' || this.currentUser.type === 'ADMIN';
     if (isAdmin) return 999;
 
-    if (!this.currentUser.currentPlanId) {
-      return 0;
-    }
-
     if (this.currentUser.planExpiryDate) {
       const expiry = new Date(this.currentUser.planExpiryDate);
       if (expiry < new Date(new Date().toDateString())) {
@@ -251,7 +247,22 @@ export class EventDetailModalComponent implements OnInit, OnChanges {
       }
     }
 
-    return this.currentUser.currentPlanLevel || 0;
+    if (this.currentUser.currentPlanLevel && this.currentUser.currentPlanLevel > 0) {
+      return this.currentUser.currentPlanLevel;
+    }
+
+    const hasSelectedPlan =
+      !!this.currentUser.currentPlanId ||
+      this.currentUser.planStatus === 'SELECTED' ||
+      this.currentUser.hasPlan === true;
+    if (!hasSelectedPlan) {
+      return 0;
+    }
+
+    if (this.currentUser.type === 'PREMIUM') {
+      return 2;
+    }
+    return 1;
   }
 
   // Attendance management (admin only)

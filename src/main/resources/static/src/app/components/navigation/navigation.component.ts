@@ -24,10 +24,9 @@ export class NavigationComponent implements OnInit {
     { label: 'Home', path: '/home' },
     { label: 'Gallery', path: '/gallery' },
     { label: 'Events', path: '/events' },
-    { label: 'Old Events', path: '/old-events' },
-    { label: 'Resources', path: '/bench' },
-    { label: 'Directory', path: '/directory' },
-    { label: 'Insights', path: '/blogs' }
+    { label: 'Past Events', path: '/old-events' },
+    { label: 'News', path: '/news' },
+    { label: 'Directory', path: '/directory' }
   ];
 
   constructor(
