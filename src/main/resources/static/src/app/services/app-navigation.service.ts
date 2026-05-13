@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { AppModalService } from './app-modal.service';
 
 /**
  * Centralized navigation service.
@@ -34,12 +35,16 @@ export class AppNavigationService {
     };
 
     private readonly protectedRoutes = [
-        'dashboard', 'admin-dashboard', 'directory', 'events', 'bench',
+        'dashboard', 'admin-dashboard', 'bench',
         'profile-edit', 'resource-post', 'project-post', 'blog-create',
         'member-management', 'event-create', 'event-management'
     ];
 
-    constructor(private router: Router, private authService: AuthService) { }
+    constructor(
+        private router: Router,
+        private authService: AuthService,
+        private modalService: AppModalService
+    ) { }
 
     /**
      * Navigate to a route. Accepts both ViewState strings ('EVENTS') and path strings ('events').
@@ -52,11 +57,18 @@ export class AppNavigationService {
 
         if (this.protectedRoutes.includes(path) && !user) {
             sessionStorage.setItem('redirectAfterLogin', '/' + path);
-            this.router.navigate(['/home']);
+            // Keep user on current page and prompt authentication for protected routes.
+            this.modalService.openAuth('LOGIN');
             return;
         }
 
-        if (user && user.role !== 'admin' && path !== 'select-plan' && !this.authService.hasSelectedPlan()) {
+        if (
+            user &&
+            user.role !== 'admin' &&
+            this.protectedRoutes.includes(path) &&
+            path !== 'select-plan' &&
+            !this.authService.hasSelectedPlan()
+        ) {
             this.router.navigate(['/select-plan']);
             return;
         }

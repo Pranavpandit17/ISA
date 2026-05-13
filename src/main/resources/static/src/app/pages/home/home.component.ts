@@ -27,9 +27,13 @@ type HomeTestimonial = {
 })
 export class HomeComponent implements OnInit, OnDestroy {
   readonly defaultTestimonialVideoPoster = 'assets/ISA-logo.png';
+  /** Placeholder when member/board photo URL fails or is empty (must exist under classpath static/assets). */
+  readonly defaultAvatarSrc = 'assets/ISA-logo.png';
 
   events: any[] = [];
   boardMembers: BoardMember[] = [];
+  /** Two concatenated copies of {@link boardMembers} for seamless CSS marquee. */
+  boardMembersMarquee: BoardMember[] = [];
   faqs: FaqItem[] = [];
   galleryImages: string[] = [];
   currentGalleryIndex = 0;
@@ -85,6 +89,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private modalService: AppModalService
   ) {
     this.boardMembers = this.dataService.getBoardMembers();
+    this.boardMembersMarquee = [...this.boardMembers, ...this.boardMembers];
     this.faqs = this.dataService.getFaqs();
     this.galleryImages = [
       'assets/gallery/1.png',
@@ -313,4 +318,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   nextGallery(): void { this.currentGalleryIndex = (this.currentGalleryIndex + 1) % this.galleryImages.length; }
   prevGallery(): void { this.currentGalleryIndex = (this.currentGalleryIndex - 1 + this.galleryImages.length) % this.galleryImages.length; }
   goToGallery(i: number): void { this.currentGalleryIndex = i; }
+
+  /** Fallback when /uploads/board/... file is missing */
+  onBoardImageError(event: ErrorEvent): void {
+    const img = event.target as HTMLImageElement | null;
+    if (img) {
+      img.src = this.defaultAvatarSrc;
+    }
+  }
 }

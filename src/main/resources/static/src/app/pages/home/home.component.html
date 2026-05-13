@@ -47,7 +47,8 @@
           <div class="flex -space-x-3">
             <div *ngFor="let m of boardMembers.slice(0,5)"
               class="w-12 h-12 rounded-full border-2 border-slate-900 overflow-hidden ring-1 ring-white/10 shadow-2xl">
-              <img [src]="m.image || 'assets/default-avatar.png'" class="w-full h-full object-cover">
+              <img [src]="m.image || defaultAvatarSrc" class="w-full h-full object-cover"
+                (error)="onBoardImageError($event)" alt="">
             </div>
             <div
               class="w-12 h-12 rounded-full bg-blue-600 border-2 border-slate-900 flex items-center justify-center text-[10px] font-black text-white ring-1 ring-white/10">
@@ -406,15 +407,18 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 justify-items-center">
-        <div *ngFor="let member of boardMembers; let i = index" class="leader-card reveal-up"
-          [style.animation-delay]="i * 0.1 + 's'">
-          <div class="leader-image-wrap">
-            <img [src]="member.image || 'assets/default-avatar.png'" class="leader-img">
+      <p class="text-center text-sm text-slate-400 mb-6">Scrolls automatically — hover to pause.</p>
+      <div class="board-marquee-viewport" aria-label="Board members, auto-scrolling">
+        <div class="board-marquee-track">
+          <div *ngFor="let member of boardMembersMarquee" class="leader-card leader-card--marquee">
+            <div class="leader-image-wrap">
+              <img [src]="member.image || defaultAvatarSrc" class="leader-img"
+                (error)="onBoardImageError($event)" alt="">
+            </div>
+            <h4 class="leader-name text-lg font-bold text-slate-900 leading-tight mb-1">{{ member.name }}</h4>
+            <p class="leader-role text-blue-600 text-xs font-bold uppercase tracking-widest mb-3">{{ member.role }}</p>
+            <p class="leader-company text-slate-400 text-xs font-medium">{{ member.company }}</p>
           </div>
-          <h4 class="leader-name text-lg font-bold text-slate-900 leading-tight mb-1">{{ member.name }}</h4>
-          <p class="leader-role text-blue-600 text-xs font-bold uppercase tracking-widest mb-3">{{ member.role }}</p>
-          <p class="leader-company text-slate-400 text-xs font-medium">{{ member.company }}</p>
         </div>
       </div>
     </div>

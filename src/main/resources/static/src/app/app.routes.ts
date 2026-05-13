@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { memberGuard } from './guards/member.guard';
 import { planSelectedGuard } from './guards/plan-selected.guard';
@@ -11,8 +10,8 @@ export const routes: Routes = [
   { path: 'gallery', loadComponent: () => import('./pages/gallery/gallery.component').then(c => c.GalleryComponent) },
   { path: 'dashboard', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent) },
   { path: 'admin-dashboard', canActivate: [adminGuard], loadComponent: () => import('./pages/admin-dashboard/admin-dashboard.component').then(c => c.AdminDashboardComponent) },
-  { path: 'directory', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/directory/directory.component').then(c => c.DirectoryComponent) },
-  { path: 'events', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/events/events.component').then(c => c.EventsComponent) },
+  { path: 'directory', loadComponent: () => import('./pages/directory/directory.component').then(c => c.DirectoryComponent) },
+  { path: 'events', loadComponent: () => import('./pages/events/events.component').then(c => c.EventsComponent) },
   { path: 'events/:id', loadComponent: () => import('./pages/event-detail/event-detail.component').then(c => c.EventDetailComponent) },
   { path: 'bench', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/bench/bench.component').then(c => c.BenchComponent) },
   { path: 'blogs', loadComponent: () => import('./pages/blogs/blogs.component').then(c => c.BlogsComponent) },

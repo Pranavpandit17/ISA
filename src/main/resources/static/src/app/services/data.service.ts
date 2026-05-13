@@ -1,16 +1,114 @@
 import { Injectable } from '@angular/core';
 import { Member, Event, Resource, Project, BlogPost, Transaction, Announcement, BoardMember, FaqItem } from '../models/interfaces';
 
+/** One image for all board slots (Led by Industry Visionaries + hero chips). Place at uploads/board/ on the server. */
+const BOARD_SECTION_IMAGE = '/uploads/board/board-section.jpg';
+
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   
+  /**
+   * Leadership Team 2026 (source: ISA board graphic). Photos: {@code uploads/board/} as {@code /uploads/board/...}.
+   */
   boardMembers: BoardMember[] = [
-    { name: 'Sachin Saboo', role: 'Vice President', company: 'Computronics Systems (India) Pvt. Ltd', image: 'https://ui-avatars.com/api/?name=Neelam+Singh&background=random' },
-    { name: 'Swapnil Bansal', role: 'Treasurer', company: 'Mastrics Consulting India Pvt. Ltd', image: 'https://ui-avatars.com/api/?name=Vikram+Seth&background=random' },
-    { name: 'Vipin Maru', role: 'Member Benifit Officer', company: 'Infowind Technologies IT Pvt. Ltd', image: 'https://ui-avatars.com/api/?name=Amit+Rathi&background=0D8ABC&color=fff' },
-   // { name: 'Sarvesh Sharma', role: 'Program Coordinator', company: 'Exatip', image: 'https://ui-avatars.com/api/?name=Rahul+Jain&background=random' }
+    {
+      name: 'Akhilesh Gandhi',
+      role: 'Leadership Team 2026',
+      company: 'MoreYeahs',
+      image: '/uploads/board/Akhilesh_Gandhi.jpeg'
+    },
+    {
+      name: 'Mehul Nahar',
+      role: 'Leadership Team 2026',
+      company: 'Mind Crew Technologies',
+      image: '/uploads/board/Mehul_Nahar.png'
+    },
+    {
+      name: 'Sachin Saboo',
+      role: 'Leadership Team 2026',
+      company: 'Computronics Systems',
+      image: '/uploads/board/Sachin_Saboo.png'
+    },
+    {
+      name: 'Swapnil Bansal',
+      role: 'Leadership Team 2026',
+      company: 'Mastrics Consulting',
+      image: '/uploads/board/Swapnil_Bansal.jpeg'
+    },
+    {
+      name: 'Deepak Nagar',
+      role: 'Leadership Team 2026',
+      company: 'Nagar Software Solutions',
+      image: '/uploads/board/Deepak_Nagar.jpeg'
+    },
+    {
+      name: 'Sarvesh Sharma',
+      role: 'Leadership Team 2026',
+      company: 'ExaTip Technologies',
+      image: '/uploads/board/Sarvesh_Sharma.jpeg'
+    },
+    {
+      name: 'Shawez Sheikh',
+      role: 'Leadership Team 2026',
+      company: 'VisaDesk Global',
+      image: '/uploads/board/Shawez_Sheikh.png'
+    },
+    {
+      name: 'Mayank Singh',
+      role: 'Leadership Team 2026',
+      company: 'SuperSourcing',
+      image: '/uploads/board/Mayank_Singh.JPG'
+    },
+    {
+      name: 'Vipin Maru',
+      role: 'Leadership Team 2026',
+      company: 'Infowind Technologies',
+      image: '/uploads/board/Vipin_Maru.PNG'
+    },
+    {
+      name: 'Arwind Mishra',
+      role: 'Leadership Team 2026',
+      company: 'TechLene Software Solutions',
+      image: '/uploads/board/Arwind_Mishra.JPG'
+    },
+    {
+      name: 'Anamika Hira',
+      role: 'Leadership Team 2026',
+      company: 'ISA',
+      image: '/uploads/board/Anamika_Hira.jpeg'
+    },
+    {
+      name: 'Gourav Soni',
+      role: 'Leadership Team 2026',
+      company: 'Hire Developer',
+      image: '/uploads/board/Gourav_Soni.jpeg'
+    },
+    {
+      name: 'Sufiyan Rao',
+      role: 'Leadership Team 2026',
+      company: 'Brain Inventory',
+      image: '/uploads/board/Sufiyan_Rao.jpg'
+    },
+    {
+      name: 'Vikas Dosi',
+      role: 'Leadership Team 2026',
+      company: 'Lise Infotech',
+      image: '/uploads/board/Vikas_Dosi.png'
+    },
+    {
+      name: 'Rahul Purswani',
+      role: 'Leadership Team 2026',
+      company: 'Mindefy Technologies',
+      image: '/uploads/board/Rahul_Purswani.jpeg'
+    },
+    {
+      name: 'Anurag Pandey',
+      role: 'Leadership Team 2026',
+      company: 'Control F5',
+      image: '/uploads/board/Anurag_Pandey.jpeg'
+    }
   ];
 
   faqs: FaqItem[] = [

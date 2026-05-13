@@ -47,8 +47,53 @@ public class StaticResourceConfig implements WebMvcConfigurer {
                 "/*.ttf",
                 "/*.eot"
         )
-        .addResourceLocations("classpath:/static/", "classpath:/static/browser/")
+        .addResourceLocations(
+                "classpath:/static/",
+                "classpath:/static/browser/",
+                "classpath:/static/dist/isa-angular/browser/"
+        )
         .resourceChain(true);
+
+        // Catch-all for Angular client-side routes (e.g. /home, /events/123 on browser refresh).
+        // If the requested resource doesn't exist and isn't an API route, serve index.html.
+        registry.addResourceHandler("/**")
+                .addResourceLocations(
+                        "classpath:/static/",
+                        "classpath:/static/browser/",
+                        "classpath:/static/dist/isa-angular/browser/"
+                )
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        Resource requestedResource = location.createRelative(resourcePath);
+                        if (requestedResource.exists() && requestedResource.isReadable()) {
+                            return requestedResource;
+                        }
+
+                        // Preserve backend API handling.
+                        if (resourcePath.startsWith("api/")) {
+                            return null;
+                        }
+
+                        Resource indexFromDist = new ClassPathResource("/static/dist/isa-angular/browser/index.html");
+                        if (indexFromDist.exists()) {
+                            return indexFromDist;
+                        }
+
+                        Resource indexFromRoot = new ClassPathResource("/static/index.html");
+                        if (indexFromRoot.exists()) {
+                            return indexFromRoot;
+                        }
+
+                        Resource indexFromBrowser = new ClassPathResource("/static/browser/index.html");
+                        if (indexFromBrowser.exists()) {
+                            return indexFromBrowser;
+                        }
+
+                        return null;
+                    }
+                });
     }
 
     @Override

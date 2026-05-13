@@ -530,6 +530,49 @@
   min-height: 1.5rem;
 }
 
+/* Board marquee: 16 cards (duplicated in template for seamless loop) */
+.board-marquee-viewport {
+  overflow: hidden;
+  width: 100%;
+  padding: 0.5rem 0 1.5rem;
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+}
+
+.board-marquee-viewport:hover .board-marquee-track {
+  animation-play-state: paused;
+}
+
+.board-marquee-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: board-marquee-scroll 72s linear infinite;
+}
+
+@keyframes board-marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board-marquee-track {
+    animation: none;
+  }
+}
+
+.leader-card--marquee {
+  flex-shrink: 0;
+  width: 260px;
+  max-width: 260px;
+  height: auto;
+  margin: 0;
+}
+
 /* ---------- FAQ Box ---------- */
 .faq-item {
   border: 1px solid #e2e8f0;
