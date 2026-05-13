@@ -613,6 +613,7 @@ public class MembershipService {
         dto.setEmail(member.getUser().getEmail());
         dto.setPhone(member.getUser().getPhone());
         dto.setCompany(member.getUser().getCompany());
+        dto.setAvatarUrl(member.getUser().getAvatarUrl());
         dto.setMembershipType(member.getMembershipType() != null ? member.getMembershipType().name() : null);
         dto.setMembershipStatus(member.getMembershipStatus() != null ? member.getMembershipStatus().name() : null);
         dto.setMembershipNumber(member.getMembershipNumber());
@@ -688,6 +689,17 @@ public class MembershipService {
                         .findFirst()
                         .orElse(companies.get(0));
                 teamSize = primary.getCompanySize();
+
+                if (primary.getWebsite() != null && !primary.getWebsite().isBlank()) {
+                    String w = primary.getWebsite();
+                    dto.setCompanyWebsite(w.length() > 200 ? w.substring(0, 200) : w);
+                }
+                String rawDesc = primary.getDescription();
+                if (rawDesc != null && rawDesc.length() > 8000) {
+                    dto.setCompanyDescription(rawDesc.substring(0, 8000));
+                } else {
+                    dto.setCompanyDescription(rawDesc);
+                }
 
                 // Build a simple registered office address from MemberCompany fields
                 StringBuilder sb = new StringBuilder();

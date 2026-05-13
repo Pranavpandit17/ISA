@@ -5,35 +5,40 @@
   <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <h2 class="text-2xl font-bold text-slate-900">Member Directory</h2>
     <div class="flex flex-wrap gap-2 w-full md:w-auto">
-      <input type="text" [(ngModel)]="dirSearch" (ngModelChange)="filterMembers()" placeholder="Search members..." class="pl-3 pr-4 py-2 border border-slate-300 rounded-lg w-full md:w-64">
-      <select [(ngModel)]="dirIndustryFilter" (change)="filterMembers()" class="py-2 pl-3 pr-8 border border-slate-300 rounded-lg text-sm bg-white">
+      <input type="text" [(ngModel)]="dirSearch" (ngModelChange)="filterMembers()" placeholder="Search members..." class="dir-search pl-3 pr-4 py-2 border border-slate-300 rounded-lg w-full md:w-64">
+      <select [(ngModel)]="dirIndustryFilter" (ngModelChange)="filterMembers()" class="dir-select py-2 pl-3 pr-8 border border-slate-300 rounded-lg text-sm bg-white md:min-w-[180px]">
         <option value="">All Industries</option>
-        <option *ngFor="let ind of ['SaaS', 'Fintech', 'EdTech', 'Services', 'HealthTech']" [value]="ind">{{ ind }}</option>
+        <option *ngFor="let ind of industryOptions" [value]="ind">{{ ind.length > 70 ? (ind | slice:0:70) + '…' : ind }}</option>
       </select>
     </div>
   </div>
 
-  <!-- Gated Content Check (For REGULAR) -->
-  <div *ngIf="currentUser?.type !== 'PREMIUM' && currentUser?.type !== 'ADMIN'" class="text-center py-16 bg-white rounded-xl border border-slate-200 shadow-sm">
+  <div *ngIf="currentUser?.type !== 'PREMIUM' && currentUser?.type !== 'ADMIN' && currentUser?.role !== 'admin'" class="text-center py-16 bg-white rounded-xl border border-slate-200 shadow-sm">
     <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">🔒</div>
     <h3 class="text-xl font-bold text-slate-900 mb-2">Premium Feature</h3>
-    <p class="text-slate-500 max-w-md mx-auto mb-6">Upgrade your membership to access the full directory of 200+ IT leaders and connect directly.</p>
+    <p class="text-slate-500 max-w-md mx-auto mb-6">Upgrade your membership to access the full directory of IT leaders and connect directly.</p>
     <button (click)="onOpenPayment()" class="px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 font-medium">Unlock Directory</button>
   </div>
-  
-  <div *ngIf="currentUser?.type === 'PREMIUM' || currentUser?.type === 'ADMIN'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let member of filteredMembers" class="bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all p-6 flex flex-col">
-      <div class="flex items-start justify-between mb-4">
-        <img [src]="member.image" class="w-16 h-16 rounded-full object-cover border border-slate-200">
-        <button (click)="connectWith(member.id)" class="text-blue-600 hover:bg-blue-50 p-2 rounded-full" title="Connect">Connect</button>
-      </div>
-      <div>
-        <h3 class="text-lg font-bold text-slate-900">{{ member.name }}</h3>
-        <p class="text-sm text-blue-600 font-medium">{{ member.title }}</p>
-        <p class="text-sm text-slate-500 mb-4">{{ member.company }}</p>
-        <p class="text-xs text-slate-400 mb-4 line-clamp-2 min-h-[2.5em]">{{ member.bio }}</p>
-      </div>
+
+  <div *ngIf="canViewDirectoryContent()" class="space-y-4">
+    <div *ngIf="isLoading" class="text-center py-16 text-slate-500">Loading directory…</div>
+    <div *ngIf="!isLoading && loadError" class="text-center py-8 text-red-600 text-sm">{{ loadError }}</div>
+
+    <div *ngIf="!isLoading && !loadError" class="dir-grid">
+      <article *ngFor="let row of filteredRows" class="dir-card">
+        <div class="dir-card-top">
+          <img [src]="row.avatarImage" class="dir-avatar" width="64" height="64" alt="" loading="lazy">
+          <button type="button" (click)="connectWith(row.member.id)" class="dir-connect">Connect</button>
+        </div>
+        <h3 class="dir-name">{{ row.member.name }}</h3>
+        <p class="dir-title">{{ row.displayTitle }}</p>
+        <p class="dir-company">{{ row.member.company }}</p>
+        <p class="dir-tagline">{{ row.tagline }}</p>
+      </article>
     </div>
+
+    <p *ngIf="!isLoading && !loadError && filteredRows.length === 0" class="text-center text-slate-500 py-8">
+      No members match your filters.
+    </p>
   </div>
 </div>
-

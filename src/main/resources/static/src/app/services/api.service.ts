@@ -82,6 +82,13 @@ export class ApiService {
     });
   }
 
+  /** Active members for directory (MEMBER or ADMIN JWT). */
+  getDirectoryMembers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/member/directory`, {
+      headers: this.getHeaders()
+    });
+  }
+
   // Event endpoints
   getEvents(): Observable<any> {
     return this.http.get(`${this.apiUrl}/events`, {

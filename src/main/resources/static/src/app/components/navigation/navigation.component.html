@@ -18,7 +18,8 @@
 
       <!-- ═══ DESKTOP NAV LINKS ═══ -->
       <div class="desktop-nav hidden md:flex items-center gap-1">
-        <a *ngFor="let item of navItems" [routerLink]="item.path" routerLinkActive="active-link"
+        <a *ngFor="let item of navItems" href="" (click)="$event.preventDefault(); onNavigate(item.path)"
+          [routerLink]="item.path" routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: item.path === '/home' }" class="nav-link">
           {{ item.label }}
         </a>

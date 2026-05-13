@@ -23,6 +23,15 @@ public class MemberDTO {
     private String activePlanName;
     private LocalDateTime createdAt;
 
+    /** Profile image URL from {@code User.avatarUrl} */
+    private String avatarUrl;
+
+    /** Primary company website from {@code MemberCompany} */
+    private String companyWebsite;
+
+    /** Primary company description from {@code MemberCompany} */
+    private String companyDescription;
+
     // Getters and Setters
     public Long getId() {
         return id;

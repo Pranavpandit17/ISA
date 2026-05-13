@@ -1,13 +1,14 @@
 /**
- * After `ng build`, artifacts live under dist/isa-angular/browser/.
- * Spring Boot serves the SPA from src/main/resources/static/ (classpath:/static/).
- * Copy browser output to the static root so http://localhost:8080/ picks up the latest build.
+ * After `ng build`, artifacts live under <repo>/target/isa-angular-out/browser/
+ * (see angular.json outputPath — outside static/ to avoid Windows EBUSY locks on dist/).
+ * Copy browser output next to src/ so a local Spring run can pick up the latest build.
  */
 const fs = require("fs");
 const path = require("path");
 
 const staticRoot = path.join(__dirname, "..");
-const browserDir = path.join(staticRoot, "dist", "isa-angular", "browser");
+const repoRoot = path.join(__dirname, "..", "..", "..", "..", "..");
+const browserDir = path.join(repoRoot, "target", "isa-angular-out", "browser");
 
 if (!fs.existsSync(browserDir)) {
   console.error(
