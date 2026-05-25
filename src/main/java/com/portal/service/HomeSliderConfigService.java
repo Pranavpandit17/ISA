@@ -9,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 public class HomeSliderConfigService {
@@ -21,7 +24,8 @@ public class HomeSliderConfigService {
     private FileStorageService fileStorageService;
 
     public List<HomeSliderImage> getAllImages() {
-        return homeSliderImageRepository.findAllByOrderByIdAsc();
+        ensureDisplayOrders();
+        return homeSliderImageRepository.findAllByOrderByDisplayOrderAscIdAsc();
     }
 
     @Transactional
@@ -37,6 +41,7 @@ public class HomeSliderConfigService {
             String imageUrl = fileStorageService.storePublicImage(image, "home-slider");
             HomeSliderImage sliderImage = new HomeSliderImage();
             sliderImage.setImageUrl(imageUrl);
+            sliderImage.setDisplayOrder(nextDisplayOrder());
             createdImages.add(homeSliderImageRepository.save(sliderImage));
         }
         if (createdImages.isEmpty()) {
@@ -63,6 +68,7 @@ public class HomeSliderConfigService {
             }
             HomeSliderImage sliderImage = new HomeSliderImage();
             sliderImage.setImageUrl(imagePath.trim());
+            sliderImage.setDisplayOrder(nextDisplayOrder());
             homeSliderImageRepository.save(sliderImage);
         }
         return getAllImages();
@@ -78,5 +84,60 @@ public class HomeSliderConfigService {
         }
         homeSliderImageRepository.deleteById(imageId);
         return getAllImages();
+    }
+
+    @Transactional
+    public List<HomeSliderImage> reorderImages(List<Long> orderedIds) {
+        if (orderedIds == null || orderedIds.isEmpty()) {
+            throw new IllegalArgumentException("imageIds is required");
+        }
+        List<HomeSliderImage> all = homeSliderImageRepository.findAll();
+        if (orderedIds.size() != all.size()) {
+            throw new IllegalArgumentException("imageIds must include every slider image exactly once");
+        }
+        Set<Long> existingIds = new HashSet<>();
+        for (HomeSliderImage image : all) {
+            existingIds.add(image.getId());
+        }
+        if (!existingIds.equals(new HashSet<>(orderedIds))) {
+            throw new IllegalArgumentException("imageIds must include every slider image exactly once");
+        }
+        for (int i = 0; i < orderedIds.size(); i++) {
+            Long id = orderedIds.get(i);
+            HomeSliderImage image = homeSliderImageRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Image not found: " + id));
+            image.setDisplayOrder(i + 1);
+            homeSliderImageRepository.save(image);
+        }
+        return getAllImages();
+    }
+
+    private int nextDisplayOrder() {
+        return homeSliderImageRepository.findTopByOrderByDisplayOrderDesc()
+                .map(img -> img.getDisplayOrder() + 1)
+                .orElse(1);
+    }
+
+    @Transactional
+    protected void ensureDisplayOrders() {
+        List<HomeSliderImage> images = homeSliderImageRepository.findAllByOrderByDisplayOrderAscIdAsc();
+        if (images.isEmpty()) {
+            return;
+        }
+        boolean allUnset = images.stream()
+                .allMatch(img -> img.getDisplayOrder() == null || img.getDisplayOrder() == 0);
+        long distinctOrders = images.stream()
+                .map(HomeSliderImage::getDisplayOrder)
+                .filter(Objects::nonNull)
+                .distinct()
+                .count();
+        if (!allUnset && distinctOrders == images.size()) {
+            return;
+        }
+        for (int i = 0; i < images.size(); i++) {
+            HomeSliderImage image = images.get(i);
+            image.setDisplayOrder(i + 1);
+            homeSliderImageRepository.save(image);
+        }
     }
 }

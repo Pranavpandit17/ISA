@@ -8,6 +8,7 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent) },
   { path: 'gallery', loadComponent: () => import('./pages/gallery/gallery.component').then(c => c.GalleryComponent) },
+  { path: 'member-benefits', loadComponent: () => import('./pages/member-benefits/member-benefits.component').then(c => c.MemberBenefitsComponent) },
   { path: 'dashboard', canActivate: [memberGuard, planSelectedGuard], loadComponent: () => import('./pages/dashboard/dashboard.component').then(c => c.DashboardComponent) },
   { path: 'admin-dashboard', canActivate: [adminGuard], loadComponent: () => import('./pages/admin-dashboard/admin-dashboard.component').then(c => c.AdminDashboardComponent) },
   { path: 'directory', loadComponent: () => import('./pages/directory/directory.component').then(c => c.DirectoryComponent) },

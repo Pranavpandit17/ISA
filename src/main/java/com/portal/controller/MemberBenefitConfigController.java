@@ -1,8 +1,8 @@
 package com.portal.controller;
 
 import com.portal.dto.ImageOrderRequest;
-import com.portal.entity.GalleryImage;
-import com.portal.service.GalleryConfigService;
+import com.portal.entity.MemberBenefitImage;
+import com.portal.service.MemberBenefitConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,54 +24,54 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/gallery")
-public class GalleryConfigController {
+@RequestMapping("/api/member-benefits")
+public class MemberBenefitConfigController {
 
     @Autowired
-    private GalleryConfigService galleryConfigService;
+    private MemberBenefitConfigService memberBenefitConfigService;
 
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getGalleryConfig() {
-        List<GalleryImage> images = galleryConfigService.getAllImages();
+    public ResponseEntity<Map<String, Object>> getMemberBenefitConfig() {
+        List<MemberBenefitImage> images = memberBenefitConfigService.getAllImages();
         return ResponseEntity.ok(buildResponse(images));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> updateGalleryImages(
+    public ResponseEntity<Map<String, Object>> updateMemberBenefitImages(
             @RequestPart("images") List<MultipartFile> images
     ) throws IOException {
-        List<GalleryImage> updatedImages = galleryConfigService.updateImages(images);
+        List<MemberBenefitImage> updatedImages = memberBenefitConfigService.updateImages(images);
         Map<String, Object> response = buildResponse(updatedImages);
-        response.put("message", "Gallery images updated successfully");
+        response.put("message", "Member benefit images updated successfully");
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> deleteGalleryImage(
+    public ResponseEntity<Map<String, Object>> deleteMemberBenefitImage(
             @RequestParam("imageId") Long imageId
     ) {
-        List<GalleryImage> updatedImages = galleryConfigService.deleteImageById(imageId);
+        List<MemberBenefitImage> updatedImages = memberBenefitConfigService.deleteImageById(imageId);
         Map<String, Object> response = buildResponse(updatedImages);
-        response.put("message", "Gallery image deleted successfully");
+        response.put("message", "Member benefit image deleted successfully");
         return ResponseEntity.ok(response);
     }
 
     @PutMapping(value = "/order", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> reorderGalleryImages(
+    public ResponseEntity<Map<String, Object>> reorderMemberBenefitImages(
             @RequestBody ImageOrderRequest request
     ) {
         List<Long> imageIds = request != null ? request.imageIds() : null;
-        List<GalleryImage> updatedImages = galleryConfigService.reorderImages(imageIds);
+        List<MemberBenefitImage> updatedImages = memberBenefitConfigService.reorderImages(imageIds);
         Map<String, Object> response = buildResponse(updatedImages);
-        response.put("message", "Gallery order updated successfully");
+        response.put("message", "Member benefits order updated successfully");
         return ResponseEntity.ok(response);
     }
 
-    private Map<String, Object> buildResponse(List<GalleryImage> images) {
-        List<String> imageUrls = galleryConfigService.getImageUrls(images);
+    private Map<String, Object> buildResponse(List<MemberBenefitImage> images) {
+        List<String> imageUrls = memberBenefitConfigService.getImageUrls(images);
         Map<String, Object> response = new HashMap<>();
         response.put("id", null);
         response.put("imageUrl", imageUrls.isEmpty() ? null : imageUrls.get(0));

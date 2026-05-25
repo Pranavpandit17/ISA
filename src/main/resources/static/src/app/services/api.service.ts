@@ -109,6 +109,10 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/gallery`);
   }
 
+  getMemberBenefitsConfig(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/member-benefits`);
+  }
+
   updateHomeSliderImages(formData: FormData): Observable<any> {
     return this.http.put(`${this.apiUrl}/home-slider`, formData, {
       headers: this.getAuthHeaders()
@@ -132,6 +136,37 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/gallery`, {
       headers: this.getHeaders(),
       params: { imageId }
+    });
+  }
+
+  reorderHomeSlider(imageIds: number[]): Observable<any> {
+    return this.http.put(`${this.apiUrl}/home-slider/order`, { imageIds }, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  reorderGallery(imageIds: number[]): Observable<any> {
+    return this.http.put(`${this.apiUrl}/gallery/order`, { imageIds }, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  updateMemberBenefitImages(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/member-benefits`, formData, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  deleteMemberBenefitImage(imageId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/member-benefits`, {
+      headers: this.getHeaders(),
+      params: { imageId }
+    });
+  }
+
+  reorderMemberBenefits(imageIds: number[]): Observable<any> {
+    return this.http.put(`${this.apiUrl}/member-benefits/order`, { imageIds }, {
+      headers: this.getAuthHeaders()
     });
   }
 

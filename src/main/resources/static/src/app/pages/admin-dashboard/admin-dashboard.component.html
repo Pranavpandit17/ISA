@@ -93,7 +93,7 @@
 
         <!-- Management Navigation Hub -->
         <header class="glass-card rounded-[32px] p-2 reveal-up" style="animation-delay: 0.3s">
-          <div class="grid grid-cols-2 md:grid-cols-7 gap-2">
+          <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-2">
 
             <button (click)="onSelectView('MEMBER_MANAGEMENT')" [class.active]="currentView === 'MEMBER_MANAGEMENT'"
               class="nav-item rounded-3xl p-4 transition-all">
@@ -137,6 +137,12 @@
               <p class="text-[10px] font-black uppercase text-slate-500 tracking-tight">Gallery</p>
             </button>
 
+            <button (click)="onSelectView('MEMBER_BENEFITS_MEDIA_MANAGEMENT')" [class.active]="currentView === 'MEMBER_BENEFITS_MEDIA_MANAGEMENT'"
+              class="nav-item rounded-3xl p-4 transition-all">
+              <div class="icon-box">🎁</div>
+              <p class="text-[10px] font-black uppercase text-slate-500 tracking-tight">Benefits</p>
+            </button>
+
           </div>
         </header>
 
@@ -171,15 +177,23 @@
               <div class="border border-slate-200 rounded-3xl p-6 bg-white">
                 <h3 class="text-lg font-black text-slate-900 mb-2">Home Page Slider Images</h3>
                 <p class="text-sm text-slate-500 mb-5">
-                  Upload multiple images together. The home page slider will use this backend image array.
+                  Upload images for the home page carousel. Drag thumbnails to change slide order (first = shown first).
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Current Images</p>
                     <div *ngIf="sliderImagesFromServer.length > 0; else noCurrentSliderImage"
-                      class="grid grid-cols-2 gap-3 max-h-64 overflow-auto pr-1">
-                      <div *ngFor="let img of sliderImagesFromServer" class="slider-image-card">
+                      cdkDropList
+                      cdkDropListOrientation="horizontal"
+                      (cdkDropListDropped)="onSliderReorder($event)"
+                      class="media-reorder-list flex gap-3 overflow-x-auto pb-2 pr-1"
+                      [class.media-reorder-list--busy]="isReorderingSlider">
+                      <div *ngFor="let img of sliderImagesFromServer; let i = index"
+                        cdkDrag
+                        class="slider-image-card media-reorder-card flex-shrink-0 w-36">
+                        <span class="media-order-badge">{{ i + 1 }}</span>
+                        <div cdkDragHandle class="media-drag-handle" title="Drag to reorder">⋮⋮</div>
                         <img [src]="img.imageUrl" class="h-24 w-full object-cover rounded-xl border border-slate-200"
                           alt="Current home slider image">
                         <div class="slider-image-overlay">
@@ -215,21 +229,85 @@
               </div>
             </div>
 
+            <div *ngIf="currentView === 'MEMBER_BENEFITS_MEDIA_MANAGEMENT'" class="space-y-6">
+              <div class="border border-slate-200 rounded-3xl p-6 bg-white">
+                <h3 class="text-lg font-black text-slate-900 mb-2">Member Benefits Images</h3>
+                <p class="text-sm text-slate-500 mb-5">
+                  Upload images for the Member Benefits page. Drag thumbnails to change display order (first = shown first).
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Current Images</p>
+                    <div *ngIf="memberBenefitImagesFromServer.length > 0; else noCurrentMemberBenefitImage"
+                      cdkDropList
+                      cdkDropListOrientation="horizontal"
+                      (cdkDropListDropped)="onMemberBenefitReorder($event)"
+                      class="media-reorder-list flex gap-3 overflow-x-auto pb-2 pr-1"
+                      [class.media-reorder-list--busy]="isReorderingMemberBenefits">
+                      <div *ngFor="let img of memberBenefitImagesFromServer; let i = index"
+                        cdkDrag
+                        class="slider-image-card media-reorder-card flex-shrink-0 w-36">
+                        <span class="media-order-badge">{{ i + 1 }}</span>
+                        <div cdkDragHandle class="media-drag-handle" title="Drag to reorder">⋮⋮</div>
+                        <img [src]="img.imageUrl" class="h-24 w-full object-cover rounded-xl border border-slate-200"
+                          alt="Current member benefit image">
+                        <div class="slider-image-overlay">
+                          <button type="button" class="slider-delete-btn" (click)="deleteMemberBenefitImage(img.id)"
+                            title="Delete image" aria-label="Delete image">
+                            🗑️
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #noCurrentMemberBenefitImage>
+                      <div class="h-52 rounded-2xl border border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center">
+                        <span class="text-sm text-slate-400">No image uploaded yet</span>
+                      </div>
+                    </ng-template>
+                  </div>
+
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Upload New Images</p>
+                    <input type="file" accept="image/*" multiple (change)="onMemberBenefitImageSelect($event)"
+                      class="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-indigo-50 file:text-indigo-700 file:font-semibold hover:file:bg-indigo-100">
+                    <div *ngIf="memberBenefitImagePreviewUrls.length > 0"
+                      class="mt-4 grid grid-cols-2 gap-3 max-h-52 overflow-auto pr-1">
+                      <img *ngFor="let preview of memberBenefitImagePreviewUrls" [src]="preview"
+                        class="h-24 w-full object-cover rounded-xl border border-slate-200" alt="New member benefit preview">
+                    </div>
+                    <button (click)="saveMemberBenefitImages()" [disabled]="isUpdatingMemberBenefitImage"
+                      class="mt-5 px-5 py-3 rounded-2xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed">
+                      {{ isUpdatingMemberBenefitImage ? 'Updating...' : 'Update Member Benefit Images' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div *ngIf="currentView === 'GALLERY_MEDIA_MANAGEMENT'" class="space-y-6">
               <div class="border border-slate-200 rounded-3xl p-6 bg-white">
                 <h3 class="text-lg font-black text-slate-900 mb-2">Home Page Gallery Images</h3>
                 <p class="text-sm text-slate-500 mb-5">
-                  Upload gallery photos for the home page gallery carousel.
+                  Upload photos for the Gallery page. Drag thumbnails to change display order (first = shown first).
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p class="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Current Images</p>
                     <div *ngIf="galleryImagesFromServer.length > 0; else noCurrentGalleryImage"
-                      class="grid grid-cols-2 gap-3 max-h-64 overflow-auto pr-1">
-                      <div *ngFor="let img of galleryImagesFromServer" class="slider-image-card">
+                      cdkDropList
+                      cdkDropListOrientation="horizontal"
+                      (cdkDropListDropped)="onGalleryReorder($event)"
+                      class="media-reorder-list flex gap-3 overflow-x-auto pb-2 pr-1"
+                      [class.media-reorder-list--busy]="isReorderingGallery">
+                      <div *ngFor="let img of galleryImagesFromServer; let i = index"
+                        cdkDrag
+                        class="slider-image-card media-reorder-card flex-shrink-0 w-36">
+                        <span class="media-order-badge">{{ i + 1 }}</span>
+                        <div cdkDragHandle class="media-drag-handle" title="Drag to reorder">⋮⋮</div>
                         <img [src]="img.imageUrl" class="h-24 w-full object-cover rounded-xl border border-slate-200"
-                          alt="Current home gallery image">
+                          alt="Current gallery image">
                         <div class="slider-image-overlay">
                           <button type="button" class="slider-delete-btn" (click)="deleteGalleryImage(img.id)"
                             title="Delete image" aria-label="Delete image">

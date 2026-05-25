@@ -91,6 +91,29 @@
         </div>
       </div>
 
+      <!-- Membership term (Approved members only) -->
+      <div *ngIf="isApprovedMember()" class="content-group mt-8 mb-0">
+        <span class="group-title">Membership Term</span>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Plan</label>
+            <div class="value font-bold text-indigo-600">{{ getMemberPlanName() }}</div>
+          </div>
+          <div class="info-item">
+            <label>Membership Start</label>
+            <div class="value">{{ membershipStartLabel() }}</div>
+          </div>
+          <div class="info-item">
+            <label>Membership End</label>
+            <div class="value">{{ membershipEndLabel() }}</div>
+          </div>
+          <div class="info-item" *ngIf="application.membershipNumber">
+            <label>Membership Number</label>
+            <div class="value">{{ application.membershipNumber }}</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Financial Ledger (Approved Only) -->
       <div *ngIf="isApprovedMember()" class="mt-8">
         <div class="flex items-center justify-between mb-4 px-2">

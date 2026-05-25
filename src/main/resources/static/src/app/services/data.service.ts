@@ -107,7 +107,7 @@ export class DataService {
       name: 'Anurag Pandey',
       role: 'Leadership Team 2026',
       company: 'Control F5',
-      image: '/uploads/board/Anurag_Pandey.jpeg'
+      image: '/uploads/board/Anurag_Pandey.jpg'
     }
   ];
 

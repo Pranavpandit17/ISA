@@ -4,6 +4,11 @@ import { ApiService } from '../../services/api.service';
 import { ApproveRejectModalComponent } from '../../components/modals/approve-reject-modal/approve-reject-modal.component';
 import { ApplicationDetailModalComponent } from '../../components/modals/application-detail-modal/application-detail-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import {
+  formatMembershipDateDisplay,
+  resolveSubscriptionEnd,
+  resolveSubscriptionStart
+} from '../../utils/membership-dates';
 
 @Component({
   selector: 'app-member-management',
@@ -62,8 +67,8 @@ export class MemberManagementComponent implements OnInit {
 
     this.apiService.getApprovedMembers().subscribe({
       next: (response: any) => {
-        this.approvedMembers = response;
-        this.apiService.setTotalMembers(response.length);
+        this.approvedMembers = this.normalizeApprovedMembers(response);
+        this.apiService.setTotalMembers(this.approvedMembers.length);
       },
       error: (error) => {
         console.error('Error loading approved members:', error);
@@ -150,6 +155,34 @@ export class MemberManagementComponent implements OnInit {
       member.selectedPlanName ||
       'No Plan'
     );
+  }
+
+  /** Normalize API shapes (camelCase / snake_case) so template always sees subscription dates. */
+  private normalizeApprovedMembers(response: any): any[] {
+    if (!Array.isArray(response)) {
+      return [];
+    }
+    return response.map((raw: any) => {
+      const subscriptionStartDate =
+        raw?.subscriptionStartDate ?? raw?.subscription_start_date ?? null;
+      const subscriptionEndDate =
+        raw?.subscriptionEndDate ?? raw?.subscription_end_date ?? null;
+      return {
+        ...raw,
+        subscriptionStartDate,
+        subscriptionEndDate,
+        planStartDate: raw?.planStartDate ?? raw?.plan_start_date ?? null,
+        planExpiryDate: raw?.planExpiryDate ?? raw?.plan_expiry_date ?? null
+      };
+    });
+  }
+
+  membershipStartLabel(member: any): string {
+    return formatMembershipDateDisplay(resolveSubscriptionStart(member));
+  }
+
+  membershipEndLabel(member: any): string {
+    return formatMembershipDateDisplay(resolveSubscriptionEnd(member));
   }
 }
 

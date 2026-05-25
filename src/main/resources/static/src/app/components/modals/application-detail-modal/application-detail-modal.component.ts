@@ -1,6 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
+import {
+  formatMembershipDateDisplay,
+  resolveSubscriptionEnd,
+  resolveSubscriptionStart
+} from '../../../utils/membership-dates';
 
 interface MembershipPayment {
   id: number;
@@ -71,6 +76,28 @@ export class ApplicationDetailModalComponent {
       this.application.membershipNumber ||
       this.application.status === 'APPROVED'
     );
+  }
+
+  getMemberPlanName(): string {
+    const member = this.application;
+    if (!member) {
+      return 'No Plan';
+    }
+    return (
+      member.activePlanName ||
+      member.currentPlanName ||
+      member.planName ||
+      member.selectedPlanName ||
+      'No Plan'
+    );
+  }
+
+  membershipStartLabel(): string {
+    return formatMembershipDateDisplay(resolveSubscriptionStart(this.application));
+  }
+
+  membershipEndLabel(): string {
+    return formatMembershipDateDisplay(resolveSubscriptionEnd(this.application));
   }
 
   togglePaymentHistory(): void {

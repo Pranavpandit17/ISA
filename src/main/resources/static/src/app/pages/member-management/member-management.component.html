@@ -110,6 +110,8 @@
             <th>Current Organization</th>
             <th>Direct Email</th>
             <th>Subscription</th>
+            <th>Membership Start</th>
+            <th>Membership End</th>
             <th>Specialization</th>
             <th>Account Status</th>
             <th class="text-right">Actions</th>
@@ -128,6 +130,12 @@
                 class="text-[10px] font-black uppercase px-2 py-1 rounded-md bg-indigo-50 text-indigo-600 border border-indigo-100">
                 {{ getMemberPlanName(member) }}
               </span>
+            </td>
+            <td class="text-sm text-slate-600 whitespace-nowrap">
+              {{ membershipStartLabel(member) }}
+            </td>
+            <td class="text-sm text-slate-600 whitespace-nowrap">
+              {{ membershipEndLabel(member) }}
             </td>
             <td class="text-sm text-slate-500">{{ member.industry }}</td>
             <td>

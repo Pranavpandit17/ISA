@@ -12,8 +12,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "home_slider_images")
-public class HomeSliderImage {
+@Table(name = "member_benefit_images")
+public class MemberBenefitImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,9 @@ public class HomeSliderImage {
 
     @Column(name = "display_order", nullable = false)
     private Integer displayOrder = 0;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
@@ -38,6 +41,9 @@ public class HomeSliderImage {
         this.updatedAt = now;
         if (this.displayOrder == null) {
             this.displayOrder = 0;
+        }
+        if (this.isActive == null) {
+            this.isActive = true;
         }
     }
 
@@ -68,6 +74,14 @@ public class HomeSliderImage {
 
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public LocalDateTime getCreatedAt() {
