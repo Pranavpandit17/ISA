@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ViewState } from '../../models/interfaces';
 import { ApiService } from '../../services/api.service';
 import { AuthService, User } from '../../services/auth.service';
@@ -26,6 +27,7 @@ type ManagementView =
   | 'FEATURE_MANAGEMENT'
   | 'HOME_MEDIA_MANAGEMENT'
   | 'GALLERY_MEDIA_MANAGEMENT'
+  | 'MEMBER_BENEFITS_MEDIA_MANAGEMENT'
   | null;
 
 interface AppNotification {
@@ -43,13 +45,14 @@ interface AppNotification {
 interface SliderImageItem {
   id: number;
   imageUrl: string;
+  displayOrder?: number;
 }
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [
-    CommonModule, DatePipe, EventCreateComponent, EventManagementComponent, 
+    CommonModule, DatePipe, DragDropModule, EventCreateComponent, EventManagementComponent, 
     MemberManagementComponent, JobManagementComponent, JobListingsComponent, 
     MembershipPlanManagementComponent, PlanFeatureManagementComponent,
     ApplicationDetailModalComponent, EventDetailModalComponent, 
@@ -108,12 +111,21 @@ export class AdminDashboardComponent implements OnInit {
   sliderImagePreviewUrls: string[] = [];
   sliderImagesFromServer: SliderImageItem[] = [];
   isUpdatingSliderImage = false;
+  isReorderingSlider = false;
 
   // Gallery media management
   galleryImageFiles: File[] = [];
   galleryImagePreviewUrls: string[] = [];
   galleryImagesFromServer: SliderImageItem[] = [];
   isUpdatingGalleryImage = false;
+  isReorderingGallery = false;
+
+  // Member benefits media management
+  memberBenefitImageFiles: File[] = [];
+  memberBenefitImagePreviewUrls: string[] = [];
+  memberBenefitImagesFromServer: SliderImageItem[] = [];
+  isUpdatingMemberBenefitImage = false;
+  isReorderingMemberBenefits = false;
 
   constructor(
     private apiService: ApiService,
@@ -133,6 +145,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadStats();
     this.loadHomeSliderSettings();
     this.loadGallerySettings();
+    this.loadMemberBenefitSettings();
     this.refreshUnreadNotificationsCount();
   }
 
@@ -261,6 +274,7 @@ export class AdminDashboardComponent implements OnInit {
         'FEATURE_MANAGEMENT',
         'HOME_MEDIA_MANAGEMENT',
         'GALLERY_MEDIA_MANAGEMENT',
+        'MEMBER_BENEFITS_MEDIA_MANAGEMENT',
         null
       ];
       if ((supported as any).includes(viewParam)) {
@@ -376,6 +390,9 @@ export class AdminDashboardComponent implements OnInit {
     } else if (view === 'GALLERY_MEDIA_MANAGEMENT') {
       this.loadGallerySettings();
       this.isLoading = false;
+    } else if (view === 'MEMBER_BENEFITS_MEDIA_MANAGEMENT') {
+      this.loadMemberBenefitSettings();
+      this.isLoading = false;
     }
   }
 
@@ -397,19 +414,65 @@ export class AdminDashboardComponent implements OnInit {
     return `${this.apiService.getBackendBaseUrl()}${normalizedPath}`;
   }
 
+  private mapMediaImages(images: any[]): SliderImageItem[] {
+    return images
+      .map((img: any) => ({
+        id: Number(img?.id),
+        imageUrl: this.resolveImageUrl(img?.imageUrl),
+        displayOrder: Number(img?.displayOrder)
+      }))
+      .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl)
+      .sort((a, b) => {
+        const orderA = Number.isFinite(a.displayOrder) ? (a.displayOrder as number) : a.id;
+        const orderB = Number.isFinite(b.displayOrder) ? (b.displayOrder as number) : b.id;
+        return orderA - orderB || a.id - b.id;
+      });
+  }
+
+  private applySliderResponse(response: any): void {
+    const images = Array.isArray(response?.images) ? response.images : [];
+    this.sliderImagesFromServer = this.mapMediaImages(images);
+  }
+
+  private applyGalleryResponse(response: any): void {
+    const images = Array.isArray(response?.images) ? response.images : [];
+    this.galleryImagesFromServer = this.mapMediaImages(images);
+  }
+
+  private applyMemberBenefitResponse(response: any): void {
+    const images = Array.isArray(response?.images) ? response.images : [];
+    this.memberBenefitImagesFromServer = this.mapMediaImages(images);
+  }
+
   loadHomeSliderSettings(): void {
     this.apiService.getHomeSliderConfig().subscribe({
       next: (response: any) => {
-        const images = Array.isArray(response?.images) ? response.images : [];
-        this.sliderImagesFromServer = images
-          .map((img: any) => ({
-            id: Number(img?.id),
-            imageUrl: this.resolveImageUrl(img?.imageUrl)
-          }))
-          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.applySliderResponse(response);
       },
       error: () => {
         this.sliderImagesFromServer = [];
+      }
+    });
+  }
+
+  onSliderReorder(event: CdkDragDrop<SliderImageItem[]>): void {
+    if (event.previousIndex === event.currentIndex || this.sliderImagesFromServer.length < 2) {
+      return;
+    }
+    moveItemInArray(this.sliderImagesFromServer, event.previousIndex, event.currentIndex);
+    const imageIds = this.sliderImagesFromServer.map((img) => img.id);
+    this.isReorderingSlider = true;
+    this.apiService.reorderHomeSlider(imageIds).subscribe({
+      next: (response: any) => {
+        this.applySliderResponse(response);
+        this.isReorderingSlider = false;
+        this.toastr.success('Slider order saved.', 'Updated');
+      },
+      error: (error) => {
+        this.isReorderingSlider = false;
+        this.loadHomeSliderSettings();
+        const message = error?.error?.message || 'Failed to save slider order.';
+        this.toastr.error(message, 'Error');
       }
     });
   }
@@ -446,14 +509,8 @@ export class AdminDashboardComponent implements OnInit {
     this.isUpdatingSliderImage = true;
     this.apiService.updateHomeSliderImages(formData).subscribe({
       next: (response: any) => {
-        const images = Array.isArray(response?.images) ? response.images : [];
         this.toastr.success('Home slider images updated successfully.', 'Updated');
-        this.sliderImagesFromServer = images
-          .map((img: any) => ({
-            id: Number(img?.id),
-            imageUrl: this.resolveImageUrl(img?.imageUrl)
-          }))
-          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.applySliderResponse(response);
         this.sliderImagePreviewUrls = [];
         this.sliderImageFiles = [];
         this.isUpdatingSliderImage = false;
@@ -472,13 +529,7 @@ export class AdminDashboardComponent implements OnInit {
     }
     this.apiService.deleteHomeSliderImage(imageId).subscribe({
       next: (response: any) => {
-        const images = Array.isArray(response?.images) ? response.images : [];
-        this.sliderImagesFromServer = images
-          .map((img: any) => ({
-            id: Number(img?.id),
-            imageUrl: this.resolveImageUrl(img?.imageUrl)
-          }))
-          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.applySliderResponse(response);
         this.toastr.success('Slider image deleted successfully.', 'Deleted');
       },
       error: (error) => {
@@ -491,16 +542,32 @@ export class AdminDashboardComponent implements OnInit {
   loadGallerySettings(): void {
     this.apiService.getGalleryConfig().subscribe({
       next: (response: any) => {
-        const images = Array.isArray(response?.images) ? response.images : [];
-        this.galleryImagesFromServer = images
-          .map((img: any) => ({
-            id: Number(img?.id),
-            imageUrl: this.resolveImageUrl(img?.imageUrl)
-          }))
-          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.applyGalleryResponse(response);
       },
       error: () => {
         this.galleryImagesFromServer = [];
+      }
+    });
+  }
+
+  onGalleryReorder(event: CdkDragDrop<SliderImageItem[]>): void {
+    if (event.previousIndex === event.currentIndex || this.galleryImagesFromServer.length < 2) {
+      return;
+    }
+    moveItemInArray(this.galleryImagesFromServer, event.previousIndex, event.currentIndex);
+    const imageIds = this.galleryImagesFromServer.map((img) => img.id);
+    this.isReorderingGallery = true;
+    this.apiService.reorderGallery(imageIds).subscribe({
+      next: (response: any) => {
+        this.applyGalleryResponse(response);
+        this.isReorderingGallery = false;
+        this.toastr.success('Gallery order saved.', 'Updated');
+      },
+      error: (error) => {
+        this.isReorderingGallery = false;
+        this.loadGallerySettings();
+        const message = error?.error?.message || 'Failed to save gallery order.';
+        this.toastr.error(message, 'Error');
       }
     });
   }
@@ -537,14 +604,8 @@ export class AdminDashboardComponent implements OnInit {
     this.isUpdatingGalleryImage = true;
     this.apiService.updateGalleryImages(formData).subscribe({
       next: (response: any) => {
-        const images = Array.isArray(response?.images) ? response.images : [];
         this.toastr.success('Gallery images updated successfully.', 'Updated');
-        this.galleryImagesFromServer = images
-          .map((img: any) => ({
-            id: Number(img?.id),
-            imageUrl: this.resolveImageUrl(img?.imageUrl)
-          }))
-          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.applyGalleryResponse(response);
         this.galleryImagePreviewUrls = [];
         this.galleryImageFiles = [];
         this.isUpdatingGalleryImage = false;
@@ -563,17 +624,106 @@ export class AdminDashboardComponent implements OnInit {
     }
     this.apiService.deleteGalleryImage(imageId).subscribe({
       next: (response: any) => {
-        const images = Array.isArray(response?.images) ? response.images : [];
-        this.galleryImagesFromServer = images
-          .map((img: any) => ({
-            id: Number(img?.id),
-            imageUrl: this.resolveImageUrl(img?.imageUrl)
-          }))
-          .filter((img: SliderImageItem) => Number.isFinite(img.id) && !!img.imageUrl);
+        this.applyGalleryResponse(response);
         this.toastr.success('Gallery image deleted successfully.', 'Deleted');
       },
       error: (error) => {
         const message = error?.error?.message || 'Failed to delete gallery image.';
+        this.toastr.error(message, 'Error');
+      }
+    });
+  }
+
+  loadMemberBenefitSettings(): void {
+    this.apiService.getMemberBenefitsConfig().subscribe({
+      next: (response: any) => {
+        this.applyMemberBenefitResponse(response);
+      },
+      error: () => {
+        this.memberBenefitImagesFromServer = [];
+      }
+    });
+  }
+
+  onMemberBenefitReorder(event: CdkDragDrop<SliderImageItem[]>): void {
+    if (event.previousIndex === event.currentIndex || this.memberBenefitImagesFromServer.length < 2) {
+      return;
+    }
+    moveItemInArray(this.memberBenefitImagesFromServer, event.previousIndex, event.currentIndex);
+    const imageIds = this.memberBenefitImagesFromServer.map((img) => img.id);
+    this.isReorderingMemberBenefits = true;
+    this.apiService.reorderMemberBenefits(imageIds).subscribe({
+      next: (response: any) => {
+        this.applyMemberBenefitResponse(response);
+        this.isReorderingMemberBenefits = false;
+        this.toastr.success('Member benefits order saved.', 'Updated');
+      },
+      error: (error) => {
+        this.isReorderingMemberBenefits = false;
+        this.loadMemberBenefitSettings();
+        const message = error?.error?.message || 'Failed to save member benefits order.';
+        this.toastr.error(message, 'Error');
+      }
+    });
+  }
+
+  onMemberBenefitImageSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+    this.memberBenefitImageFiles = files;
+    if (!files.length) {
+      this.memberBenefitImagePreviewUrls = [];
+      return;
+    }
+    const readers = files.map((file) => {
+      return new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.readAsDataURL(file);
+      });
+    });
+    Promise.all(readers).then((previews) => {
+      this.memberBenefitImagePreviewUrls = previews;
+    });
+  }
+
+  saveMemberBenefitImages(): void {
+    if (!this.memberBenefitImageFiles.length) {
+      this.toastr.warning('Please select at least one image.', 'No file selected');
+      return;
+    }
+    const formData = new FormData();
+    this.memberBenefitImageFiles.forEach((file) => {
+      formData.append('images', file, file.name);
+    });
+    this.isUpdatingMemberBenefitImage = true;
+    this.apiService.updateMemberBenefitImages(formData).subscribe({
+      next: (response: any) => {
+        this.toastr.success('Member benefit images updated successfully.', 'Updated');
+        this.applyMemberBenefitResponse(response);
+        this.memberBenefitImagePreviewUrls = [];
+        this.memberBenefitImageFiles = [];
+        this.isUpdatingMemberBenefitImage = false;
+      },
+      error: (error) => {
+        const message = error?.error?.message || 'Failed to update member benefit images.';
+        this.toastr.error(message, 'Error');
+        this.isUpdatingMemberBenefitImage = false;
+      }
+    });
+  }
+
+  deleteMemberBenefitImage(imageId: number): void {
+    if (!imageId) {
+      return;
+    }
+    this.apiService.deleteMemberBenefitImage(imageId).subscribe({
+      next: (response: any) => {
+        this.applyMemberBenefitResponse(response);
+        this.toastr.success('Member benefit image deleted successfully.', 'Deleted');
+      },
+      error: (error) => {
+        const message = error?.error?.message || 'Failed to delete member benefit image.';
         this.toastr.error(message, 'Error');
       }
     });

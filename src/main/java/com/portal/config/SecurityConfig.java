@@ -71,6 +71,7 @@ public class SecurityConfig {
                                                                                        // events
                         .requestMatchers(HttpMethod.GET, "/api/home-slider").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/gallery").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/member-benefits").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/plans").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/plans/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/payment-plans").permitAll()

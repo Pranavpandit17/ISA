@@ -5,13 +5,15 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:spring": "ng build && node scripts/copy-browser-to-static-root.cjs",
+    "build:spring": "ng build && node scripts/sync-angular-build.cjs",
+    "sync:dist": "node scripts/sync-angular-build.cjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.3.12",
+    "@angular/cdk": "^17.3.10",
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",

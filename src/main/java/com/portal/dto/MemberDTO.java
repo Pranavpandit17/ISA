@@ -1,5 +1,8 @@
 package com.portal.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,8 +21,24 @@ public class MemberDTO {
     private String membershipType;
     private String membershipStatus;
     private String membershipNumber;
+    @JsonProperty("subscriptionStartDate")
+    @JsonAlias("subscription_start_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate subscriptionStartDate;
+
+    @JsonProperty("subscriptionEndDate")
+    @JsonAlias("subscription_end_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate subscriptionEndDate;
+
+    /** From {@code users.plan_start_date} when member subscription dates are unset. */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate planStartDate;
+
+    /** From {@code users.plan_expiry_date} when member subscription dates are unset. */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate planExpiryDate;
+
     private String activePlanName;
     private LocalDateTime createdAt;
 
@@ -143,6 +162,22 @@ public class MemberDTO {
 
     public void setSubscriptionEndDate(LocalDate subscriptionEndDate) {
         this.subscriptionEndDate = subscriptionEndDate;
+    }
+
+    public LocalDate getPlanStartDate() {
+        return planStartDate;
+    }
+
+    public void setPlanStartDate(LocalDate planStartDate) {
+        this.planStartDate = planStartDate;
+    }
+
+    public LocalDate getPlanExpiryDate() {
+        return planExpiryDate;
+    }
+
+    public void setPlanExpiryDate(LocalDate planExpiryDate) {
+        this.planExpiryDate = planExpiryDate;
     }
 
     public String getActivePlanName() {

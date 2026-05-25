@@ -1,0 +1,13 @@
+package com.portal.repository;
+
+import com.portal.entity.MemberBenefitImage;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface MemberBenefitImageRepository extends JpaRepository<MemberBenefitImage, Long> {
+    List<MemberBenefitImage> findAllByOrderByDisplayOrderAscIdAsc();
+
+    Optional<MemberBenefitImage> findTopByOrderByDisplayOrderDesc();
+}

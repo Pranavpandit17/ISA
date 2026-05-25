@@ -214,6 +214,73 @@
   transform: scale(1.06);
 }
 
+.media-reorder-list {
+  min-height: 6.5rem;
+}
+
+.media-reorder-list--busy {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.media-reorder-card {
+  cursor: grab;
+}
+
+.media-reorder-card.cdk-drag-dragging {
+  cursor: grabbing;
+}
+
+.media-order-badge {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.35rem;
+  z-index: 12;
+  background: rgba(15, 23, 42, 0.75);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.35rem;
+}
+
+.media-drag-handle {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  z-index: 12;
+  background: rgba(255, 255, 255, 0.92);
+  color: #475569;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  padding: 0.25rem 0.35rem;
+  border-radius: 0.35rem;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+}
+
+.media-reorder-list.cdk-drop-list-dragging .media-reorder-card:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview.media-reorder-card {
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22);
+  opacity: 0.95;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.35;
+  border: 2px dashed #cbd5e1;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  min-height: 6rem;
+  min-width: 9rem;
+}
+
 /* Admin dashboard performance mode for smoother scrolling */
 .admin-layout .reveal-up {
   animation: none !important;

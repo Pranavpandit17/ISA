@@ -586,6 +586,23 @@ public class MembershipService {
         return userRepository.save(user);
     }
 
+    private void populateMembershipDates(MemberDTO dto, Member member) {
+        LocalDate start = member.getSubscriptionStartDate();
+        LocalDate end = member.getSubscriptionEndDate();
+        if (member.getUser() != null) {
+            dto.setPlanStartDate(member.getUser().getPlanStartDate());
+            dto.setPlanExpiryDate(member.getUser().getPlanExpiryDate());
+            if (start == null) {
+                start = member.getUser().getPlanStartDate();
+            }
+            if (end == null) {
+                end = member.getUser().getPlanExpiryDate();
+            }
+        }
+        dto.setSubscriptionStartDate(start);
+        dto.setSubscriptionEndDate(end);
+    }
+
     private MemberDTO convertMemberToDTO(Member member) {
         MemberDTO dto = new MemberDTO();
         dto.setId(member.getId());
@@ -600,8 +617,7 @@ public class MembershipService {
             dto.setMembershipType(member.getMembershipType() != null ? member.getMembershipType().name() : null);
             dto.setMembershipStatus(member.getMembershipStatus() != null ? member.getMembershipStatus().name() : null);
             dto.setMembershipNumber(member.getMembershipNumber());
-            dto.setSubscriptionStartDate(member.getSubscriptionStartDate());
-            dto.setSubscriptionEndDate(member.getSubscriptionEndDate());
+            populateMembershipDates(dto, member);
             dto.setActivePlanName("No Plan");
             dto.setCreatedAt(member.getCreatedAt());
             return dto;
@@ -617,8 +633,7 @@ public class MembershipService {
         dto.setMembershipType(member.getMembershipType() != null ? member.getMembershipType().name() : null);
         dto.setMembershipStatus(member.getMembershipStatus() != null ? member.getMembershipStatus().name() : null);
         dto.setMembershipNumber(member.getMembershipNumber());
-        dto.setSubscriptionStartDate(member.getSubscriptionStartDate());
-        dto.setSubscriptionEndDate(member.getSubscriptionEndDate());
+        populateMembershipDates(dto, member);
         
         // Populate current plan name from the User entity.
         // Fallback to the latest PAID membership payment if selectedPlan is not set.
