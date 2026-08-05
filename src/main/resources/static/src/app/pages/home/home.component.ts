@@ -42,6 +42,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private galleryIntervalId: any;
 
+  /** Zoho Backstage ticket page for Beyond Small Talk / ISA Social. */
+  readonly zohoBackstageEventUrl =
+    'https://isa.zohobackstage.in/embed/ISASocial26/buyTickets';
+
   stats = [
     { value: '200+', label: 'Active CXOs', color: '#6366f1', icon: '👥' },
     { value: '50+', label: 'Annual Events', color: '#22d3ee', icon: '🎯' },
@@ -252,6 +256,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Navigate the browser to the Zoho Backstage ticket page. */
+  private redirectToZohoTickets(): void {
+    window.location.href = this.zohoBackstageEventUrl;
+  }
+
   /**
    * Compare using local calendar date/time so YYYY-MM-DD from the API is not shifted by UTC parsing.
    * Event counts as upcoming until end of local day on endDate (with endTime if present).
@@ -312,6 +321,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   onViewEvent(event: Event): void {
     if (!this.authService.isAuthenticated()) { this.modalService.openAuth('LOGIN'); return; }
     this.navService.eventDetail((event as any).id);
+  }
+
+  /** Home "Register Now" always opens Zoho Backstage tickets for ISA Social. */
+  onRegisterClick(_event: any, clickEvent: MouseEvent): void {
+    clickEvent.preventDefault();
+    clickEvent.stopPropagation();
+    this.redirectToZohoTickets();
   }
 
   toggleFaq(faq: FaqItem): void { faq.isOpen = !faq.isOpen; }

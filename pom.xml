@@ -155,11 +155,9 @@
                             <workingDirectory>${frontend.workingDirectory}</workingDirectory>
                             <executable>npm</executable>
                             <arguments>
+                                <!-- production build + sync to static/ and static/dist/isa-angular/browser -->
                                 <argument>run</argument>
-                                <argument>build</argument>
-                                <argument>--</argument>
-                                <argument>--configuration</argument>
-                                <argument>production</argument>
+                                <argument>build:spring</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -181,9 +179,26 @@
                         <configuration>
                             <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
                             <resources>
-                                <!-- Angular output: static/dist/isa-angular/browser (see static/package.json) -->
+                                <!-- Angular output: target/isa-angular-out/browser (see static/angular.json outputPath) -->
                                 <resource>
-                                    <directory>src/main/resources/static/dist/isa-angular/browser</directory>
+                                    <directory>${project.build.directory}/isa-angular-out/browser</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!-- Spring prefers classpath:/static/dist/isa-angular/browser/ for index.html -->
+                    <execution>
+                        <id>copy-frontend-dist</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/classes/static/dist/isa-angular/browser</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/isa-angular-out/browser</directory>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>
