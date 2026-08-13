@@ -21,6 +21,7 @@ export class FooterComponent {
     { label: 'Member Directory', path: '/directory' },
     { label: 'Insights & Blogs', path: '/blogs' },
     { label: 'Bench Exchange', path: '/bench' },
+    { label: 'Terms & Policy', path: '/terms-and-policy' },
   ];
 
   memberLinks = [

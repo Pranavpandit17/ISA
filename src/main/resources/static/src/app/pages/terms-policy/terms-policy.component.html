@@ -1,0 +1,251 @@
+<section class="legal-page max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="mb-8">
+    <p class="legal-eyebrow">Indore Software Association</p>
+    <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">Terms &amp; Policy</h1>
+    <p class="text-slate-500 mt-3 leading-relaxed">
+      Please review the terms that govern use of ISA Connect, how we handle your information, and our refund rules.
+    </p>
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mt-4">
+      Last updated · {{ lastUpdated }}
+    </p>
+  </div>
+
+  <div class="legal-tabs" role="tablist" aria-label="Legal documents">
+    <button type="button" role="tab" class="legal-tab"
+      [class.active]="activeTab === 'terms'"
+      [attr.aria-selected]="activeTab === 'terms'"
+      (click)="setTab('terms')">
+      Terms of Use
+    </button>
+    <button type="button" role="tab" class="legal-tab"
+      [class.active]="activeTab === 'privacy'"
+      [attr.aria-selected]="activeTab === 'privacy'"
+      (click)="setTab('privacy')">
+      Privacy Policy
+    </button>
+    <button type="button" role="tab" class="legal-tab"
+      [class.active]="activeTab === 'refund'"
+      [attr.aria-selected]="activeTab === 'refund'"
+      (click)="setTab('refund')">
+      Refund Policy
+    </button>
+  </div>
+
+  <!-- Terms of Use -->
+  <article *ngIf="activeTab === 'terms'" class="legal-panel" role="tabpanel">
+    <h2>Terms of Use</h2>
+    <p>
+      These Terms of Use (“Terms”) govern your access to and use of the ISA Connect portal and related services
+      operated by Indore Software Association (“ISA”, “we”, “us”, or “our”). By creating an account, submitting a
+      membership application, or using the portal, you agree to these Terms.
+    </p>
+
+    <h3>1. Eligibility &amp; membership</h3>
+    <p>
+      ISA Connect is intended for founders, CXOs, technology leaders, and member organizations associated with the
+      Indore software ecosystem. Membership applications are subject to review and approval. Providing false or
+      incomplete information may result in rejection or suspension of access.
+    </p>
+
+    <h3>2. Accounts &amp; security</h3>
+    <p>
+      You are responsible for maintaining the confidentiality of your login credentials and for all activity under
+      your account. Notify ISA promptly if you suspect unauthorized use. We may suspend or terminate accounts that
+      violate these Terms or pose a security risk.
+    </p>
+
+    <h3>3. Acceptable use</h3>
+    <ul>
+      <li>Use the portal only for lawful, professional purposes related to ISA membership and community activities.</li>
+      <li>Do not post unlawful, defamatory, harassing, or confidential third-party content without authorization.</li>
+      <li>Do not attempt to disrupt the service, scrape data without permission, or access another user’s account.</li>
+      <li>Respect directory, event, bench-exchange, and other member features as tools for collaboration—not spam.</li>
+    </ul>
+
+    <h3>4. Events, registrations &amp; payments</h3>
+    <p>
+      Event listings, ticket purchases, and membership fees may be processed through ISA Connect or third-party
+      providers (for example payment gateways or event platforms). Additional terms from those providers may apply.
+      Fees, refunds, and event policies are as stated at the time of registration or purchase.
+    </p>
+
+    <h3>5. Content &amp; intellectual property</h3>
+    <p>
+      ISA branding, portal design, and ISA-owned materials remain our property. You retain rights to content you
+      submit (such as profile or job posts), and grant ISA a non-exclusive license to display that content within the
+      portal for membership and community purposes.
+    </p>
+
+    <h3>6. Disclaimer</h3>
+    <p>
+      The portal and community features are provided “as is.” ISA does not guarantee uninterrupted availability or
+      that member-posted information is complete or accurate. Networking outcomes and business results are not
+      guaranteed.
+    </p>
+
+    <h3>7. Limitation of liability</h3>
+    <p>
+      To the fullest extent permitted by law, ISA is not liable for indirect, incidental, or consequential damages
+      arising from use of the portal. Our total liability for claims relating to the portal shall not exceed the
+      membership fees you paid to ISA in the twelve months preceding the claim, where applicable.
+    </p>
+
+    <h3>8. Changes</h3>
+    <p>
+      We may update these Terms from time to time. Continued use of ISA Connect after changes are posted constitutes
+      acceptance of the revised Terms. Material changes may be highlighted on the portal or communicated by email.
+    </p>
+
+    <h3>9. Contact</h3>
+    <p>
+      Questions about these Terms: <a href="mailto:info@theisa.in">info&#64;theisa.in</a>
+    </p>
+  </article>
+
+  <!-- Privacy Policy -->
+  <article *ngIf="activeTab === 'privacy'" class="legal-panel" role="tabpanel">
+    <h2>Privacy Policy</h2>
+    <p>
+      This Privacy Policy explains how Indore Software Association (“ISA”, “we”, “us”) collects, uses, and protects
+      personal information when you use ISA Connect and related membership services.
+    </p>
+
+    <h3>1. Information we collect</h3>
+    <ul>
+      <li><strong>Account &amp; membership data</strong> — name, email, phone, company, industry, address, and related application details.</li>
+      <li><strong>Profile &amp; directory data</strong> — information you choose to display to other members.</li>
+      <li><strong>Usage data</strong> — login activity, feature usage, and technical logs needed to operate and secure the portal.</li>
+      <li><strong>Payment &amp; event data</strong> — plan selection, payment references, and event registration details (payment card data is typically handled by payment providers).</li>
+    </ul>
+
+    <h3>2. How we use information</h3>
+    <ul>
+      <li>To process membership applications and manage member accounts.</li>
+      <li>To operate events, directories, bench exchange, and other portal features.</li>
+      <li>To communicate about membership, events, and important service updates.</li>
+      <li>To improve security, prevent abuse, and comply with legal obligations.</li>
+    </ul>
+
+    <h3>3. Sharing</h3>
+    <p>
+      We do not sell your personal information. We may share information with:
+    </p>
+    <ul>
+      <li>Service providers who help us host, email, process payments, or run events (under appropriate safeguards).</li>
+      <li>Other members, when you publish profile or directory information intended for the community.</li>
+      <li>Authorities when required by law or to protect ISA’s rights and members’ safety.</li>
+    </ul>
+
+    <h3>4. Retention</h3>
+    <p>
+      We retain membership and account data for as long as your account is active and as needed for legitimate
+      business, legal, and audit purposes. You may request correction or deletion subject to membership and legal
+      requirements.
+    </p>
+
+    <h3>5. Security</h3>
+    <p>
+      We use reasonable administrative and technical measures to protect personal data. No online system is
+      completely secure; please use a strong password and keep your credentials private.
+    </p>
+
+    <h3>6. Your choices</h3>
+    <ul>
+      <li>Update profile and contact details from your member dashboard where available.</li>
+      <li>Contact us to request access, correction, or deletion of personal data we hold about you.</li>
+      <li>Opt out of non-essential marketing communications where offered.</li>
+    </ul>
+
+    <h3>7. Third-party services</h3>
+    <p>
+      Links or embeds (such as payment or ticketing partners) are governed by those parties’ own privacy policies.
+      Review their policies when you leave ISA Connect or complete a checkout with a partner.
+    </p>
+
+    <h3>8. Updates</h3>
+    <p>
+      We may update this Privacy Policy periodically. The “Last updated” date at the top of this page will change
+      when revisions are published.
+    </p>
+
+    <h3>9. Contact</h3>
+    <p>
+      Privacy questions: <a href="mailto:info@theisa.in">info&#64;theisa.in</a><br>
+      Address: Vijay Nagar, Indore, M.P. 452009
+    </p>
+  </article>
+
+  <!-- Refund Policy -->
+  <article *ngIf="activeTab === 'refund'" class="legal-panel" role="tabpanel">
+    <h2>Refund Policy</h2>
+    <p>
+      This Refund Policy explains when Indore Software Association (“ISA”, “we”, “us”) may issue refunds for
+      membership fees, event registrations, and related purchases made through ISA Connect or partner platforms.
+    </p>
+
+    <h3>1. Membership fees</h3>
+    <ul>
+      <li>Membership application and plan fees are generally <strong>non-refundable</strong> once an application is approved and membership is activated.</li>
+      <li>If payment was collected in error (duplicate charge, incorrect amount), contact us promptly with proof of payment for review.</li>
+      <li>Unused portion of an active membership period is typically not refundable if you cancel mid-term, unless ISA expressly agrees in writing.</li>
+    </ul>
+
+    <h3>2. Event tickets (ISA Connect)</h3>
+    <ul>
+      <li>Refund eligibility for events registered through ISA Connect depends on the event’s published rules at the time of registration.</li>
+      <li>Where no event-specific rule is stated, requests made <strong>7 or more days</strong> before the event start may be considered for a full or partial refund at ISA’s discretion.</li>
+      <li>Requests made within 7 days of the event, or after the event has started or been completed, are generally not eligible for refund.</li>
+      <li>If ISA cancels or materially reschedules an event, we will offer a refund or credit as communicated for that event.</li>
+    </ul>
+
+    <h3>3. Third-party ticketing (e.g. Zoho Backstage)</h3>
+    <p>
+      Tickets purchased on partner platforms (such as Zoho Backstage) are subject to that platform’s and the event
+      organizer’s refund rules. ISA Connect may redirect you to those checkout pages; refunds for those purchases
+      must be requested through the partner’s process unless ISA notifies you otherwise.
+    </p>
+
+    <h3>4. Payment gateway failures</h3>
+    <p>
+      If a payment is deducted but registration or membership is not confirmed due to a technical failure, contact us
+      with the transaction reference. After verification with our payment provider, we will either complete the
+      registration or initiate a refund according to bank/provider timelines.
+    </p>
+
+    <h3>5. How to request a refund</h3>
+    <p>Email <a href="mailto:info@theisa.in">info&#64;theisa.in</a> with:</p>
+    <ul>
+      <li>Full name and registered email</li>
+      <li>Membership number or event name / order / payment reference</li>
+      <li>Date and amount paid</li>
+      <li>Reason for the refund request</li>
+    </ul>
+    <p>
+      We aim to respond within <strong>5–7 business days</strong>. Approved refunds are typically processed within
+      <strong>7–14 business days</strong>, depending on the payment method and bank.
+    </p>
+
+    <h3>6. Non-refundable items</h3>
+    <ul>
+      <li>Services or benefits already fully delivered</li>
+      <li>Fees marked as non-refundable at checkout</li>
+      <li>Charges arising from violation of Terms of Use or membership rules</li>
+    </ul>
+
+    <h3>7. Changes</h3>
+    <p>
+      ISA may update this Refund Policy from time to time. The “Last updated” date on this page reflects the latest
+      revision. Continued use of paid features after an update constitutes acceptance of the revised policy.
+    </p>
+
+    <h3>8. Contact</h3>
+    <p>
+      Refunds &amp; billing: <a href="mailto:info@theisa.in">info&#64;theisa.in</a><br>
+      Address: Vijay Nagar, Indore, M.P. 452009
+    </p>
+  </article>
+
+  <div class="legal-back">
+    <a routerLink="/home">← Back to Home</a>
+  </div>
+</section>
