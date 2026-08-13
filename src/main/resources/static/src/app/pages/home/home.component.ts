@@ -62,25 +62,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     { icon: '🎖️', title: 'Prestigious Recognition', desc: 'Awards, certifications, and recognition programs for member excellence.' },
   ];
 
-  // Frontend-only testimonials (static content from local assets)
+    // Frontend-only testimonials (static content from local assets)
   testimonials: HomeTestimonial[] = [
     {
-      quote: 'ISA helped us convert networking into measurable partnerships and faster execution across teams.',
-      name: 'Member Testimonial 1',
+      quote: 'Watch the winning team share their journey, key learnings, and the excitement of achieving success at an ISA event.',
+      name: 'Celebrating Success',
       role: 'Industry Leader',
       company: 'ISA Community',
       videoUrl: 'assets/videos/video1.mp4',
       videoPoster: 'assets/ISA-logo.png'
     },
     {
-      quote: 'The ISA network gave us the right visibility, hiring connections, and trusted peer support to scale confidently.',
-      name: 'Member Testimonial 2',
+      quote: 'Feel the excitement of the event through the voices of our participants as they share what made the experience inspiring, engaging, and unforgettable. ',
+      name: 'The Excitement of ISA Events',
       role: 'Technology Executive',
       company: 'ISA Community',
       videoUrl: 'assets/videos/video2.mp4',
       videoPoster: 'assets/ISA-logo.png'
     }
   ];
+
 
   membershipPlans: any[] = [];
   isLoadingPlans = false;
