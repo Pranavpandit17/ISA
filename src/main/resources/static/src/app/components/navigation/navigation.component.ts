@@ -27,7 +27,8 @@ export class NavigationComponent implements OnInit {
     { label: 'Events', path: '/events' },
     { label: 'Past Events', path: '/old-events' },
     { label: 'News', path: '/news' },
-    { label: 'Directory', path: '/directory' }
+    { label: 'Directory', path: '/directory' },
+    { label: 'About Us', path: '/about' }
   ];
 
   constructor(

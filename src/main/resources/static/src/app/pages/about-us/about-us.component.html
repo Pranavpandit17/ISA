@@ -1,0 +1,62 @@
+<section class="about-page max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="mb-8">
+    <p class="about-eyebrow">Indore Software Association</p>
+    <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">About Us</h1>
+    <p class="text-slate-500 mt-3 leading-relaxed">
+      Indore Software Association (ISA) is the definitive ecosystem for Indore's IT founders, CXOs, and technology
+      leaders. We foster innovation, advocate on policy, and enable resource sharing to accelerate growth across the
+      region's software industry.
+    </p>
+  </div>
+
+  <article class="about-panel">
+    <h2>Who we are</h2>
+    <p>
+      ISA brings together software product companies, IT services firms, and technology leaders from Indore under a
+      single registered body. Through member meets, knowledge sessions, a member directory, and a bench exchange, we
+      help our members hire better, sell better, and build better.
+    </p>
+
+    <h3>What we do</h3>
+    <ul>
+      <li>Convene founders and CXOs through curated events, roundtables, and annual conferences.</li>
+      <li>Represent the local software industry in conversations with government and academia.</li>
+      <li>Enable business and talent exchange between member organizations.</li>
+      <li>Share market insights, hiring trends, and best practices across the community.</li>
+    </ul>
+  </article>
+
+  <article class="about-panel mt-8">
+    <h2>Society Registration</h2>
+    <p>
+      ISA is a society registered with the Government of Madhya Pradesh. The official registration certificate is
+      reproduced below for reference.
+    </p>
+
+    <dl class="registration-grid">
+      <div class="registration-item" *ngFor="let detail of registrationDetails">
+        <dt>{{ detail.label }}</dt>
+        <dd>{{ detail.value }}</dd>
+      </div>
+    </dl>
+
+    <h3>Registration certificate</h3>
+    <div class="certificate-viewer">
+      <iframe
+        [src]="certificateUrl"
+        title="ISA Society Registration Certificate"
+        loading="lazy"
+        class="certificate-frame">
+        Your browser cannot display the certificate inline. Please write to us at info&#64;theisa.in to verify our
+        registration details.
+      </iframe>
+    </div>
+    <p class="certificate-note">
+      Digitally signed document issued on 20 July 2023. Displayed for verification purposes only.
+    </p>
+  </article>
+
+  <div class="about-back">
+    <a [routerLink]="'/home'">&larr; Back to home</a>
+  </div>
+</section>

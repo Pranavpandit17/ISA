@@ -1,5 +1,22 @@
 <div class="home-page-root overflow-x-hidden">
 
+  <!-- ══════════════ EVENT PROMO POPUP (once per session) ══════════════ -->
+  <div *ngIf="showPromoPopup" class="promo-overlay" (click)="closePromoPopup()">
+    <div class="promo-dialog" (click)="$event.stopPropagation()" role="dialog" aria-modal="true"
+      aria-label="ISA Marathon - Save the date">
+      <button type="button" class="promo-close" aria-label="Close" (click)="closePromoPopup()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <img [src]="promoImageSrc" alt="The ISA Marathon - Beyond the screen. Into motion. Save the date, 27 September 2026"
+        class="promo-image">
+    </div>
+  </div>
+
+
   <!-- ══════════════ 1. HERO SECTION (PREMIUM DARK) ══════════════ -->
   <section class="hero-dark min-h-[95vh] flex items-center justify-center px-6 overflow-hidden">
     <!-- Sophisticated Glow Backgrounds -->

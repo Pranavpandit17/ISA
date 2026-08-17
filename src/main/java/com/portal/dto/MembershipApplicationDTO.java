@@ -23,6 +23,8 @@ public class MembershipApplicationDTO {
     private LocalDateTime reviewedAt;
     private String rejectionReason;
     private String notes;
+    /** Present only for private invite registration; not persisted on the application entity. */
+    private String inviteToken;
 
     public Long getId() {
         return id;
@@ -108,6 +110,10 @@ public class MembershipApplicationDTO {
         return notes;
     }
 
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public String getWebsite() {
         return website;
     }
@@ -164,8 +170,12 @@ public class MembershipApplicationDTO {
         this.planId = planId;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public String getInviteToken() {
+        return inviteToken;
+    }
+
+    public void setInviteToken(String inviteToken) {
+        this.inviteToken = inviteToken;
     }
 }
 

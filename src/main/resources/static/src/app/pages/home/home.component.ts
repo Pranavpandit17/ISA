@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, HostListener } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Event, BoardMember, FaqItem } from '../../models/interfaces';
@@ -85,6 +85,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   membershipPlans: any[] = [];
   isLoadingPlans = false;
 
+  /** Marathon "Save the Date" promo popup shown once per browser session on home. */
+  readonly promoImageSrc = 'assets/promo/Marathon_ISA.jpg';
+  private readonly promoDismissKey = 'isa_promo_dismissed_marathon_2026';
+  showPromoPopup = false;
+
   constructor(
     private dataService: DataService,
     private authService: AuthService,
@@ -107,6 +112,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadUpcomingEvents();
     this.loadMembershipPlans();
     this.startGalleryAutoSlide();
+    this.maybeShowPromoPopup();
+  }
+
+  private maybeShowPromoPopup(): void {
+    let alreadyDismissed = false;
+    try {
+      alreadyDismissed = sessionStorage.getItem(this.promoDismissKey) === '1';
+    } catch {
+      // Private mode / storage disabled: fall back to showing the popup.
+      alreadyDismissed = false;
+    }
+    if (!alreadyDismissed) {
+      this.showPromoPopup = true;
+    }
+  }
+
+  closePromoPopup(): void {
+    this.showPromoPopup = false;
+    try {
+      sessionStorage.setItem(this.promoDismissKey, '1');
+    } catch {
+      // Ignore storage failures; popup simply reappears next session.
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapePromo(): void {
+    if (this.showPromoPopup) {
+      this.closePromoPopup();
+    }
   }
 
   private startGalleryAutoSlide(): void {

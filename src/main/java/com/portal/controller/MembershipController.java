@@ -55,6 +55,22 @@ public class MembershipController {
         return ResponseEntity.ok(membershipService.createApplication(dto));
     }
 
+    /**
+     * Private invite registration — requires a valid invite token.
+     * Creates an ACTIVE member immediately (no admin approval).
+     */
+    @PostMapping("/invite-register")
+    public ResponseEntity<MembershipApplicationDTO> registerViaInvite(@RequestBody MembershipApplicationDTO dto) {
+        return ResponseEntity.ok(membershipService.registerViaInvite(dto));
+    }
+
+    /** Lightweight check so the /join page can unlock the form. */
+    @GetMapping("/invite-register/validate")
+    public ResponseEntity<Map<String, Object>> validateInviteToken(@RequestParam("token") String token) {
+        boolean valid = membershipService.isInviteTokenValid(token);
+        return ResponseEntity.ok(Map.of("valid", valid));
+    }
+
     @PutMapping("/applications/{id}/approve")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> approveApplication(@PathVariable("id") Long id, org.springframework.security.core.Authentication authentication) {
