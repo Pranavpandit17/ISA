@@ -9,6 +9,11 @@ export const routes: Routes = [
   { path: 'home', loadComponent: () => import('./pages/home/home.component').then(c => c.HomeComponent) },
   { path: 'gallery', loadComponent: () => import('./pages/gallery/gallery.component').then(c => c.GalleryComponent) },
   { path: 'member-benefits', loadComponent: () => import('./pages/member-benefits/member-benefits.component').then(c => c.MemberBenefitsComponent) },
+  { path: 'about', loadComponent: () => import('./pages/about-us/about-us.component').then(c => c.AboutUsComponent) },
+  {
+    path: 'join',
+    loadComponent: () => import('./pages/join-invite/join-invite.component').then(c => c.JoinInviteComponent)
+  },
   {
     path: 'terms-and-policy',
     loadComponent: () => import('./pages/terms-policy/terms-policy.component').then(c => c.TermsPolicyComponent)
