@@ -58,6 +58,19 @@ export class ApiService {
     });
   }
 
+  /** Private invite link registration — creates ACTIVE member when token is valid. */
+  registerViaInvite(application: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/membership/invite-register`, application, {
+      headers: this.getHeaders()
+    });
+  }
+
+  validateInviteToken(token: string): Observable<{ valid: boolean }> {
+    return this.http.get<{ valid: boolean }>(`${this.apiUrl}/membership/invite-register/validate`, {
+      params: { token }
+    });
+  }
+
   getMembershipApplications(): Observable<any> {
     return this.http.get(`${this.apiUrl}/membership/applications`, {
       headers: this.getHeaders()

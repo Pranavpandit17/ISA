@@ -54,6 +54,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(org.springframework.security.config.Customizer.withDefaults())
+                // Default is DENY, which blocks the same-origin iframe used to display
+                // the society registration certificate on the About Us page.
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session
@@ -64,6 +67,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/test/**").permitAll() // Temporary - remove in production
                         .requestMatchers(HttpMethod.POST, "/api/membership/applications").permitAll() // Public
                                                                                                       // registration
+                        .requestMatchers(HttpMethod.POST, "/api/membership/invite-register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/membership/invite-register/validate").permitAll()
                         // Public event endpoints - allow viewing events without authentication
                         .requestMatchers(HttpMethod.GET, "/api/events").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/events/published").permitAll()

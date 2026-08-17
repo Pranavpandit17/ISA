@@ -1,0 +1,166 @@
+<div class="join-page">
+  <div class="join-glow join-glow-a"></div>
+  <div class="join-glow join-glow-b"></div>
+
+  <div class="join-shell">
+    <aside class="join-aside">
+      <div class="join-brand">
+        <img src="assets/ISA-logo.png" alt="ISA" class="join-logo" />
+        <div>
+          <p class="join-brand-name">ISA Connect</p>
+          <p class="join-brand-sub">Indore Software Association</p>
+        </div>
+      </div>
+
+      <p class="join-kicker">Private invite</p>
+      <h1 class="join-title">Join Indore’s technology leadership network</h1>
+      <p class="join-lead">
+        This page is for invitees only. Submit your details to create your membership account immediately —
+        no admin approval step.
+      </p>
+
+      <ul class="join-perks">
+        <li>CXO networking &amp; curated events</li>
+        <li>Member directory &amp; bench exchange</li>
+        <li>Policy advocacy for Indore IT</li>
+      </ul>
+
+      <div class="join-share-card" *ngIf="tokenValid">
+        <p class="join-share-label">Your invite link</p>
+        <code class="join-share-url">{{ shareUrlHint }}</code>
+        <p class="join-share-note">Keep this link private. Public Join ISA still uses admin approval.</p>
+      </div>
+
+      <a routerLink="/home" class="join-back">← Back to home</a>
+    </aside>
+
+    <main class="join-main">
+      <div class="join-card" *ngIf="!tokenChecked">
+        <p class="checking-token">Checking invite link…</p>
+      </div>
+
+      <div class="join-card locked-card" *ngIf="tokenChecked && !tokenValid && !submitted">
+        <h2>Invite required</h2>
+        <p>
+          This registration path is available only with a valid invite link from ISA
+          (<code>/join?token=…</code>).
+        </p>
+        <p>
+          To apply publicly, use <strong>Join ISA</strong> on the website — that flow goes to admin for approval.
+        </p>
+        <a routerLink="/home" class="submit-btn">Go to home</a>
+      </div>
+
+      <div class="join-card" *ngIf="tokenChecked && tokenValid && !submitted">
+        <header class="join-card-head">
+          <h2>Direct membership registration</h2>
+          <p>Complete the form. After submit you can sign in with this email and password.</p>
+          <p class="join-ref" *ngIf="inviteRef">Invite ref: <strong>{{ inviteRef }}</strong></p>
+        </header>
+
+        <form class="join-form" (ngSubmit)="onSubmit()" novalidate>
+          <div class="form-section-title">Company</div>
+          <div class="form-grid">
+            <label class="field">
+              <span>Company name <span class="req">*</span></span>
+              <input type="text" [(ngModel)]="form.company" name="company" placeholder="Tech Solutions Ltd" />
+            </label>
+            <label class="field">
+              <span>Website</span>
+              <input type="text" [(ngModel)]="form.website" name="website" placeholder="www.example.com" />
+            </label>
+          </div>
+
+          <div class="form-section-title">Primary contact</div>
+          <label class="field">
+            <span>Director / applicant name <span class="req">*</span></span>
+            <input type="text" [(ngModel)]="form.applicantName" name="applicantName" placeholder="Full name" />
+          </label>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Official email <span class="req">*</span></span>
+              <input type="email" [(ngModel)]="form.email" name="email" placeholder="admin@company.com" />
+            </label>
+            <label class="field">
+              <span>Phone <span class="req">*</span></span>
+              <input type="text" [(ngModel)]="form.phone" name="phone" placeholder="+91 00000 00000" />
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Team size <span class="req">*</span></span>
+              <select [(ngModel)]="form.teamSize" name="teamSize">
+                <option value="" disabled>Select size</option>
+                <option value="1-10">1–10 employees</option>
+                <option value="11-50">11–50 employees</option>
+                <option value="51-200">51–200 employees</option>
+                <option value="200+">200+ employees</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Industry <span class="req">*</span></span>
+              <select [(ngModel)]="form.industry" name="industry">
+                <option value="" disabled>Select industry</option>
+                <option value="SaaS">SaaS</option>
+                <option value="Fintech">Fintech</option>
+                <option value="Services">Services</option>
+                <option value="HealthTech">HealthTech</option>
+                <option value="EdTech">EdTech</option>
+                <option value="AI">AI</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Technology stack</span>
+            <input type="text" [(ngModel)]="form.techStack" name="techStack" placeholder="e.g. Java, Angular, AWS" />
+          </label>
+
+          <label class="field">
+            <span>Office address <span class="req">*</span></span>
+            <textarea rows="3" [(ngModel)]="form.address" name="address" placeholder="Registered office address"></textarea>
+          </label>
+
+          <div class="form-section-title">Account access</div>
+          <label class="field">
+            <span>Create password <span class="req">*</span></span>
+            <input type="password" [(ngModel)]="form.password" name="password" placeholder="Minimum 6 characters" />
+          </label>
+
+          <p class="legal-line">
+            By submitting, you agree to our
+            <a routerLink="/terms">Terms of Use</a>,
+            <a routerLink="/privacy">Privacy Policy</a>, and
+            <a routerLink="/refund">Refund Policy</a>.
+          </p>
+
+          <div class="error-box" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+          <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Creating membership…' : 'Create membership &amp; activate' }}
+          </button>
+        </form>
+      </div>
+
+      <div class="join-card success-card" *ngIf="submitted">
+        <div class="success-icon">✓</div>
+        <h2>Membership activated</h2>
+        <p>
+          Welcome, <strong>{{ form.applicantName || 'member' }}</strong>. Your account is
+          <strong>ACTIVE</strong>. Sign in with <strong>{{ form.email }}</strong> and the password you set.
+        </p>
+        <ul class="success-steps">
+          <li>1. Account created via private invite</li>
+          <li>2. Membership status: ACTIVE (no admin wait)</li>
+          <li>3. Use Sign In on the website to access your dashboard</li>
+        </ul>
+        <div class="success-actions">
+          <a routerLink="/home" class="submit-btn">Go to home &amp; sign in</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

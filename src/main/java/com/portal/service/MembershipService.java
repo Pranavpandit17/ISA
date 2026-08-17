@@ -22,10 +22,13 @@ import com.portal.repository.MembershipPaymentRepository;
 import com.portal.repository.UserRepository;
 import com.portal.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -61,6 +64,9 @@ public class MembershipService {
     private EmailService emailService;
     @Autowired
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    @Value("${isa.membership.invite-token:}")
+    private String configuredInviteToken;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -515,6 +521,146 @@ public class MembershipService {
         return convertToDTO(saved);
     }
 
+    /**
+     * Private invite registration: validates invite token and creates an ACTIVE member
+     * without waiting for admin approval. Public Join ISA still uses {@link #createApplication}.
+     */
+    @Transactional
+    public MembershipApplicationDTO registerViaInvite(MembershipApplicationDTO dto) {
+        validateInviteToken(dto != null ? dto.getInviteToken() : null);
+
+        if (dto.getEmail() == null || dto.getEmail().isBlank()) {
+            throw new RuntimeException("Email is required");
+        }
+        if (dto.getApplicantName() == null || dto.getApplicantName().isBlank()) {
+            throw new RuntimeException("Applicant name is required");
+        }
+        if (dto.getPhone() == null || dto.getPhone().isBlank()) {
+            throw new RuntimeException("Phone is required");
+        }
+        if (dto.getCompany() == null || dto.getCompany().isBlank()) {
+            throw new RuntimeException("Company is required");
+        }
+        if (dto.getAddress() == null || dto.getAddress().isBlank()) {
+            throw new RuntimeException("Address is required");
+        }
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new RuntimeException("Password is required");
+        }
+        if (userRepository.existsByEmail(dto.getEmail().trim())) {
+            throw new RuntimeException("A user with this email already exists");
+        }
+
+        String membershipTypeName = dto.getMembershipType();
+        if (membershipTypeName == null || membershipTypeName.isBlank()) {
+            membershipTypeName = "CORPORATE";
+            dto.setMembershipType(membershipTypeName);
+        }
+
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+        User newUser = new User();
+        newUser.setUsername(dto.getEmail().trim().toLowerCase());
+        newUser.setEmail(dto.getEmail().trim().toLowerCase());
+        newUser.setPasswordHash(encodedPassword);
+        newUser.setRole(User.Role.MEMBER);
+        newUser.setName(dto.getApplicantName());
+        newUser.setPhone(dto.getPhone());
+        newUser.setCompany(dto.getCompany());
+        newUser.setIsActive(true);
+        newUser.setPlanStatus(User.PlanStatus.NOT_SELECTED);
+
+        if (dto.getPlanId() != null) {
+            MembershipFeePlan selectedPlan = feePlanRepository.findById(dto.getPlanId())
+                    .orElseThrow(() -> new RuntimeException("Selected plan not found: " + dto.getPlanId()));
+            newUser.setSelectedPlan(selectedPlan);
+            newUser.setPlanStatus(User.PlanStatus.SELECTED);
+            LocalDate startDate = LocalDate.now();
+            newUser.setPlanStartDate(startDate);
+            Integer durationMonths = selectedPlan.getDurationMonths() != null && selectedPlan.getDurationMonths() > 0
+                    ? selectedPlan.getDurationMonths()
+                    : null;
+            newUser.setPlanExpiryDate(durationMonths != null ? startDate.plusMonths(durationMonths).minusDays(1) : null);
+        }
+
+        userRepository.save(newUser);
+
+        MembershipApplication application = new MembershipApplication();
+        application.setApplicantName(dto.getApplicantName());
+        application.setEmail(dto.getEmail().trim().toLowerCase());
+        application.setPhone(dto.getPhone());
+        application.setCompany(dto.getCompany());
+        application.setWebsite(dto.getWebsite());
+        application.setTeamSize(dto.getTeamSize());
+        application.setIndustry(dto.getIndustry());
+        application.setTechStack(dto.getTechStack());
+        ApplicationAddress address = new ApplicationAddress();
+        address.setStreet(dto.getAddress());
+        address.setApplication(application);
+        application.setAddress(address);
+        application.setMembershipType(MembershipApplication.MembershipType.valueOf(membershipTypeName));
+        application.setStatus(MembershipApplication.ApplicationStatus.APPROVED);
+        application.setReviewedAt(LocalDateTime.now());
+        application.setPasswordHash(encodedPassword);
+        application.setNotes("Registered via private invite link (auto-approved)");
+        MembershipApplication saved = applicationRepository.save(application);
+
+        Member newMember = new Member();
+        newMember.setUser(newUser);
+        newMember.setMembershipType(Member.MembershipType.valueOf(membershipTypeName));
+        newMember.setMembershipStatus(Member.MembershipStatus.ACTIVE);
+        String membershipNumber = "MEM-" + LocalDate.now().getYear() + "-" +
+                String.format("%03d", memberRepository.count() + 1);
+        newMember.setMembershipNumber(membershipNumber);
+        LocalDate startDate = LocalDate.now();
+        newMember.setSubscriptionStartDate(startDate);
+        newMember.setSubscriptionEndDate(startDate.plusYears(1));
+        memberRepository.save(newMember);
+
+        try {
+            notificationService.broadcastToAdmins(
+                    "New member joined via invite",
+                    "Member " + newUser.getName() + " (" + newUser.getEmail() + ")" +
+                            " • Membership No: " + membershipNumber +
+                            " registered via invite link and is now ACTIVE.",
+                    Notification.NotificationType.INFO,
+                    Notification.NotificationCategory.MEMBERSHIP,
+                    "/admin-dashboard?view=MEMBER_MANAGEMENT"
+            );
+        } catch (Exception ignored) { /* ignore */ }
+
+        try {
+            if (emailService != null) {
+                emailService.sendMembershipApproval(newUser.getEmail(), newUser.getName());
+            }
+        } catch (Exception e) {
+            System.err.println("Error sending invite registration email: " + e.getMessage());
+        }
+
+        return convertToDTO(saved);
+    }
+
+    public boolean isInviteTokenValid(String token) {
+        try {
+            validateInviteToken(token);
+            return true;
+        } catch (RuntimeException ex) {
+            return false;
+        }
+    }
+
+    private void validateInviteToken(String providedToken) {
+        if (configuredInviteToken == null || configuredInviteToken.isBlank()) {
+            throw new RuntimeException("Invite registration is not configured");
+        }
+        if (providedToken == null || providedToken.isBlank()) {
+            throw new RuntimeException("Invite token is required");
+        }
+        byte[] expected = configuredInviteToken.trim().getBytes(StandardCharsets.UTF_8);
+        byte[] actual = providedToken.trim().getBytes(StandardCharsets.UTF_8);
+        if (!MessageDigest.isEqual(expected, actual)) {
+            throw new RuntimeException("Invalid invite token");
+        }
+    }
 
     private MembershipApplicationDTO convertToDTO(MembershipApplication application) {
         MembershipApplicationDTO dto = new MembershipApplicationDTO();

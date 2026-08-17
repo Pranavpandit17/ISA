@@ -15,12 +15,13 @@ export class FooterComponent {
   currentYear = new Date().getFullYear();
 
   quickLinks = [
-    { label: 'About Us', path: '/home' },
+    { label: 'About Us', path: '/about' },
     { label: 'Events', path: '/events' },
     { label: 'Past Events', path: '/old-events' },
     { label: 'Member Directory', path: '/directory' },
     { label: 'Insights & Blogs', path: '/blogs' },
     { label: 'Bench Exchange', path: '/bench' },
+    { label: 'Terms & Policy', path: '/terms-and-policy' },
   ];
 
   memberLinks = [
