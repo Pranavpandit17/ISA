@@ -95,7 +95,7 @@ export class DataService {
       name: 'Vikas Dosi',
       role: 'Leadership Team 2026',
       company: 'Lise Infotech',
-      image: '/uploads/board/Vikas_Dosi.png'
+      image: '/uploads/board/Vikas_dosi.png'
     },
     {
       name: 'Rahul Purswani',
