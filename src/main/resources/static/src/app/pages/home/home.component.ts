@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadUpcomingEvents();
     this.loadMembershipPlans();
     this.startGalleryAutoSlide();
-    this.maybeShowPromoPopup();
+    //this.maybeShowPromoPopup();
   }
 
   private maybeShowPromoPopup(): void {
